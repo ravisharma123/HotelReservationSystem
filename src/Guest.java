@@ -9,7 +9,6 @@ public class Guest {
     private String userName;
     private int userID;
     private ArrayList<Room> reservationsMadeByGuest;
-	private int test1;
 	
     public Guest(String setName, int setID) {
         userName = setName;
