@@ -5,7 +5,8 @@
  */
 public class Manager {
     private String name;
-    public Manager(String setName){
+
+    public Manager(String setName) {
         name = setName;
     }
 

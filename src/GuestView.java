@@ -17,7 +17,7 @@ public class GuestView extends JPanel implements ChangeListener{
     private String typeOfRoom;
     private JTextArea availableRooms;
 
-    public GuestView(HotelRoomsDataModel setHotelDataModel){
+    public GuestView(HotelRoomsDataModel setHotelDataModel) {
         hotelDataModel=setHotelDataModel;
         guest=null;
         a=hotelDataModel.getData();
@@ -27,12 +27,12 @@ public class GuestView extends JPanel implements ChangeListener{
 
     public void display(Guest setGuest) {
         Guest currentGuest=null;
-        for(int i=0;i<guests.size();i++){
-            if(guests.get(i).getUserID()==userID){ //make that int variable userID read above comment to see how
+        for(int i=0;i<guests.size();i++) {
+            if(guests.get(i).getUserID()==userID) { //make that int variable userID read above comment to see how
                 currentGuest = guests.get(i);
             }
         }
-        if(currentGuest!=null){
+        if(currentGuest!=null) {
             guestView.display(currentGuest);
         }
         else{
@@ -63,6 +63,7 @@ public class GuestView extends JPanel implements ChangeListener{
         makeReservationButton.addActionListener(makeReservationListener);
         viewOrCancelReservationButton.addActionListener(viewOrCancelReservationListener);
     }
+
     public void displayMakeReservationDialog() {
         /*Use GUI JTextField to get the checkin date and another JTextField to get the checkout date
           convert those dates that you recieved by the JTextField into a Calendar Object (remeber to use .getText() method of JTextField
@@ -116,6 +117,7 @@ public class GuestView extends JPanel implements ChangeListener{
         };
 
     }
+
     public void displayForFirstTimeUser() {
         JTextField getUserName = new JTextField("Enter New User Name");
         JTextField getUserID = new JTextField("Enter New User ID");
@@ -125,6 +127,7 @@ public class GuestView extends JPanel implements ChangeListener{
         HotelReservationSystemTester.guests.add(newGuest);
         display(newGuest);
     }
+
     public void viewOrCancelReservation() {
         ArrayList<Room> reservationsByGuest = guest.getGuestReservations();
         ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
@@ -162,7 +165,7 @@ public class GuestView extends JPanel implements ChangeListener{
     @Override
     public void stateChanged(ChangeEvent e) {
         a=hotelDataModel.getFilteredData();
-        for(int i=0;i<a.size();i++){
+        for(int i=0;i<a.size();i++) {
             availableRooms.append("\n"+a.get(i).toString());
         }
     }

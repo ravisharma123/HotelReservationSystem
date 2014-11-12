@@ -9,32 +9,40 @@ public class Guest {
     private String userName;
     private int userID;
     private ArrayList<Room> reservationsMadeByGuest;
-    public Guest(String setName, int setID){
+
+    public Guest(String setName, int setID) {
         userName = setName;
         userID = setID;
         reservationsMadeByGuest= new ArrayList<Room>();
     }
-    public void setUserName(String setUserName){
+
+    public void setUserName(String setUserName) {
         userName=setUserName;
 
     }
-    public String getUserName(){
+
+    public String getUserName() {
         return userName;
     }
-    public void setUserID(int setUserID){
+
+    public void setUserID(int setUserID) {
         userID=setUserID;
 
     }
-    public int getUserID(){
+
+    public int getUserID() {
         return userID;
     }
-    public void addToGuestReservations(Room addReservation){
+
+    public void addToGuestReservations(Room addReservation) {
         reservationsMadeByGuest.add(addReservation);
     }
-    public void removeFromGuestReservations(Room removeReservation){
+
+    public void removeFromGuestReservations(Room removeReservation) {
         reservationsMadeByGuest.remove(removeReservation);
     }
-    public ArrayList<Room> getGuestReservations(){
+
+    public ArrayList<Room> getGuestReservations() {
         return reservationsMadeByGuest;
     }
 }

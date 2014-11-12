@@ -15,11 +15,14 @@ public class HotelReservationSystemTester {
         // setup data
         guests = new ArrayList<Guest>();
         Manager manager = new Manager("Bob");
+
         ArrayList<Room> rooms = new ArrayList<Room>();
         //make all 20 rooms and add to the arraylist rooms. Make 10 regular and 10 luxury
         HotelRoomsDataModel dataOfRooms = new HotelRoomsDataModel(rooms);
+
         final GuestView guestView = new GuestView(dataOfRooms);
         final ManagerView managerView = new ManagerView(dataOfRooms);
+
         dataOfRooms.attach(guestView);
         dataOfRooms.attach(managerView);
 
