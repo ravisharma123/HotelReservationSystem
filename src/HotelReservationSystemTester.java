@@ -10,14 +10,24 @@ import java.util.ArrayList;
  * Version 2014-11-11
  */
 public class HotelReservationSystemTester {
-    public static ArrayList<Guest> guests;
+
     public static void main(String[]args) {
         // setup data
-        guests = new ArrayList<Guest>();
+        
         Manager manager = new Manager("Bob");
 
+        //20 rooms 10 regular and 10 luxury
         ArrayList<Room> rooms = new ArrayList<Room>();
-        //make all 20 rooms and add to the arraylist rooms. Make 10 regular and 10 luxury
+        for (int i = 1; i <= 20; i++)
+        {
+        	if ( i < 10 )
+        	{
+        		rooms.add( new Room(80, "regular") );
+        	}
+        	rooms.add( new Room(200, "luxury") );
+        }
+        
+                
         HotelRoomsDataModel dataOfRooms = new HotelRoomsDataModel(rooms);
 
         final GuestView guestView = new GuestView(dataOfRooms);
@@ -37,15 +47,19 @@ public class HotelReservationSystemTester {
 
         // make the buttons
         JButton managerButton = new JButton("Manager");
-        managerButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
+        managerButton.addMouseListener(new MouseAdapter()
+        {
+            public void mousePressed(MouseEvent e)
+            {
                 frame.add(managerView);
             }
         });
 
         JButton guestButton = new JButton("Guest");
-        guestButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
+        guestButton.addMouseListener(new MouseAdapter()
+        {
+            public void mousePressed(MouseEvent e)
+            {
                 frame.add(guestView);
             }
         });

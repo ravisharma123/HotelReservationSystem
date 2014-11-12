@@ -17,16 +17,17 @@ import java.util.List;
  */
 public class ManagerView extends JPanel {
     public static final String SEPARATOR = System.getProperty("line.separator");
-    public static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June",
+    public static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June", //should theses be ENUMs?
             "July", "August", "September", "October", "November", "December"};
-    public static final String[] VERY_SHORT_WEEK_NAMES = {"S", "M", "T", "W", "T", "F", "S"};
+//    public static final String[] VERY_SHORT_WEEK_NAMES = {"S", "M", "T", "W", "T", "F", "S"}; // Should these be ENUMS
     private Manager manager;
     private HotelRoomsDataModel hotelRoomsDataModel;
     private JTextArea roomInfoTextArea;
     private JPanel centerPanel;
     private Calendar currentCalendar;
 
-    public ManagerView(Manager manager, HotelRoomsDataModel hotelRoomsDataModel) {
+    public ManagerView(Manager manager, HotelRoomsDataModel hotelRoomsDataModel)
+    {
         this.manager = manager;
         this.hotelRoomsDataModel = hotelRoomsDataModel;
 

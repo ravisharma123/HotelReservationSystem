@@ -6,8 +6,20 @@
 public class Manager {
     private String name;
 
-    public Manager(String setName) {
+    public Manager(String setName)
+    {
         name = setName;
     }
-
+  
+    //saves the data of the reservations
+    public void save()
+    {
+    	
+    }
+    
+    //loads the reservations
+    public void load()
+    {
+    	
+    }
 }

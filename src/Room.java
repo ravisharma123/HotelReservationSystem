@@ -15,14 +15,14 @@ public class Room {
 
     public Room(double setPrice,String setTypeOfRoom) {
         price = setPrice;
-        typeOfRoom=setTypeOfRoom;
-        checkInDate=null;
-        checkOutDate=null;
-        bookedDates= new ArrayList<Calendar>();
+        typeOfRoom = setTypeOfRoom;
+        checkInDate = null;
+        checkOutDate = null;
+        bookedDates = new ArrayList<Calendar>();
     }
 
     public void setCheckInDate(Calendar setCheckInDate) {
-        checkInDate=setCheckInDate;
+        checkInDate = setCheckInDate;
     }
 
     public Calendar getCheckInDate() {
@@ -30,7 +30,7 @@ public class Room {
     }
 
     public void setCheckOutDate(Calendar setCheckOutDate) {
-        checkOutDate=setCheckOutDate;
+        checkOutDate = setCheckOutDate;
     }
 
     public Calendar getCheckOutDate() {
@@ -46,7 +46,7 @@ public class Room {
     }
 
     public void setTypeOfRoom(String setType) {
-        typeOfRoom=setType;
+        typeOfRoom = setType;
     }
 
     public String getTypeOfRoom() {
