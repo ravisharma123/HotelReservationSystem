@@ -1,16 +1,10 @@
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author Ravi Sharma
+ * Solution to group project 2 for CS151-01.
+ * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
+ * Version 2014-11-11
  */
 public class Room {
     private Calendar checkInDate;
