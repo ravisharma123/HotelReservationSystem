@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class ManagerPanel extends JPanel {
     public static final String SEPARATOR = System.getProperty("line.separator");
-    public static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June", //should theses be ENUMs?
+    public static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"};
-//    public static final String[] VERY_SHORT_WEEK_NAMES = {"S", "M", "T", "W", "T", "F", "S"}; // Should these be ENUMS
+    public static final String[] VERY_SHORT_WEEK_NAMES = {"S", "M", "T", "W", "T", "F", "S"};
     private Manager manager;
     private HotelRoomsDataModel hotelRoomsDataModel;
     private JTextArea roomInfoTextArea;
