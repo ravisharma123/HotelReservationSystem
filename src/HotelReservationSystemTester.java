@@ -4,11 +4,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-/**
+/*********************************************************
+ * Runs the hotel reservation system for 
+ * booking rooms and searching for rooms.
+ * Managers can access and view the rooms per date
+ * 
+ * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
- */
+ ********************************************************/
 public class HotelReservationSystemTester {
 
     public static void main(String[]args) {
@@ -21,20 +26,19 @@ public class HotelReservationSystemTester {
         for (int i = 1; i <= 20; i++)
         {
         	if ( i < 10 )
-        	{
-        		rooms.add( new Room(80, "regular") );
-        	}
-        	rooms.add( new Room(200, "luxury") );
+        	{	rooms.add( new Room(80, "regular") );  	}
+        	else
+        	{	rooms.add( new Room(200, "luxury") );	}
         }
         
                 
         HotelRoomsDataModel dataOfRooms = new HotelRoomsDataModel(rooms);
 
         final GuestPanel guestPanel = new GuestPanel(dataOfRooms);
-        final ManagerPanel managerPanel = new ManagerPanel(dataOfRooms);
+        //final ManagerPanel managerPanel = new ManagerPanel(dataOfRooms);                          comment out to get Guest View going
 
         dataOfRooms.attach(guestPanel);
-        dataOfRooms.attach(managerPanel);
+        //dataOfRooms.attach(managerPanel);							comment out to get Guest view going
 
         // make the frame
         int width = 600;
@@ -43,7 +47,6 @@ public class HotelReservationSystemTester {
         final JFrame frame = new JFrame("Hotel Reservation System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width, height);
-        frame.setVisible(true);
 
         // make the buttons
         JButton managerButton = new JButton("Manager");
@@ -51,7 +54,7 @@ public class HotelReservationSystemTester {
         {
             public void mousePressed(MouseEvent e)
             {
-                frame.add(managerPanel);
+                //frame.add(managerPanel);
             }
         });
 
@@ -60,7 +63,7 @@ public class HotelReservationSystemTester {
         {
             public void mousePressed(MouseEvent e)
             {
-                frame.add(guestPanel);
+                //frame.add(guestPanel);
             }
         });
 
@@ -73,5 +76,6 @@ public class HotelReservationSystemTester {
         panel.add(managerButton);
         panel.add(guestButton);
         frame.add(panel);
+        frame.setVisible(true);
     }
 }

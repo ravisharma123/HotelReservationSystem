@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
-/**
+/***********************************************************
  * The Guest of a hotel to make 
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
- */
+ ***********************************************************/
 public class Guest {
     private String userName;
     private int userID;

@@ -4,11 +4,15 @@ import java.util.Calendar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-/**
+/**********************************************
+ * This Data Model holds the information
+ * about the hotel including the rooms
+ * 
+ * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
- */
+ *********************************************/
 public class HotelRoomsDataModel {
     private ArrayList<Room> hotelRoomData;
     private ArrayList<ChangeListener> listeners;
@@ -22,15 +26,22 @@ public class HotelRoomsDataModel {
         filteredResults = new ArrayList<Room>();
     }
 
+    /**
+     * Gets a deep copy of the 
+     * List of the rooms
+     * @return A the rooms in the hotel
+     */
     public ArrayList<Room> getData()
     {
         return (ArrayList<Room>) hotelRoomData.clone();
     }
 
+
     public void attach(ChangeListener c)
     {
         listeners.add(c);
     }
+
 
     public void updateToAddReservation(Room addReservation, Calendar checkInDate, Calendar checkOutDate)
     {
@@ -71,13 +82,17 @@ public class HotelRoomsDataModel {
         return filteredResults;
     }
     
-    public void display(Guest setGuest)
+    /**
+     * 
+     * @param setGuest the guest to log in
+     */
+    public Guest display(Guest setGuest)
     {
         Guest currentGuest = null;
         
         for(int i = 0; i < guests.size(); i++)
         {
-            if( guests.get(i).getUserID() == setGuest.getUserID() ) //make that int variable userID read above comment to see how
+            if( guests.get(i).getUserID() == setGuest.getUserID() ) 
             {
                 currentGuest = guests.get(i);
             }
@@ -93,7 +108,7 @@ public class HotelRoomsDataModel {
             guestView.displayForFirstTimeUser();
         }
 
-        guest = setGuest;
+        return currentGuest; // returns the current guest
     }
     
     /**************************

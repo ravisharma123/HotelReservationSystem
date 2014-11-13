@@ -7,13 +7,16 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /*********************************************************
+ * Shows the Guest views for user input to make a reservation
+ * and to store the information in to the data model
+ * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
  *********************************************************/
 public class GuestPanel extends JPanel implements ChangeListener{
     private Guest guest;
-    private ArrayList<Room> a;
+    private ArrayList<Room> copyOfHotelRooms;
     private HotelRoomsDataModel hotelDataModel;
     private String typeOfRoom;
     private JTextArea availableRooms;
@@ -22,7 +25,7 @@ public class GuestPanel extends JPanel implements ChangeListener{
     public GuestPanel(HotelRoomsDataModel setHotelDataModel)
     {
         guest = null;
-        a = hotelDataModel.getData();
+        copyOfHotelRooms = hotelDataModel.getData();
         hotelDataModel = setHotelDataModel;
         typeOfRoom = "";
         availableRooms = new JTextArea("Available Rooms\n");
@@ -52,8 +55,8 @@ public class GuestPanel extends JPanel implements ChangeListener{
             }
         };
         
-        makeReservationButton.addActionListener(makeReservationListener);
-        viewOrCancelReservationButton.addActionListener(viewOrCancelReservationListener);
+        //makeReservationButton.addActionListener(makeReservationListener);
+        //viewOrCancelReservationButton.addActionListener(viewOrCancelReservationListener);
     
 
     public void displayMakeReservationDialog()
@@ -101,8 +104,8 @@ public class GuestPanel extends JPanel implements ChangeListener{
         ActionListener confirmedButtonListener = new ActionListener()
         {
             public void actionPerformed(ActionEvent e) {
-                hotelDataModel.updateToAddReservation(a.get(0), null, null);
-                Room addReservationToGuestRecords = a.get(0);
+                hotelDataModel.updateToAddReservation(copyOfHotelRooms.get(0), null, null);
+                Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
                 addReservationToGuestRecords.setCheckInDate(null);
                 addReservationToGuestRecords.setCheckOutDate(null);
                 guest.addToGuestReservations(addReservationToGuestRecords);

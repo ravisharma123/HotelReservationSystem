@@ -1,11 +1,14 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
+/*******************************************************
+ * Holds information about a hotel room
+ * 
+ * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
- */
+ *******************************************************/
 public class Room {
     private Calendar checkInDate;
     private Calendar checkOutDate;
