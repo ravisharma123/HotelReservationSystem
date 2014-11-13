@@ -157,6 +157,11 @@ public class ManagerPanel extends JPanel {
         JPanel calendarPanel = new JPanel();
         calendarPanel.setLayout(new GridLayout(0, VERY_SHORT_WEEK_NAMES.length));
 
+        // make short week names at top of calendar
+        for(String veryShortWeekName : VERY_SHORT_WEEK_NAMES) {
+            calendarPanel.add(new JLabel(veryShortWeekName));
+        }
+
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
 
