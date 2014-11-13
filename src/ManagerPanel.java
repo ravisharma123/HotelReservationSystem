@@ -16,36 +16,32 @@ import java.util.List;
  * Version 2014-11-11
  */
 public class ManagerPanel extends JPanel {
-    public static final String SEPARATOR = System.getProperty("line.separator");
     public static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"};
     public static final String[] VERY_SHORT_WEEK_NAMES = {"S", "M", "T", "W", "T", "F", "S"};
     private Manager manager;
-    private HotelRoomsDataModel hotelRoomsDataModel;
     private JTextArea roomInfoTextArea;
     private JPanel centerPanel;
     private Calendar currentCalendar;
 
-    public ManagerPanel(Manager manager, HotelRoomsDataModel hotelRoomsDataModel)
-    {
+    public ManagerPanel(Manager manager) {
         this.manager = manager;
-        this.hotelRoomsDataModel = hotelRoomsDataModel;
 
         // make this date's calendar
-        Calendar calendar = new GregorianCalendar();
-        Date date = calendar.getTime();
-        calendar.setTime(date);
+        currentCalendar = new GregorianCalendar();
+        Date date = currentCalendar.getTime();
+        currentCalendar.setTime(date);
 
         roomInfoTextArea = new JTextArea();
-        showRoomInfoOnDay(calendar);
+        showRoomInfoOnDay(currentCalendar);
 
         setLayout(new BorderLayout());
         add(getButtonPanel(), BorderLayout.SOUTH);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
-        centerPanel.add(getMonthAndYearComboBoxPanel(calendar), BorderLayout.NORTH);
-        centerPanel.add(getCalendarPanel(calendar), BorderLayout.CENTER);
+        centerPanel.add(getMonthAndYearComboBoxPanel(currentCalendar), BorderLayout.NORTH);
+        updateCalendarPanel();
         add(centerPanel, BorderLayout.CENTER);
 
         add(roomInfoTextArea, BorderLayout.EAST);
@@ -89,8 +85,7 @@ public class ManagerPanel extends JPanel {
      * @param calendar the calendar
      */
     private void showRoomInfoOnDay(Calendar calendar) {
-        hotelRoomsDataModel.setFilteredData(calendar, calendar, ""); // don't care about type of room, and should only use starting date
-        roomInfoTextArea.setText(hotelRoomsDataModel.getFilteredData().toString());
+        roomInfoTextArea.setText(manager.getRoomInfoOnDay(calendar));
     }
 
     private JPanel getMonthAndYearComboBoxPanel(Calendar calendar) {
@@ -99,9 +94,18 @@ public class ManagerPanel extends JPanel {
         monthComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String month = monthComboBox.getSelectedItem().toString();
+                String monthName = monthComboBox.getSelectedItem().toString();
 
-                // update month of calendar --> currentCalendar.set();
+                // get the right month value based on the month name
+                for(int i = 0; i < MONTH_NAMES.length; i++) {
+                    if(MONTH_NAMES[i].equals(monthName)) {
+                        currentCalendar.set(Calendar.MONTH, i + 1);
+
+                        break;
+                    }
+                }
+
+                updateCalendarPanel();
             }
         });
 
@@ -119,7 +123,9 @@ public class ManagerPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int year = Integer.parseInt(yearComboBox.getSelectedItem().toString());
 
-                // updated year of calendar --> updateCalendarPanel();
+                currentCalendar.set(Calendar.YEAR, year);
+
+                updateCalendarPanel();
             }
         });
 
@@ -133,6 +139,13 @@ public class ManagerPanel extends JPanel {
         monthAndYearComboBoxPanel.add(yearComboBox);
 
         return monthAndYearComboBoxPanel;
+    }
+
+    /**
+     * Updates the center panel's center panel to use the current calendar's year and month.
+     */
+    private void updateCalendarPanel() {
+        centerPanel.add(getCalendarPanel(currentCalendar), BorderLayout.CENTER);
     }
 
     /**
