@@ -11,7 +11,7 @@ import javax.swing.event.ChangeListener;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
  *********************************************************/
-public class GuestView extends JPanel implements ChangeListener{
+public class GuestPanel extends JPanel implements ChangeListener{
     private Guest guest;
     private ArrayList<Room> a;
     private HotelRoomsDataModel hotelDataModel;
@@ -19,7 +19,7 @@ public class GuestView extends JPanel implements ChangeListener{
     private JTextArea availableRooms;
     
 
-    public GuestView(HotelRoomsDataModel setHotelDataModel)
+    public GuestPanel(HotelRoomsDataModel setHotelDataModel)
     {
         guest = null;
         a = hotelDataModel.getData();

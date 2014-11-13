@@ -30,11 +30,11 @@ public class HotelReservationSystemTester {
                 
         HotelRoomsDataModel dataOfRooms = new HotelRoomsDataModel(rooms);
 
-        final GuestView guestView = new GuestView(dataOfRooms);
-        final ManagerView managerView = new ManagerView(dataOfRooms);
+        final GuestPanel guestPanel = new GuestPanel(dataOfRooms);
+        final ManagerPanel managerPanel = new ManagerPanel(dataOfRooms);
 
-        dataOfRooms.attach(guestView);
-        dataOfRooms.attach(managerView);
+        dataOfRooms.attach(guestPanel);
+        dataOfRooms.attach(managerPanel);
 
         // make the frame
         int width = 600;
@@ -51,7 +51,7 @@ public class HotelReservationSystemTester {
         {
             public void mousePressed(MouseEvent e)
             {
-                frame.add(managerView);
+                frame.add(managerPanel);
             }
         });
 
@@ -60,7 +60,7 @@ public class HotelReservationSystemTester {
         {
             public void mousePressed(MouseEvent e)
             {
-                frame.add(guestView);
+                frame.add(guestPanel);
             }
         });
 

@@ -15,7 +15,7 @@ import java.util.List;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
  */
-public class ManagerView extends JPanel {
+public class ManagerPanel extends JPanel {
     public static final String SEPARATOR = System.getProperty("line.separator");
     public static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June", //should theses be ENUMs?
             "July", "August", "September", "October", "November", "December"};
@@ -26,7 +26,7 @@ public class ManagerView extends JPanel {
     private JPanel centerPanel;
     private Calendar currentCalendar;
 
-    public ManagerView(Manager manager, HotelRoomsDataModel hotelRoomsDataModel)
+    public ManagerPanel(Manager manager, HotelRoomsDataModel hotelRoomsDataModel)
     {
         this.manager = manager;
         this.hotelRoomsDataModel = hotelRoomsDataModel;
