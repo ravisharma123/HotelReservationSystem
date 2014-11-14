@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /***********************************************************
- * The Guest of a hotel to make 
+ * The Guest of a hotel to make reservations
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
@@ -16,15 +16,12 @@ public class Guest {
     {
         userName = setName;
         userID = setID;
-        reservationsMadeByGuest= new ArrayList<Room>();
-        
-        
+        reservationsMadeByGuest= new ArrayList<Room>();      
     }
 
     public void setUserName(String setUserName)
     {
         userName = setUserName;
-
     }
 
     public String getUserName()
@@ -35,7 +32,6 @@ public class Guest {
     public void setUserID(int setUserID)
     {
         userID = setUserID;
-
     }
 
     public int getUserID()
