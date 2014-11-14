@@ -18,13 +18,13 @@ import javax.swing.event.ChangeListener;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
  *********************************************/
-public class HotelRoomsDataModel {
+public class HotelModel {
     private ArrayList<Room> hotelRoomData;
     private ArrayList<ChangeListener> listeners;
     private ArrayList<Room> filteredResults;
-    private ArrayList<Guest> guests;
+    private ArrayList<Guest> guestList;
 
-    public HotelRoomsDataModel(ArrayList<Room> setHotelRoomData)
+    public HotelModel(ArrayList<Room> setHotelRoomData)
     {
         hotelRoomData = setHotelRoomData;
         listeners = new ArrayList<ChangeListener>();
@@ -40,7 +40,7 @@ public class HotelRoomsDataModel {
     {   return (ArrayList<Room>) hotelRoomData.clone();    }
 
     public void addGuest(Guest guest)
-    {  	guests.add(guest);    }
+    {  	guestList.add(guest);    }
     
     public ArrayList<Room> getFilteredData()
     {    return filteredResults;    }
@@ -123,11 +123,11 @@ public class HotelRoomsDataModel {
     {
         Guest currentGuest = null;
         
-        for(int i = 0; i < guests.size(); i++)
+        for(int i = 0; i < guestList.size(); i++)
         {
-            if( guests.get(i).getUserID() == setGuest.getUserID() ) 
+            if( guestList.get(i).getUserID() == setGuest.getUserID() ) 
             {
-                currentGuest = guests.get(i);
+                currentGuest = guestList.get(i);
             }
         }
         
@@ -148,16 +148,16 @@ public class HotelRoomsDataModel {
      * vacant.
      * 
      */
-    public String nonVacantRooms(Calendar calendar)
+    public String getRoomInfoOnDay(Calendar calendar)
     {
-    	String message = "";
+    	String message = calendar.getTime().toString();
     	
     	for (Room r: hotelRoomData)
     	{
     		if( r.getBookedDates().contains(calendar)  )
     		{
     			Guest user = new Guest(null, 1);
-    			for (Guest g: guests)
+    			for (Guest g: guestList)
     			{
     				if( g.getGuestReservations().contains(r) )
     				{	user = g;	}

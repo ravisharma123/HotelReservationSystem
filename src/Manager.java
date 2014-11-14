@@ -22,7 +22,7 @@ public class Manager {
      * reservations on to
      * a file
      */
-    public void saveToFile(HotelRoomsDataModel hotelData)
+    public void save(HotelRoomsDataModel hotelData)
     {
     	try
         {
@@ -43,7 +43,7 @@ public class Manager {
      * information from file
      * to a program
      */
-    public HotelRoomsDataModel loadData()
+    public HotelModel load()
     {
     	try
       	{
@@ -66,4 +66,6 @@ public class Manager {
 	       return null;
 	    }
     }
+    
+    getRoomInfoOnDay
 }

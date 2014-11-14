@@ -19,7 +19,7 @@ public class HotelReservationSystemTester {
     public static void main(String[] args) {
         // setup data
         
-        Manager manager = new Manager("Bob");
+        final Manager manager = new Manager("Bob");
 
         //20 rooms 10 regular and 10 luxury
         ArrayList<Room> rooms = new ArrayList<Room>();
@@ -32,10 +32,10 @@ public class HotelReservationSystemTester {
         }
         
         //START UP LOAD DATA
-        HotelRoomsDataModel dataOfRooms = manager.loadData();
+        HotelModel dataOfRooms = manager.load();
         //NO LOAD DATA EXISTS -> START EMPTY
         if (dataOfRooms == null)
-        {  	dataOfRooms = new HotelRoomsDataModel(rooms);  }
+        {  	dataOfRooms = new HotelModel(rooms);  }
         
         final GuestPanel guestPanel = new GuestPanel(dataOfRooms);
         //final ManagerPanel managerPanel = new ManagerPanel(dataOfRooms);                          comment out to get Guest View going
@@ -59,7 +59,7 @@ public class HotelReservationSystemTester {
         {
             public void mousePressed(MouseEvent e)
             {
-                //frame.add(managerPanel);
+                frame.add( new ManagerPanel(manager) );
             }
         });
 

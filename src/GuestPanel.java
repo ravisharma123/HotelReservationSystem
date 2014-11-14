@@ -18,12 +18,12 @@ import javax.swing.event.ChangeListener;
 public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
     private ArrayList<Room> copyOfHotelRooms;
-    private HotelRoomsDataModel hotelDataModel;
+    private HotelModel hotelDataModel;
     private String typeOfRoom;
     private JTextArea availableRooms;
     
 
-    public GuestPanel(HotelRoomsDataModel setHotelDataModel)
+    public GuestPanel(HotelModel setHotelDataModel)
     {
         guest = null;
         copyOfHotelRooms = setHotelDataModel.getData();
