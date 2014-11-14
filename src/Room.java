@@ -26,50 +26,39 @@ public class Room {
     }
 
     public void setCheckInDate(Calendar setCheckInDate)
-    {
-        checkInDate = setCheckInDate;
-    }
+    {   checkInDate = setCheckInDate;    }
 
     public Calendar getCheckInDate()
-    {
-        return checkInDate;
-    }
+    {    return checkInDate;   }
 
     public void setCheckOutDate(Calendar setCheckOutDate)
-    {
-        checkOutDate = setCheckOutDate;
-    }
+    {  checkOutDate = setCheckOutDate;    }
 
     public Calendar getCheckOutDate()
-    {
-        return checkOutDate;
-    }
+    {   return checkOutDate;   }
 
     public void setPrice(double setPrice)
-    {
-        price = setPrice;
-    }
+    {    price = setPrice;   }
 
     public double getPrice()
-    {
-        return price;
-    }
+    {   return price;   }
 
     public void setTypeOfRoom(String setType)
-    {
-        typeOfRoom = setType;
-    }
+    {    typeOfRoom = setType;    }
 
     public String getTypeOfRoom()
-    {
-        return typeOfRoom;
-    }
+    { 	return typeOfRoom;   }
     
     public ArrayList<Calendar> getBookedDates()
-    {
-        return bookedDates;
-    }
+    {	return bookedDates;   }
 
+    /**
+     * Adds the check-in to check-out days to the room
+     * signifying the room is not vacant on those days
+     * 
+     * @param checkInDate the room check in date
+     * @param checkOutDate the room check out date
+     */
     public void setBookedDates(Calendar checkInDate, Calendar checkOutDate)
     {  	
     	int days = getDays(checkInDate, checkOutDate);
@@ -81,19 +70,22 @@ public class Room {
     	}
     }
 
+    /**
+     * Removes the check-in to check-out days to
+     * the room making the room vacant
+     * 
+     * @param checkInDate the room check in date
+     * @param checkOutDate the room check out date
+     */
     public void deleteBookedDates(Calendar checkInDate, Calendar checkOutDate)
     {
     	int days = getDays(checkInDate, checkOutDate);
     	
-    	for (int i = 0; i < bookedDates.size(); i++)
-    	{
-    		if( bookedDates.get(i).equals(checkInDate) )  //finds start date
-    		{
-    			for (int j = 1; j <= days; j ++)
-    			{	bookedDates.remove(i);	}  //deletes start date through end date
-    		}
+    	int loc = bookedDates.indexOf(checkInDate);
+    	
+		for (int i = 1; i <= days; i++)
+		{	bookedDates.remove(loc);	}  //deletes start date through end date
 
-    	}
     }
 
     /**
@@ -102,7 +94,7 @@ public class Room {
      * 
      * @param checkInDate the room check in date
      * @param checkOutDate the room check out date
-     * @return
+     * @return the number of days between the dates (including the date)
      */
     public int getDays(Calendar checkInDate, Calendar checkOutDate)
     {
