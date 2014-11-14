@@ -15,16 +15,21 @@ public class Room {
     private ArrayList<Calendar> bookedDates;
     private double price;
     private String typeOfRoom;
+    private int rmNum;
 
-    public Room(double setPrice,String setTypeOfRoom)
+    public Room(double setPrice, String setTypeOfRoom, int roomNumber)
     {
         price = setPrice;
         typeOfRoom = setTypeOfRoom;
         checkInDate = null;
         checkOutDate = null;
         bookedDates = new ArrayList<Calendar>();
+        rmNum = roomNumber;
     }
 
+    public int getRmNum()
+    {	return rmNum;	}
+    
     public void setCheckInDate(Calendar setCheckInDate)
     {   checkInDate = setCheckInDate;    }
 
