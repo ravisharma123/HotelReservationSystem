@@ -21,7 +21,8 @@ public class ManagerPanel extends JPanel {
     public static final String[] VERY_SHORT_WEEK_NAMES = {"S", "M", "T", "W", "T", "F", "S"};
     private Manager manager;
     private JTextArea roomInfoTextArea;
-    private JPanel centerPanel;
+    private JPanel westPanel;
+    private JPanel calendarPanel;
     private Calendar currentCalendar;
 
     public ManagerPanel(Manager manager) {
@@ -38,13 +39,18 @@ public class ManagerPanel extends JPanel {
         setLayout(new BorderLayout());
         add(getButtonPanel(), BorderLayout.SOUTH);
 
-        centerPanel = new JPanel();
-        centerPanel.setLayout(new BorderLayout());
-        centerPanel.add(getMonthAndYearComboBoxPanel(currentCalendar), BorderLayout.NORTH);
-        updateCalendarPanel();
-        add(centerPanel, BorderLayout.CENTER);
+        // west panel that holds calendar stuff
+        westPanel = new JPanel();
+        westPanel.setLayout(new BorderLayout());
+        westPanel.add(getMonthAndYearComboBoxPanel(currentCalendar), BorderLayout.NORTH);
 
-        add(roomInfoTextArea, BorderLayout.EAST);
+        calendarPanel = getCalendarPanel(currentCalendar);
+        westPanel.add(calendarPanel, BorderLayout.CENTER);
+
+        updateCalendarPanel();
+        add(westPanel, BorderLayout.WEST);
+
+        add(roomInfoTextArea, BorderLayout.CENTER);
     }
 
     /**
@@ -99,7 +105,7 @@ public class ManagerPanel extends JPanel {
                 // get the right month value based on the month name
                 for(int i = 0; i < MONTH_NAMES.length; i++) {
                     if(MONTH_NAMES[i].equals(monthName)) {
-                        currentCalendar.set(Calendar.MONTH, i + 1);
+                        currentCalendar.set(Calendar.MONTH, i);
 
                         break;
                     }
@@ -145,7 +151,13 @@ public class ManagerPanel extends JPanel {
      * Updates the center panel's center panel to use the current calendar's year and month.
      */
     private void updateCalendarPanel() {
-        centerPanel.add(getCalendarPanel(currentCalendar), BorderLayout.CENTER);
+        westPanel.remove(calendarPanel);
+
+        calendarPanel = getCalendarPanel(currentCalendar);
+        westPanel.add(calendarPanel, BorderLayout.CENTER);
+
+        westPanel.revalidate();
+
     }
 
     /**

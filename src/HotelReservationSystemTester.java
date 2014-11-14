@@ -50,38 +50,43 @@ public class HotelReservationSystemTester {
         final int width = 600;
         final int height = 600;
         frame.setSize(width, height);
+        frame.setLayout(new BorderLayout());
+
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation( dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2 );
 
         //BUTTONS
-        //RUN THE MANAGER VIEW
-        JButton managerButton = new JButton("Manager");
-        managerButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                frame.add(new ManagerPanel(manager));
-            }
-        });
-
-        //RUN THE GUEST VIEW
-        JButton guestButton = new JButton("Guest");
-        guestButton.addMouseListener(new MouseAdapter()
-        {
-            public void mousePressed(MouseEvent e)
-            {
-            	//frame.add( guestPanel.userLogIn() ); // just for testing
-            	guestPanel.run();
-            }
-        });
-
         // make the panel and add to the frame
         int rows = 0;
         int columns = 1;
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(rows, columns));
+
+        // open manager panel
+        JButton managerButton = new JButton("Manager");
+        managerButton.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                frame.remove(mainPanel);
+                frame.add(new ManagerPanel(manager), BorderLayout.CENTER);
+                frame.revalidate();
+            }
+        });
+
+        // open guest panel
+        JButton guestButton = new JButton("Guest");
+        guestButton.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                frame.remove(mainPanel);
+            	//frame.add( guestPanel.userLogIn() ); // just for testing
+            	guestPanel.run();
+                frame.revalidate();
+            }
+        });
+
         mainPanel.add(managerButton);
         mainPanel.add(guestButton);
-        frame.add(mainPanel);
+        frame.add(mainPanel, BorderLayout.CENTER);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
