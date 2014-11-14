@@ -255,6 +255,11 @@ public class GuestPanel extends JPanel implements ChangeListener {
             checkBoxes.add(checkBox);           
         }
         
+        //create vertical check boxes
+        JPanel viewDeletePanel = new JPanel();
+        viewDeletePanel.setLayout( new BoxLayout() );
+        
+        
         /*
         Add a JButton |CANCEL| so that all the check boxes that were selected then their appropriate reservations are deleted from data
         model.(remember we are not deleting a room from data model but we are deleting from the bookingDates of the room. 
