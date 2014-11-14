@@ -34,6 +34,7 @@ public class ManagerPanel extends JPanel {
         currentCalendar.setTime(date);
 
         roomInfoTextArea = new JTextArea();
+        roomInfoTextArea.setEditable(false); // do not allow people to edit the text
         showRoomInfoOnDay(currentCalendar);
 
         setLayout(new BorderLayout());
