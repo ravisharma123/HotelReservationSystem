@@ -1,3 +1,8 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -32,21 +37,27 @@ public class HotelRoomsDataModel {
      * @return A the rooms in the hotel
      */
     public ArrayList<Room> getData()
-    {
-        return (ArrayList<Room>) hotelRoomData.clone();
-    }
+    {   return (ArrayList<Room>) hotelRoomData.clone();    }
 
     public void addGuest(Guest guest)
-    {
-    	guests.add(guest);
-    }
+    {  	guests.add(guest);    }
+    
+    public ArrayList<Room> getFilteredData()
+    {    return filteredResults;    }
     
     public void attach(ChangeListener c)
-    {
-        listeners.add(c);
-    }
+    {   listeners.add(c);    }
 
 
+    /**
+     * Adds dates to the room.  The room is reserved 
+	 * from the check-in date to the check-out
+     * date. 
+     * 
+     * @param addReservation is a room
+     * @param checkInDate is the first day of the reservation
+     * @param checkOutDate is the last day of the reservation
+     */
     public void updateToAddReservation(Room addReservation, Calendar checkInDate, Calendar checkOutDate)
     {
         hotelRoomData.get( hotelRoomData.indexOf(addReservation) ).setBookedDates(checkInDate, checkOutDate);
@@ -56,6 +67,15 @@ public class HotelRoomsDataModel {
         }
     }
 
+    /**
+     * Removes dates from the room.  The room
+     * becomes vacant from the check-in date
+     * to the check-out date
+     * 
+     * @param addReservation is a room
+     * @param checkInDate is the first day of the reservation
+     * @param checkOutDate is the last day of the reservation
+     */
     public void updateToCancelReservation(Room cancelReservation, Calendar checkInDate, Calendar checkOutDate)
     {
         hotelRoomData.get( hotelRoomData.indexOf(cancelReservation) ).deleteBookedDates(checkInDate, checkOutDate);
@@ -65,13 +85,21 @@ public class HotelRoomsDataModel {
         }
     }
 
+    /**
+     * The filtered data is a list of rooms that are
+     * vacant for that day
+     * 
+     * @param checkInDate is the first day of the reservation
+     * @param checkOutDate is the last day of the reservation
+     * @param typeOfRoom is either a standard or luxury room
+     */
     public void setFilteredData(Calendar checkInDate, Calendar checkOutDate, String typeOfRoom)
     {
         filteredResults.removeAll(filteredResults);
         
         for(int i = 0; i < hotelRoomData.size(); i++)
         {
-            if( ( !hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) && ( hotelRoomData.get(i).getTypeOfRoom().equalsIgnoreCase(typeOfRoom) ) )
+            if( ( !( ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) || ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) ) ) && ( hotelRoomData.get(i).getTypeOfRoom().equalsIgnoreCase(typeOfRoom) ) )
                 filteredResults.add(hotelRoomData.get(i));
         }
         
@@ -81,10 +109,7 @@ public class HotelRoomsDataModel {
         }
     }
 
-    public ArrayList<Room> getFilteredData()
-    {
-        return filteredResults;
-    }
+
     
     /**
      * Checks to see if the User is in the system.
@@ -109,15 +134,38 @@ public class HotelRoomsDataModel {
         return currentGuest; // returns the current guest
     }
     
-    /**************************
-     * for manager
+    /**
+     * Finds the reserved rooms on a specific date and
+     * sends a string of information about the reserved
+     * rooms.
+     * 
+     * e.g. 
+     * Regular Room 1: Tom
+     * Luxury Room 12: Jeff
+     * 
+     * @param calendar is the date for the manager view
+     * @return is a string of all the rooms that are not
+     * vacant.
+     * 
      */
-    //save ()
-    
-    //load()
-    
-    //get Room info on day (calendar)
-    //use filter for luxury and regular
-    //send viewer the string "Regular: Room 1: guest Name" // one string will all the rooms
+    public String nonVacantRooms(Calendar calendar)
+    {
+    	String message = "";
+    	
+    	for (Room r: hotelRoomData)
+    	{
+    		if( r.getBookedDates().contains(calendar)  )
+    		{
+    			Guest user = new Guest(null, 1);
+    			for (Guest g: guests)
+    			{
+    				if( g.getGuestReservations().contains(r) )
+    				{	user = g;	}
+    			}
+    			message += r.getTypeOfRoom() + "Room " + r.getRmNum() + ": " + user.getUserName() + "\n"; //Regular Room 1: guest name
+    		}
+    	}
+    	return message;
+    }
 
 }
