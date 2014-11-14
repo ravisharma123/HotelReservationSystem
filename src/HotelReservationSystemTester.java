@@ -16,7 +16,7 @@ import java.util.ArrayList;
  ********************************************************/
 public class HotelReservationSystemTester {
 
-    public static void main(String[]args) {
+    public static void main(String[] args) {
         // setup data
         
         Manager manager = new Manager("Bob");
@@ -31,22 +31,26 @@ public class HotelReservationSystemTester {
         	{	rooms.add( new Room(200, "luxury") );	}
         }
         
-                
+        
         HotelRoomsDataModel dataOfRooms = new HotelRoomsDataModel(rooms);
-
         final GuestPanel guestPanel = new GuestPanel(dataOfRooms);
         //final ManagerPanel managerPanel = new ManagerPanel(dataOfRooms);                          comment out to get Guest View going
-
+        
+        //load the room data/////////////////////////////////////////////////////////
+        
+        
+        //attach listener
         dataOfRooms.attach(guestPanel);
         //dataOfRooms.attach(managerPanel);							comment out to get Guest view going
 
-        // make the frame
-        int width = 600;
-        int height = 600;
-
+        // make the frame dimensions
         final JFrame frame = new JFrame("Hotel Reservation System");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        int width = 300;
+        int height = 300;
         frame.setSize(width, height);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation( dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2 );
 
         // make the buttons
         JButton managerButton = new JButton("Manager");
@@ -63,19 +67,22 @@ public class HotelReservationSystemTester {
         {
             public void mousePressed(MouseEvent e)
             {
-                //frame.add(guestPanel);
+                //cardLayout.show( guestPanel.userLogIn() );
+            	frame.add( guestPanel.userLogIn() ); // just for testing
             }
         });
 
-        // make the panel
+        // make the panel and add to the frame
         int rows = 0;
         int columns = 1;
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(rows, columns));
-        panel.add(managerButton);
-        panel.add(guestButton);
-        frame.add(panel);
+        JPanel mainMenu = new JPanel();
+        mainMenu.setLayout(new GridLayout(rows, columns));
+        mainMenu.add(managerButton);
+        mainMenu.add(guestButton);
+        frame.add(mainMenu);
+        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 }

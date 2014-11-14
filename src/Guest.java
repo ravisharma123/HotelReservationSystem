@@ -17,6 +17,8 @@ public class Guest {
         userName = setName;
         userID = setID;
         reservationsMadeByGuest= new ArrayList<Room>();
+        
+        
     }
 
     public void setUserName(String setUserName)

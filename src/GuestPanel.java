@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,12 +26,61 @@ public class GuestPanel extends JPanel implements ChangeListener{
     public GuestPanel(HotelRoomsDataModel setHotelDataModel)
     {
         guest = null;
-        copyOfHotelRooms = hotelDataModel.getData();
+        copyOfHotelRooms = setHotelDataModel.getData();
         hotelDataModel = setHotelDataModel;
         typeOfRoom = "";
         availableRooms = new JTextArea("Available Rooms\n");
+        
     }
 
+    /**
+     * User login. Checks to see if the
+     * Used to log into the system
+     * 
+     * @return the Panel to insert User name
+     */
+    public JPanel userLogIn()
+    {
+    	JPanel logIn = new JPanel();
+    	JPanel logInSouth = new JPanel();
+    	JLabel nameLabel = new JLabel("User Name:", JLabel.RIGHT);
+    	JLabel IdLabel = new JLabel("User ID:", JLabel.CENTER);
+    	final JTextField UserName = new JTextField("User Name");
+        final JTextField UserID = new JTextField("User ID");
+        JButton logInButton = new JButton("Login"); // submit button to log in
+           
+        logInButton.addActionListener(new ActionListener()
+   	         {
+   	            public void actionPerformed(ActionEvent event)
+   	            {
+   	            	String theUserName = UserName.getName();
+   	             	int theUserID = Integer.parseInt( UserID.getText() );
+   	            }
+   	         });
+
+        logIn.add(nameLabel, BorderLayout.EAST);
+        logIn.add(UserName, BorderLayout.CENTER);
+        logInSouth.add(UserID, BorderLayout.CENTER);
+        logInSouth.add(logInButton, BorderLayout.SOUTH);
+        logIn.add(logInSouth, BorderLayout.SOUTH);
+        /*
+        Guest aUser = new Guest(theUserName, theUserID);
+        
+        //checks to see if the user is in the system.
+        Guest guest = hotelDataModel.display(aUser);
+        
+        if( guest != null )
+        {
+            //guestView.display(currentGuest);
+        }
+        
+        else
+        {
+            //guestView.displayForFirstTimeUser();
+        }
+    	*/
+    	return logIn;
+    }
 
     /*
     Use GUI to make 2 buttons one is |MAKE RESERVATION| and other is |VIEW/CANCEL RESERVATION|
@@ -77,7 +127,7 @@ public class GuestPanel extends JPanel implements ChangeListener{
         {
             public void actionPerformed(ActionEvent e)
             {
-                typeOfRoom="standard";
+                typeOfRoom = "standard";
                 hotelDataModel.setFilteredData(null, null, typeOfRoom);
             }
         };
@@ -86,7 +136,7 @@ public class GuestPanel extends JPanel implements ChangeListener{
         {
             public void actionPerformed(ActionEvent e)
             {
-                typeOfRoom="luxury";
+                typeOfRoom = "luxury";
                 hotelDataModel.setFilteredData(null, null, typeOfRoom);
             }
         };
@@ -114,7 +164,13 @@ public class GuestPanel extends JPanel implements ChangeListener{
 
     } // make reservation 
 
-    public void displayForFirstTimeUser()
+    /**
+     * Display for new user
+     * new user inputs info for new user
+     * 
+     * @return the JPanel to view the log in
+     */
+    public JPanel displayForFirstTimeUser()
     {
         JTextField getUserName = new JTextField("Enter New User Name");
         JTextField getUserID = new JTextField("Enter New User ID");
@@ -125,7 +181,7 @@ public class GuestPanel extends JPanel implements ChangeListener{
         
         Guest newGuest = new Guest(newUserName, newUserID);
         
-        HotelReservationSystemTester.guests.add(newGuest);
+        hotelDataModel.addGuest(newGuest);
         
         display(newGuest);
     }
@@ -142,9 +198,9 @@ public class GuestPanel extends JPanel implements ChangeListener{
         Might need two toString methods one for available rooms because that will display only the room name. And another 
         that displays the room name and check in and checkout dates for cancel option
         */
-        for(int i=0; i<reservationsByGuest.size();i++)
+        for(int i = 0; i<reservationsByGuest.size();i++)
         {
-            JCheckBox checkBox = new JCheckBox(reservationsByGuest.get(i).cancelToString());
+            JCheckBox checkBox = new JCheckBox( reservationsByGuest.get(i).cancelToString() );
             //frame/component.add(checkBox);
             checkBoxes.add(checkBox);
         }
@@ -158,11 +214,11 @@ public class GuestPanel extends JPanel implements ChangeListener{
         {
             public void actionPerformed(ActionEvent e)
             {
-                for(int i=0;i<checkBoxes.size();i++)
+                for(int i = 0; i < checkBoxes.size(); i++)
                 {
                     if( checkBoxes.get(i).isSelected() )
                     {
-                        hotelDataModel.updateToCancelReservation(reservationsByGuest.get(i), reservationsByGuest.get(i).getCheckInDate(),  reservationsByGuest.get(i).getCheckOutDate());
+                        hotelDataModel.updateToCancelReservation( reservationsByGuest.get(i), reservationsByGuest.get(i).getCheckInDate(),  reservationsByGuest.get(i).getCheckOutDate() );
                     }
                 }
             }
@@ -175,10 +231,10 @@ public class GuestPanel extends JPanel implements ChangeListener{
     
     public void stateChanged(ChangeEvent e)
     {
-        a=hotelDataModel.getFilteredData();
-        for(int i=0;i<a.size();i++)
+    	copyOfHotelRooms = hotelDataModel.getFilteredData();
+        for(int i=0; i < copyOfHotelRooms.size(); i++)
         {
-            availableRooms.append("\n"+a.get(i).toString());
+            availableRooms.append("\n" + copyOfHotelRooms.get(i).toString() );
         }
     }
 

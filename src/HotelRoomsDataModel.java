@@ -36,7 +36,11 @@ public class HotelRoomsDataModel {
         return (ArrayList<Room>) hotelRoomData.clone();
     }
 
-
+    public void addGuest(Guest guest)
+    {
+    	guests.add(guest);
+    }
+    
     public void attach(ChangeListener c)
     {
         listeners.add(c);
@@ -83,6 +87,10 @@ public class HotelRoomsDataModel {
     }
     
     /**
+     * Checks to see if the User is in the system.
+     * if in the system the User can view
+     * and use the system. If not the User
+     * gets sent to create a User
      * 
      * @param setGuest the guest to log in
      */
@@ -98,16 +106,6 @@ public class HotelRoomsDataModel {
             }
         }
         
-        if( currentGuest != null )
-        {
-            guestView.display(currentGuest);
-        }
-        
-        else
-        {
-            guestView.displayForFirstTimeUser();
-        }
-
         return currentGuest; // returns the current guest
     }
     
