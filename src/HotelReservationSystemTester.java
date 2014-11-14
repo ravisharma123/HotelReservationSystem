@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -55,38 +57,57 @@ public class HotelReservationSystemTester {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation( dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2 );
 
-        //BUTTONS
-        // make the panel and add to the frame
+        // make the selection panel and add to the frame
         int rows = 0;
         int columns = 1;
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(rows, columns));
+        JPanel selectionPanel = new JPanel();
+        selectionPanel.setLayout(new GridLayout(rows, columns));
 
-        // open manager panel
+        JPanel managerPanel = new ManagerPanel(manager);
+
+        JButton backButton = new JButton("Go back to user selection");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backButton.setVisible(false);
+                frame.remove(managerPanel);
+                frame.add(selectionPanel, BorderLayout.CENTER);
+                selectionPanel.revalidate();
+                selectionPanel.repaint();
+                frame.revalidate();
+            }
+        });
+        backButton.setVisible(false);
+
+        // open manager panel and add a back button
         JButton managerButton = new JButton("Manager");
         managerButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                frame.remove(mainPanel);
-                frame.add(new ManagerPanel(manager), BorderLayout.CENTER);
+                frame.remove(selectionPanel);
+                frame.add(managerPanel, BorderLayout.CENTER);
+                backButton.setVisible(true);
                 frame.revalidate();
+                frame.repaint();
             }
         });
 
-        // open guest panel
+        // open guest panel and add a back button
         JButton guestButton = new JButton("Guest");
         guestButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                frame.remove(mainPanel);
+                frame.remove(selectionPanel);
             	//frame.add( guestPanel.userLogIn() ); // just for testing
             	guestPanel.run();
+                backButton.setVisible(true);
                 frame.revalidate();
             }
         });
 
-        mainPanel.add(managerButton);
-        mainPanel.add(guestButton);
-        frame.add(mainPanel, BorderLayout.CENTER);
+        frame.add(backButton, BorderLayout.NORTH);
+        selectionPanel.add(managerButton);
+        selectionPanel.add(guestButton);
+        frame.add(selectionPanel, BorderLayout.CENTER);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
