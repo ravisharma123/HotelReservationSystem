@@ -71,11 +71,12 @@ public class HotelReservationSystemTester {
             @Override
             public void actionPerformed(ActionEvent e) {
                 backButton.setVisible(false);
+
                 frame.remove(managerPanel);
+                frame.remove(guestPanel);
+
                 frame.add(selectionPanel, BorderLayout.CENTER);
-                selectionPanel.revalidate();
                 selectionPanel.repaint();
-                frame.revalidate();
             }
         });
         backButton.setVisible(false);
@@ -97,7 +98,7 @@ public class HotelReservationSystemTester {
         guestButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 frame.remove(selectionPanel);
-            	//frame.add( guestPanel.userLogIn() ); // just for testing
+            	frame.add( guestPanel.userLogIn() ); // just for testing
             	guestPanel.run();
                 backButton.setVisible(true);
                 frame.revalidate();

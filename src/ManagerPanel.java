@@ -76,6 +76,7 @@ public class ManagerPanel extends JPanel {
         saveAndQuitButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 manager.save();
+
                 System.exit(0);
             }
         });
