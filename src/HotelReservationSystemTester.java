@@ -26,33 +26,34 @@ public class HotelReservationSystemTester {
         for (int i = 1; i <= 20; i++)
         {
         	if ( i < 10 )
-        	{	rooms.add( new Room(80, "regular") );  	}
+        	{	rooms.add( new Room(80, "regular", i) );  	}
         	else
-        	{	rooms.add( new Room(200, "luxury") );	}
+        	{	rooms.add( new Room(200, "luxury", i) );	}
         }
         
+        //START UP LOAD DATA
+        HotelRoomsDataModel dataOfRooms = manager.loadData();
+        //NO LOAD DATA EXISTS -> START EMPTY
+        if (dataOfRooms == null)
+        {  	dataOfRooms = new HotelRoomsDataModel(rooms);  }
         
-        HotelRoomsDataModel dataOfRooms = new HotelRoomsDataModel(rooms);
         final GuestPanel guestPanel = new GuestPanel(dataOfRooms);
         //final ManagerPanel managerPanel = new ManagerPanel(dataOfRooms);                          comment out to get Guest View going
         
-        //load the room data/////////////////////////////////////////////////////////
-        
-        
-        //attach listener
+        //attach listeners
         dataOfRooms.attach(guestPanel);
         //dataOfRooms.attach(managerPanel);							comment out to get Guest view going
 
-        // make the frame dimensions
+        //CREATE FRAME / CENTER ON SCREEN
         final JFrame frame = new JFrame("Hotel Reservation System");
-        
-        int width = 300;
-        int height = 300;
+        final int width = 600;
+        final int height = 600;
         frame.setSize(width, height);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation( dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2 );
 
-        // make the buttons
+        //BUTTONS
+        //RUN THE MANAGER VIEW
         JButton managerButton = new JButton("Manager");
         managerButton.addMouseListener(new MouseAdapter()
         {
@@ -62,13 +63,14 @@ public class HotelReservationSystemTester {
             }
         });
 
+        //RUN THE GUEST VIEW
         JButton guestButton = new JButton("Guest");
         guestButton.addMouseListener(new MouseAdapter()
         {
             public void mousePressed(MouseEvent e)
             {
-                //cardLayout.show( guestPanel.userLogIn() );
-            	frame.add( guestPanel.userLogIn() ); // just for testing
+            	//frame.add( guestPanel.userLogIn() ); // just for testing
+            	guestPanel.run();
             }
         });
 
@@ -76,11 +78,11 @@ public class HotelReservationSystemTester {
         int rows = 0;
         int columns = 1;
 
-        JPanel mainMenu = new JPanel();
-        mainMenu.setLayout(new GridLayout(rows, columns));
-        mainMenu.add(managerButton);
-        mainMenu.add(guestButton);
-        frame.add(mainMenu);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayout(rows, columns));
+        mainPanel.add(managerButton);
+        mainPanel.add(guestButton);
+        frame.add(mainPanel);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
