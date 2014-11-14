@@ -39,13 +39,6 @@ public class HotelReservationSystemTester {
 
         // make manager after setting up hotel model
         final Manager manager = new Manager(hotelModel);
-        
-        final GuestPanel guestPanel = new GuestPanel(hotelModel);
-        //final ManagerPanel managerPanel = new ManagerPanel(dataOfRooms);                          comment out to get Guest View going
-        
-        //attach listeners
-        hotelModel.attach(guestPanel);
-        //dataOfRooms.attach(managerPanel);							comment out to get Guest view going
 
         //CREATE FRAME / CENTER ON SCREEN
         final JFrame frame = new JFrame("Hotel Reservation System");
@@ -65,6 +58,11 @@ public class HotelReservationSystemTester {
         selectionPanel.setLayout(new GridLayout(rows, columns));
 
         JPanel managerPanel = new ManagerPanel(manager);
+        GuestPanel guestPanel = new GuestPanel(hotelModel);
+
+        //attach listeners
+        hotelModel.attach(guestPanel);
+        //dataOfRooms.attach(managerPanel);							comment out to get Guest view going
 
         JButton backButton = new JButton("Go back to user selection");
         backButton.addActionListener(new ActionListener() {
@@ -77,6 +75,7 @@ public class HotelReservationSystemTester {
 
                 frame.add(selectionPanel, BorderLayout.CENTER);
                 selectionPanel.repaint();
+                selectionPanel.revalidate();
             }
         });
         backButton.setVisible(false);
@@ -98,8 +97,7 @@ public class HotelReservationSystemTester {
         guestButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 frame.remove(selectionPanel);
-            	frame.add( guestPanel.userLogIn() ); // just for testing
-            	guestPanel.run();
+            	frame.add(guestPanel, BorderLayout.CENTER);
                 backButton.setVisible(true);
                 frame.revalidate();
             }
