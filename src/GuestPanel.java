@@ -15,7 +15,7 @@ import javax.swing.event.ChangeListener;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
  *********************************************************/
-public class GuestPanel extends JPanel implements ChangeListener{
+public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
     private ArrayList<Room> copyOfHotelRooms;
     private HotelRoomsDataModel hotelDataModel;
@@ -62,10 +62,9 @@ public class GuestPanel extends JPanel implements ChangeListener{
      */
     public JPanel userLogIn()
     {
-    	JPanel logIn = new JPanel();
-    	JPanel logInSouth = new JPanel();
-    	JLabel nameLabel = new JLabel("User Name:", JLabel.RIGHT);
-    	JLabel IdLabel = new JLabel("User ID:", JLabel.CENTER);
+
+    	JLabel nameLabel = new JLabel("User Name: ");
+    	JLabel IdLabel = new JLabel("User ID: ");
     	final JTextField UserName = new JTextField("User Name");
         final JTextField UserID = new JTextField("User ID");
         JButton logInButton = new JButton("Login"); // submit button to log in
@@ -80,6 +79,8 @@ public class GuestPanel extends JPanel implements ChangeListener{
    	            }
    	         });
 
+    	JPanel logIn = new JPanel();
+    	JPanel logInSouth = new JPanel();
         logIn.setLayout( new BorderLayout() );
         logInSouth.setLayout( new BorderLayout() );
         logInSouth.add(IdLabel, BorderLayout.WEST);
@@ -93,25 +94,44 @@ public class GuestPanel extends JPanel implements ChangeListener{
     }
 
     /**
-     * Display for new user
+     * GUI for a new user input
      * new user inputs info for new user
      * 
      * @return the JPanel to view the log in
      */
     public JPanel displayForFirstTimeUser()
     {
-        JTextField getUserName = new JTextField("Enter New User Name");
-        JTextField getUserID = new JTextField("Enter New User ID");
-    
-        String newUserName = getUserName.getText();
+    	
+        final JTextField getUserName = new JTextField("Enter New User Name");
+        final JTextField getUserID = new JTextField("Enter New User ID");
+    	JLabel nameLabel = new JLabel("User Name: ");
+    	JLabel IdLabel = new JLabel("User ID: ");
+        JButton newUserButton = new JButton("Submit"); // submit button to add users
         
-        int newUserID = Integer.parseInt( getUserID.getText() );
+        newUserButton.addActionListener(new ActionListener()
+   	         {
+   	            public void actionPerformed(ActionEvent event)
+   	            {
+   	            	String newUserName = getUserName.getText();
+   	            	int newUserID = Integer.parseInt( getUserID.getText() );
+   	             guest = new Guest(newUserName, newUserID);
+   	             }
+   	         });
+                
+        hotelDataModel.addGuest(guest);
         
-        Guest newGuest = new Guest(newUserName, newUserID);
+        JPanel firstTimeUserPanel = new JPanel();
+        JPanel firstUserSouthPanel = new JPanel();
+        firstTimeUserPanel.setLayout( new BorderLayout() );
+        firstUserSouthPanel.setLayout( new BorderLayout() );
+        firstUserSouthPanel.add(IdLabel, BorderLayout.WEST);
+        firstUserSouthPanel.add(getUserID, BorderLayout.CENTER);
+        firstUserSouthPanel.add(newUserButton, BorderLayout.EAST);
+        firstTimeUserPanel.add(nameLabel, BorderLayout.WEST);
+        firstTimeUserPanel.add(getUserName, BorderLayout.CENTER);
+        firstTimeUserPanel.add(firstUserSouthPanel, BorderLayout.SOUTH);        
         
-        hotelDataModel.addGuest(newGuest);
-        
-        display(newGuest);
+        return firstTimeUserPanel;
     }
     
     /** 
