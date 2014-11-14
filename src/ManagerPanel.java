@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-11
+ * Version 2014-11-12
  */
 public class ManagerPanel extends JPanel {
     public static final String[] MONTH_NAMES = {"January", "February", "March", "April", "May", "June",

@@ -1,71 +1,62 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.Calendar;
 
 /**
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-11
+ * Version 2014-11-14
  */
 public class Manager {
-    private String name;
+    public static final String FILENAME = "HotelModel.txt";
+    private HotelModel hotelModel;
 
-    public Manager(String setName)
-    {
-        name = setName;
+    public Manager(HotelModel hotelModel) {
+        this.hotelModel = hotelModel;
     }
-  
+
     /**
-     * Saves the hotel
-     * reservations on to
-     * a file
+     * Saves the hotel model.
+     * @return true on success, otherwise false
      */
-    public void save(HotelRoomsDataModel hotelData)
-    {
-    	try
-        {
-           FileOutputStream fileOut = new FileOutputStream("Hotel_Data.txt");
-           ObjectOutputStream out = new ObjectOutputStream(fileOut);
-           out.writeObject(hotelData);
-           out.close();
-           fileOut.close();
+    public boolean save() {
+        if(hotelModel == null) {
+            return false;
         }
-    	catch(IOException i)
-        {
-            i.printStackTrace();
+
+        try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(FILENAME))) {
+            objectOutputStream.writeObject(hotelModel);
+
+            return true;
         }
+        catch(FileNotFoundException e) {}
+        catch(IOException e) {}
+
+        return false;
     }
-    
+
     /**
-     * Loads the reservation
-     * information from file
-     * to a program
+     * Loads the hotel model.
+     * @return hotel model on success, otherwise null
      */
-    public HotelModel load()
-    {
-    	try
-      	{
-	        FileInputStream fileIn = new FileInputStream("Hotel_Data.txt");
-	        ObjectInputStream in = new ObjectInputStream(fileIn);
-	        HotelRoomsDataModel hotelData = (HotelRoomsDataModel) in.readObject();
-	        in.close();
-	        fileIn.close();
-	        return hotelData;
-	    }
-	    catch(IOException i)
-	    {
-	       i.printStackTrace();
-	       return null;
-	    }
-	    catch(ClassNotFoundException c)
-	    {
-	       System.out.println("Employee class not found");
-	       c.printStackTrace();
-	       return null;
-	    }
+    public static HotelModel load() {
+        try(ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(FILENAME))) {
+            Object object = objectInputStream.readObject();
+
+            return (HotelModel) object;
+        }
+        catch(FileNotFoundException e) {}
+        catch(IOException e) {}
+        catch(ClassNotFoundException e) {}
+
+        return null;
     }
-    
-    getRoomInfoOnDay
+
+    /**
+     * Gets the room info on a certain calendar day.
+     * @param calendar the calendar
+     * @return the room info
+     */
+    public String getRoomInfoOnDay(Calendar calendar) {
+        return hotelModel.getRoomInfoOnDay(calendar);
+    }
 }

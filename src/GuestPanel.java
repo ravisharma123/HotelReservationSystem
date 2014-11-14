@@ -257,7 +257,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         
         //create vertical check boxes
         JPanel viewDeletePanel = new JPanel();
-        viewDeletePanel.setLayout( new BoxLayout() );
+        //viewDeletePanel.setLayout( new BoxLayout() );
         
         
         /*

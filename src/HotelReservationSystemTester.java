@@ -12,36 +12,37 @@ import java.util.ArrayList;
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-11
+ * Version 2014-11-14
  ********************************************************/
 public class HotelReservationSystemTester {
 
     public static void main(String[] args) {
-        // setup data
-        
-        final Manager manager = new Manager("Bob");
+        HotelModel hotelModel = Manager.load();
 
-        //20 rooms 10 regular and 10 luxury
-        ArrayList<Room> rooms = new ArrayList<Room>();
-        for (int i = 1; i <= 20; i++)
-        {
-        	if ( i < 10 )
-        	{	rooms.add( new Room(80, "regular", i) );  	}
-        	else
-        	{	rooms.add( new Room(200, "luxury", i) );	}
+        // no save data exists so make empty rooms
+        if(hotelModel == null) {
+            //20 rooms 10 regular and 10 luxury
+            ArrayList<Room> rooms = new ArrayList<Room>();
+            for (int i = 1; i <= 20; i++) {
+                if (i < 10) {
+                    rooms.add( new Room(80, "regular", i) );
+                }
+                else {
+                    rooms.add( new Room(200, "luxury", i) );
+                }
+            }
+
+            hotelModel = new HotelModel(rooms);
         }
+
+        // make manager after setting up hotel model
+        final Manager manager = new Manager(hotelModel);
         
-        //START UP LOAD DATA
-        HotelModel dataOfRooms = manager.load();
-        //NO LOAD DATA EXISTS -> START EMPTY
-        if (dataOfRooms == null)
-        {  	dataOfRooms = new HotelModel(rooms);  }
-        
-        final GuestPanel guestPanel = new GuestPanel(dataOfRooms);
+        final GuestPanel guestPanel = new GuestPanel(hotelModel);
         //final ManagerPanel managerPanel = new ManagerPanel(dataOfRooms);                          comment out to get Guest View going
         
         //attach listeners
-        dataOfRooms.attach(guestPanel);
+        hotelModel.attach(guestPanel);
         //dataOfRooms.attach(managerPanel);							comment out to get Guest view going
 
         //CREATE FRAME / CENTER ON SCREEN
@@ -55,11 +56,9 @@ public class HotelReservationSystemTester {
         //BUTTONS
         //RUN THE MANAGER VIEW
         JButton managerButton = new JButton("Manager");
-        managerButton.addMouseListener(new MouseAdapter()
-        {
-            public void mousePressed(MouseEvent e)
-            {
-                frame.add( new ManagerPanel(manager) );
+        managerButton.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                frame.add(new ManagerPanel(manager));
             }
         });
 
