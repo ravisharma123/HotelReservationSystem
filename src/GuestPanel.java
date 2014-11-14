@@ -108,13 +108,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
     	JLabel IdLabel = new JLabel("User ID: ");
         JButton newUserButton = new JButton("Submit"); // submit button to add users
         
-        newUserButton.addActionListener(new ActionListener()
+        newUserButton.addActionListener( new ActionListener()
    	         {
    	            public void actionPerformed(ActionEvent event)
    	            {
    	            	String newUserName = getUserName.getText();
    	            	int newUserID = Integer.parseInt( getUserID.getText() );
-   	             guest = new Guest(newUserName, newUserID);
+   	            	guest = new Guest(newUserName, newUserID);
    	             }
    	         });
                 
@@ -144,30 +144,31 @@ public class GuestPanel extends JPanel implements ChangeListener {
      */
     public JPanel displayCreateView()
     {
-    	JPanel createView = new JPanel();
         JButton makeReservationButton = new JButton("Make Reservation");
         JButton viewOrCancelReservationButton = new JButton("View/Cancel Reservation");
         
-        ActionListener makeReservationListener = new ActionListener()
+        makeReservationButton.addActionListener( new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 displayMakeReservationDialog();
             }
-        };
+        });
         
-        ActionListener viewOrCancelReservationListener = new ActionListener()
+        viewOrCancelReservationButton.addActionListener( new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 viewOrCancelReservation();
             }
-        };
+        });
         
-        createView.add(makeReservationButton);
-        createView.add(viewOrCancelReservationButton);
-        //makeReservationButton.addActionListener(makeReservationListener);
-        //viewOrCancelReservationButton.addActionListener(viewOrCancelReservationListener);
+    	JPanel createView = new JPanel();
+    	createView.setLayout( new BorderLayout() );
+        createView.add(makeReservationButton, BorderLayout.NORTH);
+        createView.add(viewOrCancelReservationButton, BorderLayout.SOUTH);
+
+
         return createView;
     }
 
@@ -227,11 +228,14 @@ public class GuestPanel extends JPanel implements ChangeListener {
     } // make reservation 
 
    
-
+    /**
+     * GUI to view or cancel a reservation
+     * made by the guest
+     */
     public void viewOrCancelReservation()
     {
         ArrayList<Room> reservationsByGuest = guest.getGuestReservations();
-        ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
+        final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
     
         /*
         Loop through the reservationsByGuest ArrayList and create JCheckBoxes out of each element inside the arrayList
@@ -240,11 +244,15 @@ public class GuestPanel extends JPanel implements ChangeListener {
         Might need two toString methods one for available rooms because that will display only the room name. And another 
         that displays the room name and check in and checkout dates for cancel option
         */
-        for(int i = 0; i<reservationsByGuest.size();i++)
+        for( Room room: reservationsByGuest )
         {
-            JCheckBox checkBox = new JCheckBox( reservationsByGuest.get(i).cancelToString() );
+            //add a String description of the room specs -> Luxury Room 10: date to date
+        	String reservationDescription = ( room.getTypeOfRoom() + " Room " + room.getRmNum() + ": " + room.getCheckInDate().getTime().toString() + " to " + room.getCheckOutDate().getTime().toString() );
+
+        	//JCheckBox checkBox = new JCheckBox( room.cancelToString() );
+        	JCheckBox checkBox = new JCheckBox( reservationDescription );
             //frame/component.add(checkBox);
-            checkBoxes.add(checkBox);
+            checkBoxes.add(checkBox);           
         }
         
         /*
@@ -252,7 +260,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         model.(remember we are not deleting a room from data model but we are deleting from the bookingDates of the room. 
         */
         JButton cancel = new JButton("Cancel");
-        ActionListener cancelButtonListener = new ActionListener()
+        cancel.addActionListener( new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -264,9 +272,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     }
                 }
             }
-        };
-       
-        cancel.addActionListener(cancelButtonListener);
+        });
 
     }// view or cancel reservation
   
