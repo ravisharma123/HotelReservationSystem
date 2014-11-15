@@ -99,6 +99,7 @@ public class ManagerPanel extends JPanel {
     private JPanel getMonthAndYearComboBoxPanel(Calendar calendar) {
         // make the months combo box
         final JComboBox<String> monthComboBox = new JComboBox<>(MONTH_NAMES);
+        monthComboBox.setSelectedIndex(currentCalendar.get(Calendar.MONTH));
         monthComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
