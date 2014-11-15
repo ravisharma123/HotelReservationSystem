@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -19,8 +21,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
     private ArrayList<Room> copyOfHotelRooms;
     private HotelModel hotelModel;
-    private boolean isLuxury;
     private JTextArea availableRooms;
+    private boolean isLuxury;
 
     public GuestPanel(HotelModel hotelModel) {
         copyOfHotelRooms = hotelModel.getData();
@@ -111,12 +113,26 @@ public class GuestPanel extends JPanel implements ChangeListener {
     }
 
     private void displayMakeReservationOption() {
+        removeAll();
+
+        // check in and check out panels
+        JLabel checkInLabel = new JLabel("Check-in date (in mm/dd/yyyy format):");
+        JTextField checkInField = new JTextField();
+        JPanel checkInPanel = new JPanel(new GridLayout(0, 2));
+        checkInPanel.add(checkInLabel);
+        checkInPanel.add(checkInField);
+
+        JLabel checkOutLabel = new JLabel("Check-out date (in mm/dd/yyyy format):");
+        JTextField checkOutField = new JTextField();
+        JPanel checkOutPanel = new JPanel(new GridLayout(0, 2));
+        checkOutPanel.add(checkOutLabel);
+        checkOutPanel.add(checkOutField);
+        
         // standard and luxury buttons
         JButton standardButton = new JButton("Standard");
         standardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 isLuxury = false;
-                hotelModel.setFilteredData(null, null, isLuxury);
             }
         });
 
@@ -124,36 +140,53 @@ public class GuestPanel extends JPanel implements ChangeListener {
         luxuryButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 isLuxury = true;
-                hotelModel.setFilteredData(null, null, isLuxury);
             }
         });
 
-        int rows = 1;
-        int columns = 0;
-
-        JPanel buttonPanel = new JPanel(new GridLayout(rows, columns));
+        JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
         buttonPanel.add(standardButton);
         buttonPanel.add(luxuryButton);
 
+        JTextArea availableRoomsArea = new JTextArea();
+        availableRoomsArea.setEditable(false);
+
+        JButton showAvailableRoomsButton = new JButton("Show Available Room");
+        showAvailableRoomsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String checkInDate = checkInField.getText();
+                String checkOutDate = checkOutField.getText();
+                
+                if(checkInDate.matches("\\d+/\\d+/\\d+") && checkOutDate.matches("\\d+/\\d+/\\d+")) {
+                    String[] checkInDateArr = checkInDate.split("/");
+                    int checkInYear = Integer.parseInt(checkInDateArr[2]);
+                    int checkInMonth = Integer.parseInt(checkInDateArr[0]) - 1;
+                    int checkInDay = Integer.parseInt(checkInDateArr[1]);
+
+                    String[] checkOutDateArr = checkOutDate.split("/");
+                    int checkOutYear = Integer.parseInt(checkOutDateArr[2]);
+                    int checkOutMonth = Integer.parseInt(checkOutDateArr[0]) - 1;
+                    int checkOutDay = Integer.parseInt(checkOutDateArr[1]);
+
+                    Calendar checkInCalendar = new GregorianCalendar(checkInYear, checkInMonth, checkInDay);
+                    Calendar checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
+                    
+                    hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, true);
+
+                    availableRoomsArea.setText(hotelModel.getFilteredData().toString());
+                }
+            }
+        });
+
+        JPanel infoPanel = new JPanel(new GridLayout(0, 1));
+        infoPanel.add(checkInPanel);
+        infoPanel.add(checkOutPanel);
+        infoPanel.add(buttonPanel);
+        infoPanel.add(showAvailableRoomsButton);
+
         setLayout(new BorderLayout());
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        // check in and check out panels
-        JLabel checkInLabel = new JLabel("Check-in:");
-        JTextField checkInField = new JTextField();
-        JPanel checkInPanel = new JPanel(new GridLayout(rows, columns));
-        checkInPanel.add(checkInLabel);
-        checkInPanel.add(checkInField);
-
-        JLabel checkOutLabel = new JLabel("Check-out:");
-        JTextField checkOutField = new JTextField();
-        JPanel checkOutPanel = new JPanel(new GridLayout(rows, columns));
-        checkOutPanel.add(checkOutLabel);
-        checkOutPanel.add(checkOutField);
-
-        JPanel checkInAndOutPanel = new JPanel(new GridLayout(rows, columns));
-        checkInAndOutPanel.add(checkInPanel);
-        checkInAndOutPanel.add(checkOutPanel);
+        add(infoPanel, BorderLayout.NORTH);
+        add(availableRoomsArea, BorderLayout.CENTER);
 
         /*
         Make 2 more JButtons |CONFIRMED| and |TRANSACTION DONE| and then add ActionListeners to them
