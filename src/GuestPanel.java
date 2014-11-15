@@ -4,7 +4,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -45,14 +44,14 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         // get username
         String username;
-    	if(!hotelModel.hasUserID(userID)) { // make a username if hotel data model does not have the given user id
+    	if(hotelModel.hasUserID(userID)) {
+            username = hotelModel.getUsername(userID);
+        }
+        else {
             username = JOptionPane.showInputDialog("Enter your username: ");
             if(username == null) {
                 username = "null";
             }
-        }
-        else {
-            username = hotelModel.getUsername(userID);
         }
 
         // ADD CODE TO ADD THIS GUEST TO THE HOTEL MODEL
@@ -74,7 +73,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
             public void actionPerformed(ActionEvent e) {
                 remove(makeReservationButton);
 
-                displayMakeReservationDialog();
+                displayMakeReservationOption();
 
                 revalidate();
             }
@@ -85,7 +84,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
             public void actionPerformed(ActionEvent e) {
                 remove(viewOrCancelReservationButton);
 
-                viewOrCancelReservation();
+                displayViewOrCancelOption();
 
                 revalidate();
             }
@@ -97,7 +96,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         revalidate();
     }
 
-    private void displayMakeReservationDialog() {
+    private void displayMakeReservationOption() {
         /*Use GUI JTextField to get the checkin date and another JTextField to get the checkout date
           convert those dates that you recieved by the JTextField into a Calendar Object (remeber to use .getText() method of JTextField
           it is a String so convert it into a Calendar object. Then check if the checkin date is before the current real date if yes throw 
@@ -108,25 +107,20 @@ public class GuestPanel extends JPanel implements ChangeListener {
           
          */
         JButton standardButton = new JButton("Standard");
-        JButton luxuaryButton = new JButton("Luxury");
-
-        ActionListener standardButtonListener = new ActionListener() {
+        standardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 isLuxury = false;
                 hotelModel.setFilteredData(null, null, isLuxury);
             }
-        };
-        
-        ActionListener luxuryButtonListener = new ActionListener()
-        {
+        });
+
+        JButton luxuryButton = new JButton("Luxury");
+        luxuryButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 isLuxury = true;
                 hotelModel.setFilteredData(null, null, isLuxury);
             }
-        };
-
-        luxuaryButton.addActionListener(luxuryButtonListener);
-        standardButton.addActionListener(standardButtonListener);
+        });
         
         /*
         Make 2 more JButtons |CONFIRMED| and |TRANSACTION DONE| and then add ActionListeners to them
@@ -135,8 +129,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         JButton confirmedButton = new JButton("Confirm");
         JButton transactionDoneButton = new JButton("Transaction Done");
         
-        ActionListener confirmedButtonListener = new ActionListener()
-        {
+        ActionListener confirmedButtonListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), null, null);
                 Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
@@ -146,14 +139,14 @@ public class GuestPanel extends JPanel implements ChangeListener {
             }
         };
 
-    } // make reservation 
+    }
 
    
     /**
      * GUI to view or cancel a reservation
      * made by the guest
      */
-    private void viewOrCancelReservation()
+    private void displayViewOrCancelOption()
     {
         ArrayList<Room> reservationsByGuest = guest.getRoomList();
         final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
@@ -200,14 +193,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
             }
         });
 
-    }// view or cancel reservation
+    }
 
     public void stateChanged(ChangeEvent e) {
     	copyOfHotelRooms = hotelModel.getFilteredData();
-        for(int i = 0; i < copyOfHotelRooms.size(); i++)
-        {
-            availableRooms.append("\n" + copyOfHotelRooms.get(i).toString() );
+
+        for(int i = 0; i < copyOfHotelRooms.size(); i++) {
+            availableRooms.append("\n" + copyOfHotelRooms.get(i).toString());
         }
     }
-
 }
