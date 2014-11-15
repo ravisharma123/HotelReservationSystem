@@ -21,7 +21,6 @@ public class GuestPanel extends JPanel implements ChangeListener {
     private HotelModel hotelModel;
     private boolean isLuxury;
     private JTextArea availableRooms;
-    
 
     public GuestPanel(HotelModel hotelModel) {
         copyOfHotelRooms = hotelModel.getData();
@@ -31,37 +30,52 @@ public class GuestPanel extends JPanel implements ChangeListener {
     }
 
     public void displayLogin() {
-        int userID;
+        removeAll();
 
-        // label to force user to enter a number for user id
-        retryLogin:
-        try {
-            userID = Integer.parseInt(JOptionPane.showInputDialog("Enter your user ID: "));
-        }
-        catch(NumberFormatException e) {
-            break retryLogin;
-        }
+        // user ID panel
+        int rows = 1;
+        int columns = 0;
 
-        // get username
-        String username;
-    	if(hotelModel.hasUserID(userID)) {
-            username = hotelModel.getUsername(userID);
-        }
-        else {
-            username = JOptionPane.showInputDialog("Enter your username: ");
-            if(username == null) {
-                username = "null";
+        JLabel userIDLabel = new JLabel("Enter/create a user ID (can only contain numbers):");
+        JTextField userIDField = new JTextField();
+        JPanel userIDPanel = new JPanel(new GridLayout(rows, columns));
+        userIDPanel.add(userIDLabel);
+        userIDPanel.add(userIDField);
+
+        // login button
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String str = userIDField.getText();
+                if(str.matches("\\d+")) {
+                    int userID = Integer.parseInt(str);
+
+                    // get username
+                    String username;
+                    if(hotelModel.hasUserID(userID)) {
+                        username = hotelModel.getUsername(userID);
+                    }
+                    else {
+                        username = JOptionPane.showInputDialog("Create a username for this user ID: ");
+
+                        if(username == null) {
+                            username = "null";
+                        }
+                    }
+
+                    guest = new Guest(userID, username);
+
+                    displayReservationOptions();
+                }
             }
-        }
+        });
 
-        // ADD CODE TO ADD THIS GUEST TO THE HOTEL MODEL
-        guest = new Guest(userID, username);
-
-        displayReservationOptions();
+        setLayout(new BorderLayout());
+        add(userIDPanel, BorderLayout.NORTH);
+        add(loginButton, BorderLayout.CENTER);
     }
 
     private void displayReservationOptions() {
-        // setup guest panel layout
         removeAll();
 
         int rows = 0;
@@ -97,15 +111,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
     }
 
     private void displayMakeReservationOption() {
-        /*Use GUI JTextField to get the checkin date and another JTextField to get the checkout date
-          convert those dates that you recieved by the JTextField into a Calendar Object (remeber to use .getText() method of JTextField
-          it is a String so convert it into a Calendar object. Then check if the checkin date is before the current real date if yes throw 
-          an error message.
-        */
-        /* Make 2 Buttons one called |Standard| and other called |Luxuary| then add action listeners that will set the String variable 
-           isLuxury to the appropriate String. (coded already)
-          
-         */
+        // standard and luxury buttons
         JButton standardButton = new JButton("Standard");
         standardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -121,7 +127,34 @@ public class GuestPanel extends JPanel implements ChangeListener {
                 hotelModel.setFilteredData(null, null, isLuxury);
             }
         });
-        
+
+        int rows = 1;
+        int columns = 0;
+
+        JPanel buttonPanel = new JPanel(new GridLayout(rows, columns));
+        buttonPanel.add(standardButton);
+        buttonPanel.add(luxuryButton);
+
+        setLayout(new BorderLayout());
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // check in and check out panels
+        JLabel checkInLabel = new JLabel("Check-in:");
+        JTextField checkInField = new JTextField();
+        JPanel checkInPanel = new JPanel(new GridLayout(rows, columns));
+        checkInPanel.add(checkInLabel);
+        checkInPanel.add(checkInField);
+
+        JLabel checkOutLabel = new JLabel("Check-out:");
+        JTextField checkOutField = new JTextField();
+        JPanel checkOutPanel = new JPanel(new GridLayout(rows, columns));
+        checkOutPanel.add(checkOutLabel);
+        checkOutPanel.add(checkOutField);
+
+        JPanel checkInAndOutPanel = new JPanel(new GridLayout(rows, columns));
+        checkInAndOutPanel.add(checkInPanel);
+        checkInAndOutPanel.add(checkOutPanel);
+
         /*
         Make 2 more JButtons |CONFIRMED| and |TRANSACTION DONE| and then add ActionListeners to them
         User can keep making reservations until they click Transaction Done button

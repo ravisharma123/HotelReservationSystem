@@ -151,7 +151,7 @@ public class HotelModel {
     	{
     		if( r.getBookedDates().contains(calendar)  )
     		{
-    			Guest user = new Guest(null, 1);
+    			Guest user = new Guest(1, "");
     			for (Guest g: guestList)
     			{
     				if( g.getRoomList().contains(r) )
@@ -163,4 +163,12 @@ public class HotelModel {
     	return message;
     }
 
+    // new methods needed to work with guestPanel
+    public boolean hasUserID(int userID) {
+        return false;
+    }
+
+    public String getUsername(int userID) {
+        return "";
+    }
 }
