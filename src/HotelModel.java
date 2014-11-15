@@ -154,10 +154,10 @@ public class HotelModel {
     			Guest user = new Guest(null, 1);
     			for (Guest g: guestList)
     			{
-    				if( g.getGuestReservations().contains(r) )
+    				if( g.getRoomList().contains(r) )
     				{	user = g;	}
     			}
-    			message += r.getType() + " Room " + r.getRoomNumber() + ": " + user.getUserName() + "\n"; //Regular Room 1: guest name
+    			message += r.getType() + " Room " + r.getRoomNumber() + ": " + user.getUsername() + "\n"; //Regular Room 1: guest name
     		}
     	}
     	return message;

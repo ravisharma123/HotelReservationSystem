@@ -18,118 +18,46 @@ import javax.swing.event.ChangeListener;
 public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
     private ArrayList<Room> copyOfHotelRooms;
-    private HotelModel hotelDataModel;
+    private HotelModel hotelModel;
     private boolean isLuxury;
     private JTextArea availableRooms;
     
 
-    public GuestPanel(HotelModel setHotelDataModel) {
-        guest = null;
-        copyOfHotelRooms = setHotelDataModel.getData();
-        hotelDataModel = setHotelDataModel;
+    public GuestPanel(HotelModel hotelModel) {
+        copyOfHotelRooms = hotelModel.getData();
+        this.hotelModel = hotelModel;
         isLuxury = false;
         availableRooms = new JTextArea("Available Rooms\n");
     }
 
-    /**
-     * this runs the Guest view
-     */
-    public void run()
-    {
-    	//login screen
-    	JPanel userLogPanel = userLogIn();
-    	
-        //checks to see if the user is in the system.
-    	Guest g1 = guest;
-        Guest guest = hotelDataModel.display(g1);
-        
-        if( guest == null )
-        {
-        	//guestView.displayForFirstTimeUser();
-        	displayForFirstTimeUser();
+    public void displayLogin() {
+        int userID;
+
+        // label to force user to enter a number for user id
+        retryLogin:
+        try {
+            userID = Integer.parseInt(JOptionPane.showInputDialog("Enter your user ID: "));
         }
-        
-       //View/create reservation
+        catch(NumberFormatException e) {
+            break retryLogin;
+        }
 
-    	
-    }
-    /**
-     * User login GUI
-     * 
-     * @return the Panel to insert User name
-     */
-    public JPanel userLogIn()
-    {
+        // get username
+        String username;
+    	if(!hotelModel.hasUserID(userID)) { // make a username if hotel data model does not have the given user id
+            username = JOptionPane.showInputDialog("Enter your username: ");
+            if(username == null) {
+                username = "null";
+            }
+        }
+        else {
+            username = hotelModel.getUsername(userID);
+        }
 
-    	JLabel nameLabel = new JLabel("User Name: ");
-    	JLabel IdLabel = new JLabel("User ID: ");
-    	final JTextField UserName = new JTextField("User Name");
-        final JTextField UserID = new JTextField("User ID");
-        JButton logInButton = new JButton("Login"); // submit button to log in
-           
-        logInButton.addActionListener(new ActionListener()
-   	         {
-   	            public void actionPerformed(ActionEvent event)
-   	            {
-   	            	String theUserName = UserName.getName();
-   	             	int theUserID = Integer.parseInt( UserID.getText() );
-   	             	guest = new Guest(theUserName, theUserID);
-   	            }
-   	         });
+        // ADD CODE TO ADD THIS GUEST TO THE HOTEL MODEL
+        guest = new Guest(userID, username);
 
-    	JPanel logIn = new JPanel();
-    	JPanel logInSouth = new JPanel();
-        logIn.setLayout( new BorderLayout() );
-        logInSouth.setLayout( new BorderLayout() );
-        logInSouth.add(IdLabel, BorderLayout.WEST);
-        logInSouth.add(UserID, BorderLayout.CENTER);
-        logInSouth.add(logInButton, BorderLayout.EAST);
-        logIn.add(nameLabel, BorderLayout.WEST);
-        logIn.add(UserName, BorderLayout.CENTER);
-        logIn.add(logInSouth, BorderLayout.SOUTH);
-    	
-    	return logIn;
-    }
-
-    /**
-     * GUI for a new user input
-     * new user inputs info for new user
-     * 
-     * @return the JPanel to view the log in
-     */
-    public JPanel displayForFirstTimeUser()
-    {
-    	
-        final JTextField getUserName = new JTextField("Enter New User Name");
-        final JTextField getUserID = new JTextField("Enter New User ID");
-    	JLabel nameLabel = new JLabel("User Name: ");
-    	JLabel IdLabel = new JLabel("User ID: ");
-        JButton newUserButton = new JButton("Submit"); // submit button to add users
-        
-        newUserButton.addActionListener( new ActionListener()
-   	         {
-   	            public void actionPerformed(ActionEvent event)
-   	            {
-   	            	String newUserName = getUserName.getText();
-   	            	int newUserID = Integer.parseInt( getUserID.getText() );
-   	            	guest = new Guest(newUserName, newUserID);
-   	             }
-   	         });
-                
-        hotelDataModel.addGuest(guest);
-        
-        JPanel firstTimeUserPanel = new JPanel();
-        JPanel firstUserSouthPanel = new JPanel();
-        firstTimeUserPanel.setLayout( new BorderLayout() );
-        firstUserSouthPanel.setLayout( new BorderLayout() );
-        firstUserSouthPanel.add(IdLabel, BorderLayout.WEST);
-        firstUserSouthPanel.add(getUserID, BorderLayout.CENTER);
-        firstUserSouthPanel.add(newUserButton, BorderLayout.EAST);
-        firstTimeUserPanel.add(nameLabel, BorderLayout.WEST);
-        firstTimeUserPanel.add(getUserName, BorderLayout.CENTER);
-        firstTimeUserPanel.add(firstUserSouthPanel, BorderLayout.SOUTH);        
-        
-        return firstTimeUserPanel;
+        displayReservationOptions();
     }
     
     /** 
@@ -187,7 +115,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         ActionListener standardButtonListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 isLuxury = false;
-                hotelDataModel.setFilteredData(null, null, isLuxury);
+                hotelModel.setFilteredData(null, null, isLuxury);
             }
         };
         
@@ -195,7 +123,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         {
             public void actionPerformed(ActionEvent e) {
                 isLuxury = true;
-                hotelDataModel.setFilteredData(null, null, isLuxury);
+                hotelModel.setFilteredData(null, null, isLuxury);
             }
         };
 
@@ -212,7 +140,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         ActionListener confirmedButtonListener = new ActionListener()
         {
             public void actionPerformed(ActionEvent e) {
-                hotelDataModel.updateToAddReservation(copyOfHotelRooms.get(0), null, null);
+                hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), null, null);
                 Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
                 addReservationToGuestRecords.setCheckInDate(null);
                 addReservationToGuestRecords.setCheckOutDate(null);
@@ -229,7 +157,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
      */
     public void viewOrCancelReservation()
     {
-        ArrayList<Room> reservationsByGuest = guest.getGuestReservations();
+        ArrayList<Room> reservationsByGuest = guest.getRoomList();
         final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
     
         /*
@@ -268,7 +196,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                 {
                     if( checkBoxes.get(i).isSelected() )
                     {
-                        hotelDataModel.updateToCancelReservation( reservationsByGuest.get(i), reservationsByGuest.get(i).getCheckInDate(),  reservationsByGuest.get(i).getCheckOutDate() );
+                        hotelModel.updateToCancelReservation(reservationsByGuest.get(i), reservationsByGuest.get(i).getCheckInDate(), reservationsByGuest.get(i).getCheckOutDate());
                     }
                 }
             }
@@ -277,9 +205,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
     }// view or cancel reservation
   
     
-    public void stateChanged(ChangeEvent e)
-    {
-    	copyOfHotelRooms = hotelDataModel.getFilteredData();
+    public void stateChanged(ChangeEvent e) {
+    	copyOfHotelRooms = hotelModel.getFilteredData();
         for(int i = 0; i < copyOfHotelRooms.size(); i++)
         {
             availableRooms.append("\n" + copyOfHotelRooms.get(i).toString() );

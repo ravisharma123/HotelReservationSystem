@@ -97,6 +97,7 @@ public class HotelReservationSystemTester {
         guestButton.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 frame.remove(selectionPanel);
+                guestPanel.displayLogin();
             	frame.add(guestPanel, BorderLayout.CENTER);
                 backButton.setVisible(true);
                 frame.revalidate();
