@@ -1,9 +1,10 @@
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -59,47 +60,44 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         displayReservationOptions();
     }
-    
-    /** 
-     * Use GUI to make 2 buttons one is
-     * |MAKE RESERVATION| and other is
-     * |VIEW/CANCEL RESERVATION|
-     * and then add ActionListeners to them
-     * so that when they are clicked
-     * appropriate method is called. (coded already)
-     */
-    public JPanel displayCreateView()
-    {
-        JButton makeReservationButton = new JButton("Make Reservation");
-        JButton viewOrCancelReservationButton = new JButton("View/Cancel Reservation");
-        
-        makeReservationButton.addActionListener( new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+
+    private void displayReservationOptions() {
+        // setup guest panel layout
+        removeAll();
+
+        int rows = 0;
+        int columns = 1;
+        setLayout(new GridLayout(rows, columns));
+
+        final JButton makeReservationButton = new JButton("Make a Reservation");
+        makeReservationButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                remove(makeReservationButton);
+
                 displayMakeReservationDialog();
+
+                revalidate();
             }
         });
-        
-        viewOrCancelReservationButton.addActionListener( new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+
+        final JButton viewOrCancelReservationButton = new JButton("View/Cancel a Reservation");
+        viewOrCancelReservationButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                remove(viewOrCancelReservationButton);
+
                 viewOrCancelReservation();
+
+                revalidate();
             }
         });
-        
-    	JPanel createView = new JPanel();
-    	createView.setLayout( new BorderLayout() );
-        createView.add(makeReservationButton, BorderLayout.NORTH);
-        createView.add(viewOrCancelReservationButton, BorderLayout.SOUTH);
 
+        add(makeReservationButton);
+        add(viewOrCancelReservationButton);
 
-        return createView;
+        revalidate();
     }
 
-    public void displayMakeReservationDialog()
-    {
+    private void displayMakeReservationDialog() {
         /*Use GUI JTextField to get the checkin date and another JTextField to get the checkout date
           convert those dates that you recieved by the JTextField into a Calendar Object (remeber to use .getText() method of JTextField
           it is a String so convert it into a Calendar object. Then check if the checkin date is before the current real date if yes throw 
@@ -155,7 +153,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
      * GUI to view or cancel a reservation
      * made by the guest
      */
-    public void viewOrCancelReservation()
+    private void viewOrCancelReservation()
     {
         ArrayList<Room> reservationsByGuest = guest.getRoomList();
         final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
@@ -203,8 +201,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         });
 
     }// view or cancel reservation
-  
-    
+
     public void stateChanged(ChangeEvent e) {
     	copyOfHotelRooms = hotelModel.getFilteredData();
         for(int i = 0; i < copyOfHotelRooms.size(); i++)
