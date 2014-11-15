@@ -7,55 +7,75 @@ import java.util.Calendar;
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-11
+ * Version 2014-11-14
  *******************************************************/
 public class Room {
     private Calendar checkInDate;
     private Calendar checkOutDate;
     private ArrayList<Calendar> bookedDates;
-    private double price;
-    private String typeOfRoom;
-    private int rmNum;
+    private int price;
+    private boolean isLuxury;
+    private int roomNumber;
 
-    public Room(double setPrice, String setTypeOfRoom, int roomNumber)
-    {
-        price = setPrice;
-        typeOfRoom = setTypeOfRoom;
+    public Room(boolean isLuxury, int roomNumber) {
+        this.isLuxury = isLuxury;
+
+        // set price based on isLuxury
+        if(this.isLuxury) {
+            price = 200;
+        }
+        else {
+            price = 80;
+        }
+
+        this.roomNumber = roomNumber;
+
         checkInDate = null;
         checkOutDate = null;
-        bookedDates = new ArrayList<Calendar>();
-        rmNum = roomNumber;
+
+        bookedDates = new ArrayList<>();
+
     }
 
-    public int getRmNum()
-    {	return rmNum;	}
-    
-    public void setCheckInDate(Calendar setCheckInDate)
-    {   checkInDate = setCheckInDate;    }
+    public Calendar getCheckInDate() {
+        return checkInDate;
+    }
 
-    public Calendar getCheckInDate()
-    {    return checkInDate;   }
+    public void setCheckInDate(Calendar checkInDate) {
+        this.checkInDate = checkInDate;
+    }
 
-    public void setCheckOutDate(Calendar setCheckOutDate)
-    {  checkOutDate = setCheckOutDate;    }
+    public Calendar getCheckOutDate() {
+        return checkOutDate;
+    }
 
-    public Calendar getCheckOutDate()
-    {   return checkOutDate;   }
+    public void setCheckOutDate(Calendar checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
 
-    public void setPrice(double setPrice)
-    {    price = setPrice;   }
+    public int getPrice() {
+        return price;
+    }
 
-    public double getPrice()
-    {   return price;   }
+    public int getRoomNumber() {
+        return roomNumber;
+    }
 
-    public void setTypeOfRoom(String setType)
-    {    typeOfRoom = setType;    }
+    public String getType() {
+        if(isLuxury) {
+            return "Luxury";
+        }
 
-    public String getTypeOfRoom()
-    { 	return typeOfRoom;   }
-    
-    public ArrayList<Calendar> getBookedDates()
-    {	return bookedDates;   }
+        return "Regular";
+    }
+
+    public boolean isLuxury() {
+        return isLuxury;
+    }
+
+    public ArrayList<Calendar> getBookedDates() {
+        return bookedDates;
+    }
 
     /**
      * Adds the check-in to check-out days to the room
@@ -64,12 +84,10 @@ public class Room {
      * @param checkInDate the room check in date
      * @param checkOutDate the room check out date
      */
-    public void setBookedDates(Calendar checkInDate, Calendar checkOutDate)
-    {  	
+    public void setBookedDates(Calendar checkInDate, Calendar checkOutDate) {
     	int days = getDays(checkInDate, checkOutDate);
     	
-    	for (int i = 1; i <= days; i++)
-    	{
+    	for (int i = 1; i <= days; i++) {
     		bookedDates.add(checkInDate); //adds the check in date
     		checkInDate.add(Calendar.DATE, 1); //increments the date by one day
     	}
@@ -82,15 +100,15 @@ public class Room {
      * @param checkInDate the room check in date
      * @param checkOutDate the room check out date
      */
-    public void deleteBookedDates(Calendar checkInDate, Calendar checkOutDate)
-    {
+    public void deleteBookedDates(Calendar checkInDate, Calendar checkOutDate) {
     	int days = getDays(checkInDate, checkOutDate);
     	
     	int loc = bookedDates.indexOf(checkInDate);
-    	
-		for (int i = 1; i <= days; i++)
-		{	bookedDates.remove(loc);	}  //deletes start date through end date
 
+        // deletes start date through end date
+		for (int i = 1; i <= days; i++) {
+            bookedDates.remove(loc);
+        }
     }
 
     /**
@@ -101,8 +119,7 @@ public class Room {
      * @param checkOutDate the room check out date
      * @return the number of days between the dates (including the date)
      */
-    public int getDays(Calendar checkInDate, Calendar checkOutDate)
-    {
+    public int getDays(Calendar checkInDate, Calendar checkOutDate) {
     	long milliSecPerDay = 86400000;   //86400000 = 1 day in milliseconds
     	long days = ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / milliSecPerDay;
     	return (int) days + 1;

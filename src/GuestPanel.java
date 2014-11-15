@@ -13,24 +13,22 @@ import javax.swing.event.ChangeListener;
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-11
+ * Version 2014-11-14
  *********************************************************/
 public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
     private ArrayList<Room> copyOfHotelRooms;
     private HotelModel hotelDataModel;
-    private String typeOfRoom;
+    private boolean isLuxury;
     private JTextArea availableRooms;
     
 
-    public GuestPanel(HotelModel setHotelDataModel)
-    {
+    public GuestPanel(HotelModel setHotelDataModel) {
         guest = null;
         copyOfHotelRooms = setHotelDataModel.getData();
         hotelDataModel = setHotelDataModel;
-        typeOfRoom = "";
+        isLuxury = false;
         availableRooms = new JTextArea("Available Rooms\n");
-        
     }
 
     /**
@@ -180,27 +178,24 @@ public class GuestPanel extends JPanel implements ChangeListener {
           an error message.
         */
         /* Make 2 Buttons one called |Standard| and other called |Luxuary| then add action listeners that will set the String variable 
-           typeOfRoom to the appropriate String. (coded already)
+           isLuxury to the appropriate String. (coded already)
           
          */
         JButton standardButton = new JButton("Standard");
         JButton luxuaryButton = new JButton("Luxury");
 
-        ActionListener standardButtonListener = new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                typeOfRoom = "standard";
-                hotelDataModel.setFilteredData(null, null, typeOfRoom);
+        ActionListener standardButtonListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                isLuxury = false;
+                hotelDataModel.setFilteredData(null, null, isLuxury);
             }
         };
         
         ActionListener luxuryButtonListener = new ActionListener()
         {
-            public void actionPerformed(ActionEvent e)
-            {
-                typeOfRoom = "luxury";
-                hotelDataModel.setFilteredData(null, null, typeOfRoom);
+            public void actionPerformed(ActionEvent e) {
+                isLuxury = true;
+                hotelDataModel.setFilteredData(null, null, isLuxury);
             }
         };
 
@@ -247,7 +242,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         for( Room room: reservationsByGuest )
         {
             //add a String description of the room specs -> Luxury Room 10: date to date
-        	String reservationDescription = ( room.getTypeOfRoom() + " Room " + room.getRmNum() + ": " + room.getCheckInDate().getTime().toString() + " to " + room.getCheckOutDate().getTime().toString() );
+        	String reservationDescription = ( room.getType() + " Room " + room.getRoomNumber() + ": " + room.getCheckInDate().getTime().toString() + " to " + room.getCheckOutDate().getTime().toString() );
 
         	//JCheckBox checkBox = new JCheckBox( room.cancelToString() );
         	JCheckBox checkBox = new JCheckBox( reservationDescription );

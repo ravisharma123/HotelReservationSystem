@@ -1,8 +1,3 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -16,7 +11,7 @@ import javax.swing.event.ChangeListener;
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-11
+ * Version 2014-11-14
  *********************************************/
 public class HotelModel {
     private ArrayList<Room> hotelRoomData;
@@ -91,15 +86,15 @@ public class HotelModel {
      * 
      * @param checkInDate is the first day of the reservation
      * @param checkOutDate is the last day of the reservation
-     * @param typeOfRoom is either a standard or luxury room
+     * @param isLuxury is either a standard or luxury room
      */
-    public void setFilteredData(Calendar checkInDate, Calendar checkOutDate, String typeOfRoom)
+    public void setFilteredData(Calendar checkInDate, Calendar checkOutDate, boolean isLuxury)
     {
         filteredResults.removeAll(filteredResults);
         
         for(int i = 0; i < hotelRoomData.size(); i++)
         {
-            if( ( !( ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) || ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) ) ) && ( hotelRoomData.get(i).getTypeOfRoom().equalsIgnoreCase(typeOfRoom) ) )
+            if( ( !( ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) || ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) ) ) && ( hotelRoomData.get(i).isLuxury()) )
                 filteredResults.add(hotelRoomData.get(i));
         }
         
@@ -162,7 +157,7 @@ public class HotelModel {
     				if( g.getGuestReservations().contains(r) )
     				{	user = g;	}
     			}
-    			message += r.getTypeOfRoom() + "Room " + r.getRmNum() + ": " + user.getUserName() + "\n"; //Regular Room 1: guest name
+    			message += r.getType() + " Room " + r.getRoomNumber() + ": " + user.getUserName() + "\n"; //Regular Room 1: guest name
     		}
     	}
     	return message;

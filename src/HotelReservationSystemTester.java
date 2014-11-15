@@ -27,10 +27,10 @@ public class HotelReservationSystemTester {
             ArrayList<Room> rooms = new ArrayList<Room>();
             for (int i = 1; i <= 20; i++) {
                 if (i < 10) {
-                    rooms.add( new Room(80, "regular", i) );
+                    rooms.add( new Room(false, i) );
                 }
                 else {
-                    rooms.add( new Room(200, "luxury", i) );
+                    rooms.add( new Room(true, i) );
                 }
             }
 
