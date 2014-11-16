@@ -33,6 +33,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
         availableRooms = new JTextArea("Available Rooms\n");
     }
 
+    /**
+     * Display login.
+     */
     public void displayLogin() {
         removeAll();
 
@@ -79,6 +82,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
         add(loginButton, BorderLayout.CENTER);
     }
 
+    /**
+     * Display reservation options.
+     */
     private void displayReservationOptions() {
         removeAll();
 
@@ -114,6 +120,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
         revalidate();
     }
 
+    /**
+     * Display make reservation options.
+     */
     private void displayMakeReservationOption() {
         removeAll();
 
@@ -230,6 +239,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
         revalidate();
     }
 
+    /**
+     * Display receipt.
+     */
     private void displayReceipt() {
         removeAll();
 
@@ -262,12 +274,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         revalidate();
     }
-   
+
     /**
-     * GUI to view or cancel a reservation
-     * made by the guest
+     * Display view or cancel options.
      */
     private void displayViewOrCancelOption() {
+        removeAll();
+
         ArrayList<Room> reservationsByGuest = guest.getRoomList();
         final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
     
@@ -308,6 +321,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
             }
         });
 
+        revalidate();
     }
 
     public void stateChanged(ChangeEvent e) {
