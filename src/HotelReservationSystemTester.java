@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * 
  * 
  * Solution to group project 2 for CS151-01.
- * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
+ * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma Im the ZenMaster
  * Version 2014-11-14
  ********************************************************/
 public class HotelReservationSystemTester {
