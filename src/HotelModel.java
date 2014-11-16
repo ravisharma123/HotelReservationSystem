@@ -11,7 +11,7 @@ import javax.swing.event.ChangeListener;
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-14
+ * Version 2014-11-15
  *********************************************/
 public class HotelModel {
     private ArrayList<Room> hotelRoomData;

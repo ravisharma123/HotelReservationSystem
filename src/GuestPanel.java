@@ -15,7 +15,7 @@ import javax.swing.event.ChangeListener;
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-14
+ * Version 2014-11-15
  *********************************************************/
 public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
@@ -281,41 +281,31 @@ public class GuestPanel extends JPanel implements ChangeListener {
     private void displayViewOrCancelOption() {
         removeAll();
 
-        ArrayList<Room> reservationsByGuest = guest.getRoomList();
-        final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
-    
-        /*
-        Loop through the reservationsByGuest ArrayList and create JCheckBoxes out of each element inside the arrayList
-        and then add them to the JFrame or the component that is going to be used to display the GUI.(You can use the 
-        toStringMethod of the room to name each JCheckBox so that is will display the room name and check in check out dates. 
-        Might need two toString methods one for available rooms because that will display only the room name. And another 
-        that displays the room name and check in and checkout dates for cancel option
-        */
-        for(Room room: reservationsByGuest) {
-            //add a String description of the room specs -> Luxury Room 10: date to date
-        	String reservationDescription = ( room.getType() + " Room " + room.getRoomNumber() + ": " + room.getCheckInDate().getTime().toString() + " to " + room.getCheckOutDate().getTime().toString() );
+        setLayout(new GridLayout(0, 1));
 
-        	//JCheckBox checkBox = new JCheckBox( room.cancelToString() );
-        	JCheckBox checkBox = new JCheckBox( reservationDescription );
-            //frame/component.add(checkBox);
-            checkBoxes.add(checkBox);           
+        ArrayList<Room> reservationsByGuest = guest.getRoomList();
+        final ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
+    
+        // THE WAY I GET THIS STRING IS WAY TOO COMPLICATED
+        for(Room room: reservationsByGuest) {
+        	String reservationDescription = room.getType() + " Room " + room.getRoomNumber() + ": " + room.getCheckInDate().getTime().toString() + " to " + room.getCheckOutDate().getTime().toString();
+
+        	JCheckBox checkBox = new JCheckBox(reservationDescription);
+            checkBoxList.add(checkBox);
+            add(checkBox);
         }
-        
-        //create vertical check boxes
-        JPanel viewDeletePanel = new JPanel();
-        //viewDeletePanel.setLayout( new BoxLayout() );
-        
-        
-        /*
-        Add a JButton |CANCEL| so that all the check boxes that were selected then their appropriate reservations are deleted from data
-        model.(remember we are not deleting a room from data model but we are deleting from the bookingDates of the room. 
-        */
+
         JButton cancel = new JButton("Cancel");
         cancel.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                for(int i = 0; i < checkBoxes.size(); i++) {
-                    if( checkBoxes.get(i).isSelected() ) {
+                for(int i = checkBoxList.size() - 1; i >= 0; i--) {
+                    JCheckBox checkBox = checkBoxList.get(i);
+
+                    if(checkBox.isSelected()) {
                         hotelModel.updateToCancelReservation(reservationsByGuest.get(i), reservationsByGuest.get(i).getCheckInDate(), reservationsByGuest.get(i).getCheckOutDate());
+                        checkBoxList.remove(checkBox);
+                        remove(checkBox);
+                        revalidate();
                     }
                 }
             }
