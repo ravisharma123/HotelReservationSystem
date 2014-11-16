@@ -23,6 +23,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
     private HotelModel hotelModel;
     private JTextArea availableRooms;
     private boolean isLuxury;
+    private Calendar checkInCalendar;
+    private Calendar checkOutCalendar;
 
     public GuestPanel(HotelModel hotelModel) {
         copyOfHotelRooms = hotelModel.getData();
@@ -152,9 +154,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
         standardRadioButton.addActionListener(groupListener);
         luxuryRadioButton.addActionListener(groupListener);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
-        buttonPanel.add(standardRadioButton);
-        buttonPanel.add(luxuryRadioButton);
+        JPanel standardOrLuxuryButtonPanel = new JPanel(new GridLayout(0, 2));
+        standardOrLuxuryButtonPanel.add(standardRadioButton);
+        standardOrLuxuryButtonPanel.add(luxuryRadioButton);
 
         // available room text area
         JTextArea availableRoomsArea = new JTextArea();
@@ -178,45 +180,87 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     int checkOutMonth = Integer.parseInt(checkOutDateArr[0]) - 1;
                     int checkOutDay = Integer.parseInt(checkOutDateArr[1]);
 
-                    Calendar checkInCalendar = new GregorianCalendar(checkInYear, checkInMonth, checkInDay);
-                    Calendar checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
+                    checkInCalendar = new GregorianCalendar(checkInYear, checkInMonth, checkInDay);
+                    checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
                     
                     hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
 
-                    availableRoomsArea.setText(hotelModel.getFilteredData().toString());
+                    availableRoomsArea.setText(hotelModel.getAvailableRoomInfo());
                 }
             }
         });
 
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // THIS STUFF LOOKS REALLY NASTY AND NEEDS REWORKING
+                hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), null, null);
+
+                Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
+                addReservationToGuestRecords.setCheckInDate(null);
+                addReservationToGuestRecords.setCheckOutDate(null);
+
+                guest.addToGuestReservations(addReservationToGuestRecords);
+            }
+        });
+
+        JButton transactionDoneButton = new JButton("Transaction Done");
+        transactionDoneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displayReceipt();
+            }
+        });
+
+        JPanel confirmedOrTransactionDonePanel = new JPanel(new GridLayout(1, 0));
+        confirmedOrTransactionDonePanel.add(confirmButton);
+        confirmedOrTransactionDonePanel.add(transactionDoneButton);
+
         JPanel infoPanel = new JPanel(new GridLayout(0, 1));
         infoPanel.add(checkInPanel);
         infoPanel.add(checkOutPanel);
-        infoPanel.add(buttonPanel);
+        infoPanel.add(standardOrLuxuryButtonPanel);
         infoPanel.add(showAvailableRoomsButton);
 
         setLayout(new BorderLayout());
         add(infoPanel, BorderLayout.NORTH);
         add(availableRoomsArea, BorderLayout.CENTER);
+        add(confirmedOrTransactionDonePanel, BorderLayout.SOUTH);
 
         revalidate();
+    }
 
-        /*
-        Make 2 more JButtons |CONFIRMED| and |TRANSACTION DONE| and then add ActionListeners to them
-        User can keep making reservations until they click Transaction Done button
-        */
-        JButton confirmedButton = new JButton("Confirm");
-        JButton transactionDoneButton = new JButton("Transaction Done");
-        
-        ActionListener confirmedButtonListener = new ActionListener() {
+    private void displayReceipt() {
+        removeAll();
+
+        JTextArea receiptArea = new JTextArea();
+        receiptArea.setEditable(false);
+
+        JButton simpleButton = new JButton("Simple");
+        simpleButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), null, null);
-                Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
-                addReservationToGuestRecords.setCheckInDate(null);
-                addReservationToGuestRecords.setCheckOutDate(null);
-                guest.addToGuestReservations(addReservationToGuestRecords);
+                receiptArea.setText(hotelModel.getSimpleReceipt());
             }
-        };
+        });
 
+        JButton comprehensiveButton = new JButton("Comprehensive");
+        comprehensiveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                receiptArea.setText(hotelModel.getComprehensiveReceipt());
+            }
+        });
+
+        JPanel simpleOrComprehensiveButtonPanel = new JPanel(new GridLayout(1, 0));
+        simpleOrComprehensiveButtonPanel.add(simpleButton);
+        simpleOrComprehensiveButtonPanel.add(comprehensiveButton);
+
+        setLayout(new BorderLayout());
+        add(simpleOrComprehensiveButtonPanel, BorderLayout.NORTH);
+        add(receiptArea, BorderLayout.CENTER);
+
+        revalidate();
     }
    
     /**

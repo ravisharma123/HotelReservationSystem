@@ -171,4 +171,17 @@ public class HotelModel {
     public String getUsername(int userID) {
         return "";
     }
+
+    public String getAvailableRoomInfo() { // should return data based on filteredResults or N/A if no available rooms
+        return "N/A";
+    }
+
+    // needs to use strategy pattern
+    public String getSimpleReceipt() { // this one relies on filtered results which I still do not like the idea of me having to set up first
+        return "";
+    }
+
+    public String getComprehensiveReceipt() { // this one relies on filtered results which I still do not like the idea of me having to set up first
+        return "";
+    }
 }
