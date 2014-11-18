@@ -107,7 +107,7 @@ public class HotelModel {
         
         for(int i = 0; i < hotelRoomData.size(); i++)
         {
-            if( ( !( ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) || ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) ) ) ) && ( hotelRoomData.get(i).isLuxury()) )
+            if( ( !( ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) )  ) ) && ( hotelRoomData.get(i).isLuxury()==isLuxury) )
                 filteredResults.add(hotelRoomData.get(i));
         }
         
@@ -197,8 +197,8 @@ public class HotelModel {
         return name;
     }
 
-    public String getAvailableRoomInfo() { // should return data based on filteredResults or N/A if no available rooms
-        return "N/A";
+    public ArrayList<Room> getAvailableRoomInfo() { // should return data based on filteredResults or N/A if no available rooms
+      return filteredResults;
     }
 
     // needs to use strategy pattern
