@@ -18,13 +18,17 @@ public class HotelModel {
     private ArrayList<ChangeListener> listeners;
     private ArrayList<Room> filteredResults;
     private ArrayList<Guest> guestList;
+    private boolean guestRecordFound;
 
     public HotelModel(ArrayList<Room> setHotelRoomData)
     {
         hotelRoomData = setHotelRoomData;
+        guestList = new ArrayList<Guest>();
         listeners = new ArrayList<ChangeListener>();
         filteredResults = new ArrayList<Room>();
+        guestRecordFound=false;
     }
+    
 
     /**
      * Gets a deep copy of the 
@@ -78,6 +82,15 @@ public class HotelModel {
         {
             l.stateChanged( new ChangeEvent(this) );
         }
+    }
+     public void updateToAddGuest(Guest addGuest)
+    {
+        guestList.add(addGuest);
+         for(ChangeListener l: listeners)
+        {
+            l.stateChanged(new ChangeEvent(this));
+        }
+       
     }
 
     /**
@@ -164,12 +177,24 @@ public class HotelModel {
     }
 
     // new methods needed to work with guestPanel
-    public boolean hasUserID(int userID) {
-        return false;
+    public boolean hasGuestID(int getGuestID) {
+        guestRecordFound=false;
+            for(int i=0;i<guestList.size();i++){
+                if(guestList.get(i).getUserID()==getGuestID){
+                    guestRecordFound=true;
+                }
+            }
+            return guestRecordFound;
     }
 
     public String getUsername(int userID) {
-        return "";
+        String name="";
+        for(int i=0;i<guestList.size();i++){
+                if(guestList.get(i).getUserID()==userID){
+                    name=guestList.get(i).getUsername();
+                }
+            }
+        return name;
     }
 
     public String getAvailableRoomInfo() { // should return data based on filteredResults or N/A if no available rooms

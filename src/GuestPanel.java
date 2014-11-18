@@ -38,11 +38,10 @@ public class GuestPanel extends JPanel implements ChangeListener {
      */
     public void displayLogin() {
         removeAll();
-
+        guest=null;     
         // user ID panel
         int rows = 1;
         int columns = 0;
-
         JLabel userIDLabel = new JLabel("Enter/create a user ID (can only contain numbers):");
         JTextField userIDField = new JTextField();
         JPanel userIDPanel = new JPanel(new GridLayout(rows, columns));
@@ -59,18 +58,19 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
                     // get username
                     String username;
-                    if(hotelModel.hasUserID(userID)) {
+                    if(hotelModel.hasGuestID(userID)) {
                         username = hotelModel.getUsername(userID);
                     }
                     else {
                         username = JOptionPane.showInputDialog("Create a username for this user ID: ");
-
+                       
                         if(username == null) {
                             username = "null";
                         }
                     }
 
                     guest = new Guest(userID, username);
+                    hotelModel.updateToAddGuest(guest);
 
                     displayReservationOptions();
                 }
