@@ -146,6 +146,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         standardRadioButton.setSelected(true);
 
         final String luxury = "Luxury";
+        isLuxury=false;
         JRadioButton luxuryRadioButton = new JRadioButton(luxury);
         luxuryRadioButton.setActionCommand(luxury);
 
