@@ -29,7 +29,6 @@ public class GuestPanel extends JPanel implements ChangeListener {
     public GuestPanel(HotelModel hotelModel) {
         copyOfHotelRooms = hotelModel.getData();
         this.hotelModel = hotelModel;
-        isLuxury = false;
         availableRooms = new JTextArea("Available Rooms\n");
     }
 
@@ -144,6 +143,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         JRadioButton standardRadioButton = new JRadioButton(standard);
         standardRadioButton.setActionCommand(standard);
         standardRadioButton.setSelected(true);
+        isLuxury = false;
 
         final String luxury = "Luxury";
         isLuxury=false;
