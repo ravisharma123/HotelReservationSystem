@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -158,7 +159,9 @@ public class HotelModel {
      */
     public String getRoomInfoOnDay(Calendar calendar)
     {
-    	String message = calendar.getTime().toString();
+    	//String message = calendar.getTime().toString();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM dd, yyyy");
+    	String message = dateFormat.format( calendar.getTime() );
     	
     	for (Room r: hotelRoomData)
     	{
