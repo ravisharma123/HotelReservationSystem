@@ -17,7 +17,7 @@ public interface receiptFormatter {
 	/**
 	 * formats a line of the    	
 	 */
-	String receipt(Room room);
+	String receipt(Guest guest);
 
 	/**
 	 * Formats footer of the receipt  	

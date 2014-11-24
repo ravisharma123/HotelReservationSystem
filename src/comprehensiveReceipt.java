@@ -9,7 +9,7 @@ import java.util.Calendar;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-14
  ********************************************************/
-public class simpleReceipt implements receiptFormatter{
+public class comprehensiveReceipt implements receiptFormatter{
 	private double total;
 
 	/**
@@ -31,10 +31,16 @@ public class simpleReceipt implements receiptFormatter{
 	 * @param guest is the guest making the reservation
 	 */
 	public String receipt(Guest guest) {
-		int roomPrice = guest.getRoomList().get(guest.getRoomList().size()).getPrice();
-		total += roomPrice;
+		String receipt = "";
 		
-		return "\nRoom " + guest.getRoomList().get(guest.getRoomList().size()).getRoomNumber() + ": $" + roomPrice;
+		for (Room r: guest.getRoomList() )
+		{
+			int roomPrice = r.getPrice();
+			total += roomPrice;
+			receipt = "\nRoom " + r.getRoomNumber() + ": $" + roomPrice;
+		}
+
+		return receipt;
 	}
 	
 
