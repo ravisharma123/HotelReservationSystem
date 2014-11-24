@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,7 +15,7 @@ import javax.swing.event.ChangeListener;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-15
  *********************************************/
-public class HotelModel {
+public class HotelModel implements Serializable {
     private ArrayList<Room> hotelRoomData;
     private ArrayList<ChangeListener> listeners;
     private ArrayList<Room> filteredResults;
