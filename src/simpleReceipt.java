@@ -9,7 +9,7 @@ import java.util.Calendar;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-14
  ********************************************************/
-public class roomReceipt implements receipt{
+public class simpleReceipt implements receiptFormatter{
 	private double total;
 
 	/**
