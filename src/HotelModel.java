@@ -210,7 +210,7 @@ public class HotelModel implements Serializable {
     public ArrayList<Room> getAvailableRoomInfo() { // should return data based on filteredResults or N/A if no available rooms
       return filteredResults;
     }
-
+/*
     // needs to use strategy pattern
     public String getSimpleReceipt() { // this one relies on filtered results which I still do not like the idea of me having to set up first
         return "";
@@ -218,5 +218,5 @@ public class HotelModel implements Serializable {
 
     public String getComprehensiveReceipt() { // this one relies on filtered results which I still do not like the idea of me having to set up first
         return "";
-    }
+    }*/
 }

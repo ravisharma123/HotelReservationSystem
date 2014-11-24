@@ -11,6 +11,7 @@ public class Guest {
     private String username;
     private int userID;
     private ArrayList<Room> roomList;
+
 	
     public Guest(int userID, String username) {
         this.userID = userID;
@@ -38,4 +39,10 @@ public class Guest {
     public ArrayList<Room> getRoomList() {
         return roomList;
     }
+    
+    //uses strategy pattern
+    public String getReceipt(receiptFormatter receiptType) {
+    	return receiptType.formatHeader(this) + receiptType.receipt(this) + receiptType.formatFooter();
+    }
+
 }
