@@ -167,7 +167,7 @@ public class HotelModel {
     {
     	//String message = calendar.getTime().toString();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM dd, yyyy");
-    	String message = dateFormat.format( calendar.getTime() );
+    	String message = dateFormat.format( calendar.getTime() ) + "\n";
     	
     	for (Room r: hotelRoomData)
     	{
