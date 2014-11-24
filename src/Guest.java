@@ -41,7 +41,7 @@ public class Guest {
     }
     
     //uses strategy pattern
-    public String getReceipt(receiptFormatter receiptType) {
+    public String getReceipt(ReceiptFormatter receiptType) {
     	return receiptType.formatHeader(this) + receiptType.receipt(this) + receiptType.formatFooter();
     }
 

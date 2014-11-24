@@ -7,7 +7,7 @@
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-14
  ********************************************************/
-public interface receiptFormatter {
+public interface ReceiptFormatter {
 	/**
 	 * Formats the header of the receipt
 	 * 

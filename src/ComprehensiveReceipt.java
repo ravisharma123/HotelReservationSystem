@@ -9,7 +9,7 @@ import java.util.Calendar;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-14
  ********************************************************/
-public class comprehensiveReceipt implements receiptFormatter{
+public class ComprehensiveReceipt implements ReceiptFormatter{
 	private double total;
 
 	/**
@@ -40,7 +40,7 @@ public class comprehensiveReceipt implements receiptFormatter{
 		for (Room r: guest.getRoomList() )
 		{
 			int roomPrice = r.getPrice();
-			int days = 1 + (int)( (r.getCheckOutDate().getTimeInMillis() - r.getCheckInDate().getTimeInMillis()) / (milliPerDay) );
+			int days = r.getDays(r.getCheckInDate(), r.getCheckOutDate() );
 			total += roomPrice * days;
 			receipt += "\nRoom " + r.getRoomNumber() + ": $" + roomPrice;
 		}

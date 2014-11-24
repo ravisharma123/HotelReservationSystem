@@ -54,17 +54,17 @@ public class HotelReservationSystemTester {
         int rows = 0;
         int columns = 1;
 
-        JPanel selectionPanel = new JPanel();
+        final JPanel selectionPanel = new JPanel();
         selectionPanel.setLayout(new GridLayout(rows, columns));
 
-        JPanel managerPanel = new ManagerPanel(manager);
-        GuestPanel guestPanel = new GuestPanel(hotelModel);
+        final JPanel managerPanel = new ManagerPanel(manager);
+        final GuestPanel guestPanel = new GuestPanel(hotelModel);
 
         //attach listeners
         hotelModel.attach(guestPanel);
         //dataOfRooms.attach(managerPanel);							comment out to get Guest view going
 
-        JButton backButton = new JButton("Go back to user selection");
+        final JButton backButton = new JButton("Go back to user selection");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -9,7 +9,7 @@ import java.util.Calendar;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-14
  ********************************************************/
-public class simpleReceipt implements receiptFormatter{
+public class SimpleReceipt implements ReceiptFormatter{
 	private double total;
 
 	/**
@@ -37,9 +37,8 @@ public class simpleReceipt implements receiptFormatter{
 		int milliPerDay = 1000 * 60 * 60 * 24;
 		Room room = guest.getRoomList().get(guest.getRoomList().size()-1);
 		int roomPrice = room.getPrice();
-		int days = 1 + (int)( (room.getCheckOutDate().getTimeInMillis() - room.getCheckInDate().getTimeInMillis()) / (milliPerDay) );
+		int days = room.getDays(room.getCheckInDate(), room.getCheckOutDate());
 		total += roomPrice * days;
-		//System.out.println(room.getCheckOutDate().getTimeInMillis() + " - " + room.getCheckInDate().getTimeInMillis() + " = " + milliPerDay);
 		return "\nRoom Price\nRoom " + room.getRoomNumber() + ": $" + roomPrice;
 	}
 	

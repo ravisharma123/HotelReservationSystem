@@ -122,7 +122,7 @@ public class Room {
      */
     public int getDays(Calendar checkInDate, Calendar checkOutDate) {
     	long milliSecPerDay = 86400000;   //86400000 = 1 day in milliseconds
-    	long days = ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / milliSecPerDay;
+    	long days = 1 + ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / milliSecPerDay;
     	return (int) days;
     }
 }

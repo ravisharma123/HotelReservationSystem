@@ -42,7 +42,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
         int rows = 1;
         int columns = 0;
         JLabel userIDLabel = new JLabel("Enter/create a user ID (can only contain numbers):");
-        JTextField userIDField = new JTextField();
+        final JTextField userIDField = new JTextField();
+        userIDField.requestFocus();
+        
         JPanel userIDPanel = new JPanel(new GridLayout(rows, columns));
         userIDPanel.add(userIDLabel);
         userIDPanel.add(userIDField);
@@ -127,13 +129,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         // check in and check out panels
         JLabel checkInLabel = new JLabel("Check-in date (in mm/dd/yyyy format):");
-        JTextField checkInField = new JTextField();
+        final JTextField checkInField = new JTextField();
         JPanel checkInPanel = new JPanel(new GridLayout(0, 2));
         checkInPanel.add(checkInLabel);
         checkInPanel.add(checkInField);
 
         JLabel checkOutLabel = new JLabel("Check-out date (in mm/dd/yyyy format):");
-        JTextField checkOutField = new JTextField();
+        final JTextField checkOutField = new JTextField();
         JPanel checkOutPanel = new JPanel(new GridLayout(0, 2));
         checkOutPanel.add(checkOutLabel);
         checkOutPanel.add(checkOutField);
@@ -169,7 +171,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         standardOrLuxuryButtonPanel.add(luxuryRadioButton);
 
         // available room text area
-        JTextArea availableRoomsArea = new JTextArea();
+        final JTextArea availableRoomsArea = new JTextArea();
         availableRoomsArea.setEditable(false);
 
         JButton showAvailableRoomsButton = new JButton("Show Available Room");
@@ -252,14 +254,15 @@ public class GuestPanel extends JPanel implements ChangeListener {
     private void displayReceipt() {
         removeAll();
 
-        JTextArea receiptArea = new JTextArea();
+        final JTextArea receiptArea = new JTextArea();
         receiptArea.setEditable(false);
 
         JButton simpleButton = new JButton("Simple");
         simpleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                receiptArea.setText(hotelModel.getSimpleReceipt());
+                //receiptArea.setText(hotelModel.getSimpleReceipt());
+            	receiptArea.setText(guest.getReceipt(new SimpleReceipt()));
             }
         });
 
@@ -267,7 +270,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
         comprehensiveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                receiptArea.setText(hotelModel.getComprehensiveReceipt());
+                //receiptArea.setText(hotelModel.getComprehensiveReceipt());
+            	receiptArea.setText(guest.getReceipt(new ComprehensiveReceipt()));
             }
         });
 
@@ -293,7 +297,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
       
 
-        ArrayList<Room> reservationsByGuest = guest.getRoomList();
+        final ArrayList<Room> reservationsByGuest = guest.getRoomList();
         final ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
     
         // THE WAY I GET THIS STRING IS WAY TOO COMPLICATED
