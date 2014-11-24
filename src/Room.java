@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /*******************************************************
  * Holds information about a hotel room
@@ -86,10 +87,10 @@ public class Room {
      */
     public void setBookedDates(Calendar checkInDate, Calendar checkOutDate) {
     	int days = getDays(checkInDate, checkOutDate);
-    	
-    	for (int i = 1; i <= days; i++) {
-    		bookedDates.add(checkInDate); //adds the check in date
-    		checkInDate.add(Calendar.DATE, 1); //increments the date by one day
+      bookedDates.add((Calendar)new GregorianCalendar(checkInDate.get(Calendar.YEAR), checkInDate.get(Calendar.MONTH), checkInDate.get(Calendar.DATE))); //adds the check in date
+      for (int i = 1; i <= days; i++) {
+         checkInDate.add(Calendar.DATE, 1);
+         bookedDates.add((Calendar)new GregorianCalendar(checkInDate.get(Calendar.YEAR), checkInDate.get(Calendar.MONTH), checkInDate.get(Calendar.DATE)));
     	}
     }
 
@@ -122,6 +123,6 @@ public class Room {
     public int getDays(Calendar checkInDate, Calendar checkOutDate) {
     	long milliSecPerDay = 86400000;   //86400000 = 1 day in milliseconds
     	long days = ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / milliSecPerDay;
-    	return (int) days + 1;
+    	return (int) days;
     }
 }

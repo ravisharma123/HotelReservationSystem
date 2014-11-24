@@ -108,6 +108,11 @@ public class HotelModel {
         
         for(int i = 0; i < hotelRoomData.size(); i++)
         {
+           if(!hotelRoomData.get(i).getBookedDates().isEmpty()){
+               for(int x=0;x<hotelRoomData.get(i).getBookedDates().size();x++){
+               System.out.println(hotelRoomData.get(i).getBookedDates().get(x).getTime());
+           }
+           }
             if( ( !( ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) )  ) ) && ( hotelRoomData.get(i).isLuxury()==isLuxury) )
                 filteredResults.add(hotelRoomData.get(i));
         }
@@ -116,6 +121,7 @@ public class HotelModel {
         {
             l.stateChanged(new ChangeEvent(this));
         }
+       
     }
 
 

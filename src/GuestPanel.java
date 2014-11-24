@@ -193,10 +193,14 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
                     checkInCalendar = new GregorianCalendar(checkInYear, checkInMonth, checkInDay);
                     checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
-                    
+                    if(checkOutCalendar.before(checkInCalendar)){
+                        availableRooms.append("Please enter valid check out date");
+                    }
+                    else{
                     hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
                     for(int i=0;i<hotelModel.getAvailableRoomInfo().size();i++){
                     availableRoomsArea.append(hotelModel.getAvailableRoomInfo().get(i).getRoomNumber()+"\n");
+                    }
                 }
                 }
             }
