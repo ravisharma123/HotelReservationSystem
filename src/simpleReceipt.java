@@ -17,11 +17,14 @@ public class simpleReceipt implements receiptFormatter{
 	 */
 	public String formatHeader(Guest guest) {
 		this.total = 0;
-		String header = "Name: " + guest.getUsername() + "\nUser ID: " + guest.getUserID() + "\n";
+
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yy");
+		Calendar calendar = Calendar.getInstance();
+		String header = df.format( calendar.getTime() );
 		
-		Calendar calendar = null;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-		return dateFormat.format( calendar.getTime() ) + "\n\n" + header;
+		header += "\n\nName: " + guest.getUsername() + "\nUser ID: " + guest.getUserID() + "\n";
+
+		return  header;
 	}
 
 	/**
@@ -31,10 +34,13 @@ public class simpleReceipt implements receiptFormatter{
 	 * @param guest is the guest making the reservation
 	 */
 	public String receipt(Guest guest) {
-		int roomPrice = guest.getRoomList().get(guest.getRoomList().size()).getPrice();
-		total += roomPrice;
-		
-		return "\nRoom " + guest.getRoomList().get(guest.getRoomList().size()).getRoomNumber() + ": $" + roomPrice;
+		int milliPerDay = 1000 * 60 * 60 * 24;
+		Room room = guest.getRoomList().get(guest.getRoomList().size()-1);
+		int roomPrice = room.getPrice();
+		int days = 1 + (int)( (room.getCheckOutDate().getTimeInMillis() - room.getCheckInDate().getTimeInMillis()) / (milliPerDay) );
+		total += roomPrice * days;
+		//System.out.println(room.getCheckOutDate().getTimeInMillis() + " - " + room.getCheckInDate().getTimeInMillis() + " = " + milliPerDay);
+		return "\nRoom Price\nRoom " + room.getRoomNumber() + ": $" + roomPrice;
 	}
 	
 

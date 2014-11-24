@@ -17,11 +17,14 @@ public class comprehensiveReceipt implements receiptFormatter{
 	 */
 	public String formatHeader(Guest guest) {
 		this.total = 0;
-		String header = "Name: " + guest.getUsername() + "\nUser ID: " + guest.getUserID() + "\n";
+
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yy");
+		Calendar calendar = Calendar.getInstance();
+		String header = df.format( calendar.getTime() );
 		
-		Calendar calendar = null;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-		return dateFormat.format( calendar.getTime() ) + "\n\n" + header;
+		header += "\n\nName: " + guest.getUsername() + "\nUser ID: " + guest.getUserID() + "\n";
+
+		return  header;
 	}
 
 	/**
@@ -31,13 +34,15 @@ public class comprehensiveReceipt implements receiptFormatter{
 	 * @param guest is the guest making the reservation
 	 */
 	public String receipt(Guest guest) {
-		String receipt = "";
+		int milliPerDay = 1000 * 60 * 60 * 24;
+		String receipt = "\nRoom Price";
 		
 		for (Room r: guest.getRoomList() )
 		{
 			int roomPrice = r.getPrice();
-			total += roomPrice;
-			receipt = "\nRoom " + r.getRoomNumber() + ": $" + roomPrice;
+			int days = 1 + (int)( (r.getCheckOutDate().getTimeInMillis() - r.getCheckInDate().getTimeInMillis()) / (milliPerDay) );
+			total += roomPrice * days;
+			receipt += "\nRoom " + r.getRoomNumber() + ": $" + roomPrice;
 		}
 
 		return receipt;
