@@ -62,7 +62,6 @@ public class HotelReservationSystemTester {
 
         //attach listeners
         hotelModel.attach(guestPanel);
-        //dataOfRooms.attach(managerPanel);							comment out to get Guest view going
 
         final JButton backButton = new JButton("Go back to user selection");
         backButton.addActionListener(new ActionListener() {

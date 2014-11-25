@@ -43,7 +43,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
         int columns = 0;
         JLabel userIDLabel = new JLabel("Enter/create a user ID (can only contain numbers):");
         final JTextField userIDField = new JTextField();
-        userIDField.requestFocus();
+        userIDField.requestFocusInWindow();
+        //userIDField.requestFocus();
         
         JPanel userIDPanel = new JPanel(new GridLayout(rows, columns));
         userIDPanel.add(userIDLabel);
@@ -199,11 +200,11 @@ public class GuestPanel extends JPanel implements ChangeListener {
                         availableRooms.append("Please enter valid check out date");
                     }
                     else{
-                    hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
-                    for(int i=0;i<hotelModel.getAvailableRoomInfo().size();i++){
-                    availableRoomsArea.append(hotelModel.getAvailableRoomInfo().get(i).getRoomNumber()+"\n");
+                    	hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
+                    	for(int i=0;i<hotelModel.getAvailableRoomInfo().size();i++){
+                    		availableRoomsArea.append(hotelModel.getAvailableRoomInfo().get(i).getRoomNumber()+"\n");
+                    	}
                     }
-                }
                 }
             }
         });
@@ -224,7 +225,6 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         JButton transactionDoneButton = new JButton("Transaction Done");
         transactionDoneButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 displayReceipt();
             }
@@ -259,18 +259,16 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         JButton simpleButton = new JButton("Simple");
         simpleButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                //receiptArea.setText(hotelModel.getSimpleReceipt());
+            	//Strategy Pattern
             	receiptArea.setText(guest.getReceipt(new SimpleReceipt()));
             }
         });
 
         JButton comprehensiveButton = new JButton("Comprehensive");
         comprehensiveButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                //receiptArea.setText(hotelModel.getComprehensiveReceipt());
+            	//Strategy Pattern
             	receiptArea.setText(guest.getReceipt(new ComprehensiveReceipt()));
             }
         });
