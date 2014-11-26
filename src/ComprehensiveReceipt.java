@@ -34,15 +34,14 @@ public class ComprehensiveReceipt implements ReceiptFormatter{
 	 * @param guest is the guest making the reservation
 	 */
 	public String receipt(Guest guest) {
-		int milliPerDay = 1000 * 60 * 60 * 24;
-		String receipt = "\nRoom Price";
+		String receipt = "\nRoom\tRoom Price\tNumber of Days";
 		
-		for (Room r: guest.getRoomList() )
+		for (Room room: guest.getRoomList() )
 		{
-			int roomPrice = r.getPrice();
-			int days = r.getDays(r.getCheckInDate(), r.getCheckOutDate() );
+			int roomPrice = room.getPrice();
+			int days = room.getDays(room.getCheckInDate(), room.getCheckOutDate() );
 			total += roomPrice * days;
-			receipt += "\nRoom " + r.getRoomNumber() + ": $" + roomPrice;
+			receipt += "\n" + room.getRoomNumber() + "\t$" + roomPrice + "\t" + days;
 		}
 
 		return receipt;

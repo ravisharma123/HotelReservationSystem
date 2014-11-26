@@ -34,13 +34,12 @@ public class SimpleReceipt implements ReceiptFormatter{
 	 * @param guest is the guest making the reservation
 	 */
 	public String receipt(Guest guest) {
-		int milliPerDay = 1000 * 60 * 60 * 24;
 		Room room = guest.getRoomList().get(guest.getRoomList().size()-1);
 		int roomPrice = room.getPrice();
-		System.out.println(room.getCheckInDate().getTime().toString() +"\t"+ room.getCheckOutDate().getTime().toString());
 		int days = room.getDays(room.getCheckInDate(), room.getCheckOutDate());
 		total += roomPrice * days;
-		return "\nRoom Price\nRoom " + room.getRoomNumber() + ": $" + roomPrice;
+
+		return "\nRoom\tRoom Price\tNumber of Days\n" +  room.getRoomNumber() + "\t$" + roomPrice + "\t" + days;
 	}
 	
 
