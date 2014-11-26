@@ -37,13 +37,12 @@ public class GuestPanel extends JPanel implements ChangeListener {
      */
     public void displayLogin() {
         removeAll();
-        guest=null;     
+        guest = null;     
         // user ID panel
         int rows = 1;
         int columns = 0;
         JLabel userIDLabel = new JLabel("Enter/create a user ID (can only contain numbers):");
         final JTextField userIDField = new JTextField();
-        userIDField.requestFocusInWindow();
         //userIDField.requestFocus();
         
         JPanel userIDPanel = new JPanel(new GridLayout(rows, columns));
@@ -149,7 +148,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         isLuxury = false;
 
         final String luxury = "Luxury";
-        isLuxury=false;
+        isLuxury = false;
         JRadioButton luxuryRadioButton = new JRadioButton(luxury);
         luxuryRadioButton.setActionCommand(luxury);
 
@@ -158,7 +157,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         group.add(luxuryRadioButton);
 
         ActionListener groupListener = new ActionListener() {
-            @Override
+            
             public void actionPerformed(ActionEvent e) {
                 isLuxury = e.getActionCommand().equals(luxury);
             }
@@ -177,12 +176,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         JButton showAvailableRoomsButton = new JButton("Show Available Room");
         showAvailableRoomsButton.addActionListener(new ActionListener() {
-            @Override
+            
             public void actionPerformed(ActionEvent e) {
                 
                 String checkInDate = checkInField.getText();
                 String checkOutDate = checkOutField.getText();
                 availableRoomsArea.setText("");
+                
                 if(checkInDate.matches("\\d+/\\d+/\\d+") && checkOutDate.matches("\\d+/\\d+/\\d+")) {
                     String[] checkInDateArr = checkInDate.split("/");
                     int checkInYear = Integer.parseInt(checkInDateArr[2]);
@@ -196,13 +196,19 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
                     checkInCalendar = new GregorianCalendar(checkInYear, checkInMonth, checkInDay);
                     checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
-                    if(checkOutCalendar.before(checkInCalendar)){
-                        availableRooms.append("Please enter valid check out date");
+                    Calendar currentDay = Calendar.getInstance();
+                    currentDay.add(Calendar.DATE, -1);
+                    
+                    if (checkOutCalendar.before(checkInCalendar)) {
+                        availableRoomsArea.append("Check-Out date occurs before Check-In date");
                     }
-                    else{
+                    else if (checkInCalendar.before(currentDay)) {
+                    	availableRoomsArea.append("Dates occur prior to Today");
+                    }
+                    else {
                     	hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
-                    	for(int i=0;i<hotelModel.getAvailableRoomInfo().size();i++){
-                    		availableRoomsArea.append(hotelModel.getAvailableRoomInfo().get(i).getRoomNumber()+"\n");
+                    	for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
+                    		availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
                     	}
                     }
                 }
@@ -212,13 +218,15 @@ public class GuestPanel extends JPanel implements ChangeListener {
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
-
-                Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
-                addReservationToGuestRecords.setCheckInDate(checkInCalendar);
-                addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
-
-                guest.addToGuestReservations(addReservationToGuestRecords);
+            	if (!copyOfHotelRooms.isEmpty()) {
+	                hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
+	
+	                Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
+	                addReservationToGuestRecords.setCheckInDate(checkInCalendar);
+	                addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
+	
+	                guest.addToGuestReservations(addReservationToGuestRecords);
+            	}
             }
         });
 
@@ -260,7 +268,10 @@ public class GuestPanel extends JPanel implements ChangeListener {
         simpleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	//Strategy Pattern
-            	receiptArea.setText(guest.getReceipt(new SimpleReceipt()));
+            	if ( !guest.getRoomList().isEmpty() )
+            	{	receiptArea.setText(guest.getReceipt(new SimpleReceipt()));	}
+            	else
+            	{	receiptArea.setText("No Reservations were made");	}
             }
         });
 
@@ -268,7 +279,10 @@ public class GuestPanel extends JPanel implements ChangeListener {
         comprehensiveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	//Strategy Pattern
-            	receiptArea.setText(guest.getReceipt(new ComprehensiveReceipt()));
+            	if ( !guest.getRoomList().isEmpty() )
+            	{	receiptArea.setText(guest.getReceipt(new ComprehensiveReceipt()));	}
+            	else
+            	{	receiptArea.setText("No Reservations were made");	}
             }
         });
 
