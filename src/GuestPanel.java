@@ -207,8 +207,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     }
                     else {
                     	hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
-                    	for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
-                    		availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
+                    	if (!hotelModel.getAvailableRoomInfo().isEmpty()) {
+	                    	for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
+	                    		availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
+	                    	}
+                    	}
+                    	else {
+                    		availableRoomsArea.append("There are no " + hotelModel.getAvailableRoomInfo().get(0).getType() + " rooms available on this day");
                     	}
                     }
                 }

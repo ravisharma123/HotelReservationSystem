@@ -26,7 +26,7 @@ public class HotelReservationSystemTester {
             //20 rooms 10 regular and 10 luxury
             ArrayList<Room> rooms = new ArrayList<Room>();
             for (int i = 1; i <=20; i++) {
-                if (i < 10) {
+                if (i <= 10) {
                     rooms.add( new Room(false, i) );
                 }
                 else {

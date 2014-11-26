@@ -105,17 +105,21 @@ public class HotelModel implements Serializable {
      */
     public void setFilteredData(Calendar checkInDate, Calendar checkOutDate, boolean isLuxury)
     {
-        filteredResults.removeAll(filteredResults);
+        filteredResults.clear();
         
-        for(int i = 0; i < hotelRoomData.size(); i++)
-        {
-           if(!hotelRoomData.get(i).getBookedDates().isEmpty()){
-               for(int x=0;x<hotelRoomData.get(i).getBookedDates().size();x++){
-               //System.out.println(hotelRoomData.get(i).getBookedDates().get(x).getTime());
-           }
-           }
-            if( ( !( ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) )  ) ) && ( hotelRoomData.get(i).isLuxury()==isLuxury) )
-                filteredResults.add(hotelRoomData.get(i));
+        ArrayList<Calendar> calendar = hotelRoomData.get(0).getDates(checkInDate, checkOutDate);
+        boolean addRm = true;
+        for (Room r: hotelRoomData) {
+        	for (Calendar cal: calendar) {
+        		if ( (r.getBookedDates().contains(cal)) || (r.isLuxury() != isLuxury) ) {
+        			addRm = false;
+        		}
+        			
+        	}
+        	if (addRm) {
+        		filteredResults.add(r);
+        	}
+        	addRm = true;
         }
         
         for(ChangeListener l: listeners)
@@ -166,17 +170,15 @@ public class HotelModel implements Serializable {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM dd, yyyy");
     	String message = dateFormat.format( calendar.getTime() ) + "\n\n" + "Room Type" + "\tRoom Number" + "\tGuest Name" + "\n";
     	
-    	for (Room r: hotelRoomData)
-    	{
-    		if( r.getBookedDates().contains(calendar)  )
-    		{
+    	for (Room r: hotelRoomData)	{
+    		if(r.getBookedDates().contains(calendar)) {
     			Guest user = new Guest(1, "");
-    			for (Guest g: guestList)
-    			{
-    				if( g.getRoomList().contains(r) )
-    				{	user = g;	}
+    			for (Guest g: guestList) {
+    				if(g.getRoomList().contains(r)) {
+    					user = g;
+    				}
     			}
-    			message += r.getType() + "\t" + r.getRoomNumber() + "\t" + user.getUsername() + "\n"; //Regular Room 1: guest name
+    			message += r.getType() + "\t" + r.getRoomNumber() + "\t" + user.getUsername() + "\n"; 
     		}
     	}
     	return message;
@@ -185,7 +187,7 @@ public class HotelModel implements Serializable {
     // new methods needed to work with guestPanel
     public boolean hasGuestID(int getGuestID) {
         guestRecordFound = false;
-            for(int i=0; i < guestList.size(); i++) {
+            for (int i = 0; i < guestList.size(); i++) {
                 if (guestList.get(i).getUserID() == getGuestID) {
                     guestRecordFound = true;
                 }
@@ -195,8 +197,8 @@ public class HotelModel implements Serializable {
 
     public String getUsername(int userID) {
         String name="";
-        for(int i=0;i<guestList.size();i++){
-                if(guestList.get(i).getUserID()==userID){
+        for (int i=0; i < guestList.size(); i++) {
+                if(guestList.get(i).getUserID() == userID) {
                     name=guestList.get(i).getUsername();
                 }
             }
@@ -205,8 +207,6 @@ public class HotelModel implements Serializable {
 
     /**
      *  Shows the available rooms
-     *  or N/A
-     *  if no available rooms
      * @return ArrayList of Rooms
      */
     public ArrayList<Room> getAvailableRoomInfo() {
