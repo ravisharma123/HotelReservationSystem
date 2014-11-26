@@ -17,7 +17,7 @@ public class Guest {
         this.userID = userID;
         this.username = username;
 
-        roomList = new ArrayList<>();
+        roomList = new ArrayList<Room>();
     }
 
     public int getUserID() {

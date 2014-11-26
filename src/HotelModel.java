@@ -20,7 +20,6 @@ public class HotelModel implements Serializable {
     private ArrayList<ChangeListener> listeners;
     private ArrayList<Room> filteredResults;
     private ArrayList<Guest> guestList;
-    private boolean guestRecordFound;
 
     public HotelModel(ArrayList<Room> setHotelRoomData)
     {
@@ -28,7 +27,6 @@ public class HotelModel implements Serializable {
         guestList = new ArrayList<Guest>();
         listeners = new ArrayList<ChangeListener>();
         filteredResults = new ArrayList<Room>();
-        guestRecordFound=false;
     }
     
 
@@ -153,6 +151,14 @@ public class HotelModel implements Serializable {
     }
     
     /**
+	 * @return the guestList
+	 */
+	public ArrayList<Guest> getGuestList() {
+		return guestList;
+	}
+
+
+	/**
      * Finds the reserved rooms on a specific date and
      * sends a string of information about the reserved
      * rooms.
@@ -185,11 +191,11 @@ public class HotelModel implements Serializable {
     }
 
     // new methods needed to work with guestPanel
-    public boolean hasGuestID(int getGuestID) {
-        guestRecordFound = false;
+    public int hasGuestID(int getGuestID) {
+      int guestRecordFound = -1;
             for (int i = 0; i < guestList.size(); i++) {
                 if (guestList.get(i).getUserID() == getGuestID) {
-                    guestRecordFound = true;
+                    guestRecordFound = i;
                 }
             }
             return guestRecordFound;

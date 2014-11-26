@@ -59,8 +59,12 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
                     // get username
                     String username;
-                    if(hotelModel.hasGuestID(userID)) {
-                        username = hotelModel.getUsername(userID);
+                    if(hotelModel.hasGuestID(userID)>=0) {
+                       // username = hotelModel.getUsername(userID);
+                    	int location=hotelModel.hasGuestID(userID);
+                    	guest=hotelModel.getGuestList().get(location);
+                    	System.out.println(location);
+                    	System.out.println(guest.getUsername());
                     }
                     else {
                         username = JOptionPane.showInputDialog("Create a username for this user ID: ");
@@ -68,11 +72,15 @@ public class GuestPanel extends JPanel implements ChangeListener {
                         if(username == null) {
                             username = "null";
                         }
+                        guest = new Guest(userID, username);
+                        hotelModel.updateToAddGuest(guest);
+
+
                     }
                    
-                    guest = new Guest(userID, username);
-                    hotelModel.updateToAddGuest(guest);
-
+                    for(int i=0;i<guest.getRoomList().size();i++){
+                    	System.out.println(guest.getRoomList().get(i));
+                    }
                     displayReservationOptions();
                 }
             }
@@ -198,12 +206,17 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
                     Calendar currentDay = Calendar.getInstance();
                     currentDay.add(Calendar.DATE, -1);
-                    
+                    Room tempRoom = new Room(false, 0);
+                    ArrayList<Calendar> cal = tempRoom.getDates(checkInCalendar, checkOutCalendar);
+
                     if (checkOutCalendar.before(checkInCalendar)) {
-                        availableRoomsArea.append("Check-Out date occurs before Check-In date");
+                        availableRoomsArea.append("Check-Out date is prior to the Check-In date");
                     }
                     else if (checkInCalendar.before(currentDay)) {
-                    	availableRoomsArea.append("Dates occur prior to Today");
+                    	availableRoomsArea.append("Dates occur prior to today's date");
+                    }
+                    else if (cal.size() > 60) {
+                    	availableRoomsArea.append("Reservations in excess of 60 days");
                     }
                     else {
                     	hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
@@ -327,6 +340,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
                     if(checkBox.isSelected()) {
                         hotelModel.updateToCancelReservation(reservationsByGuest.get(i), reservationsByGuest.get(i).getCheckInDate(), reservationsByGuest.get(i).getCheckOutDate());
+                        guest.removeFromGuestReservations(reservationsByGuest.get(i));
                         checkBoxList.remove(checkBox);
                         remove(checkBox);
                         revalidate();
