@@ -17,6 +17,7 @@ public class Room {
 	private int price;
 	private boolean isLuxury;
 	private int roomNumber;
+	final static long MILLISECSPERDAY = 1000*60*60*24;
 
 	public Room(boolean isLuxury, int roomNumber) {
 		this.isLuxury = isLuxury;
@@ -44,7 +45,6 @@ public class Room {
 
 	public void setCheckInDate(Calendar checkInDate) {
 		this.checkInDate = checkInDate;
-		System.out.println(checkInDate.getTime().toString());
 	}
 
 	public Calendar getCheckOutDate() {
@@ -53,7 +53,6 @@ public class Room {
 
 	public void setCheckOutDate(Calendar checkOutDate) {
 		this.checkOutDate = checkOutDate;
-		System.out.println(checkOutDate.getTime().toString());
 	}
 
 	public int getPrice() {
@@ -88,12 +87,10 @@ public class Room {
 	 * @param checkOutDate the room check out date
 	 */
 	public void setBookedDates(Calendar checkInDate, Calendar checkOutDate) {
-		int days = getDays(checkInDate, checkOutDate);
-		//CHANGE THIS. IT CHANGES THE CHECK IN DATE
-		bookedDates.add((Calendar)new GregorianCalendar(checkInDate.get(Calendar.YEAR), checkInDate.get(Calendar.MONTH), checkInDate.get(Calendar.DATE))); //adds the check in date
-		for (int i = 1; i <= days; i++) {
-			checkInDate.add(Calendar.DATE, 1);
-			bookedDates.add((Calendar)new GregorianCalendar(checkInDate.get(Calendar.YEAR), checkInDate.get(Calendar.MONTH), checkInDate.get(Calendar.DATE)));
+		ArrayList<Calendar> dates = getDates(checkInDate, checkOutDate);
+		
+		for (Calendar cal: dates) {
+			bookedDates.add(cal);
 		}
 	}
 
@@ -105,13 +102,12 @@ public class Room {
 	 * @param checkOutDate the room check out date
 	 */
 	public void deleteBookedDates(Calendar checkInDate, Calendar checkOutDate) {
-		int days = getDays(checkInDate, checkOutDate);
+		ArrayList<Calendar> dates = getDates(checkInDate, checkOutDate);
 
-		int loc = bookedDates.indexOf(checkInDate);
-
-		// deletes start date through end date
-		for (int i = 1; i <= days; i++) {
-			bookedDates.remove(loc);
+		for (Calendar cal: dates)
+		{
+			if ( bookedDates.contains(cal) )
+			{	bookedDates.remove( bookedDates.indexOf(cal) );	}
 		}
 	}
 
@@ -125,9 +121,28 @@ public class Room {
 	 */
 	public int getDays(Calendar checkInDate, Calendar checkOutDate) {
 		System.out.println(checkInDate.getTime().toString() +"\t"+ checkOutDate.getTime().toString());
-		long milliSecPerDay = 1000 * 60 * 60 * 24;   //1 day in milliseconds
-		long days = 1 + ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / milliSecPerDay;
-		System.out.println(days);
+		long days = 1 + ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / MILLISECSPERDAY;
 		return (int) days;
+	}
+	
+	/**
+	 * Gets all the days from
+	 * check-in to check-out
+	 * 
+	 * @param checkInDate
+	 * @param checkOutDate
+	 * @return list of dates
+	 */
+	public ArrayList<Calendar> getDates(Calendar checkInDate, Calendar checkOutDate) {
+		ArrayList<Calendar> reservationDates = new ArrayList<Calendar>();
+		Calendar cal = (Calendar) checkInDate.clone();
+		
+		for (long i = checkInDate.getTimeInMillis(); i <= checkOutDate.getTimeInMillis(); i = i + MILLISECSPERDAY)
+		{
+			reservationDates.add(cal);
+			cal.setTimeInMillis(cal.getTimeInMillis() + MILLISECSPERDAY);
+		}
+		
+		return reservationDates;
 	}
 }

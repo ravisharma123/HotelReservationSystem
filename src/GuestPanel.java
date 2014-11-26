@@ -212,7 +212,6 @@ public class GuestPanel extends JPanel implements ChangeListener {
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // THIS STUFF LOOKS REALLY NASTY AND NEEDS REWORKING
                 hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
 
                 Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
@@ -288,17 +287,11 @@ public class GuestPanel extends JPanel implements ChangeListener {
      * Display view or cancel options.
      */
     private void displayViewOrCancelOption() {
-        
-        
-        removeAll();
-       
-
-      
+        removeAll();   
 
         final ArrayList<Room> reservationsByGuest = guest.getRoomList();
         final ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
     
-        // THE WAY I GET THIS STRING IS WAY TOO COMPLICATED
         for(Room room: reservationsByGuest) {
         	String reservationDescription = room.getType() + " Room " + room.getRoomNumber() + ": " + room.getCheckInDate().getTime().toString() + " to " + room.getCheckOutDate().getTime().toString();
 

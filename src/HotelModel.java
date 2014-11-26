@@ -111,7 +111,7 @@ public class HotelModel implements Serializable {
         {
            if(!hotelRoomData.get(i).getBookedDates().isEmpty()){
                for(int x=0;x<hotelRoomData.get(i).getBookedDates().size();x++){
-               System.out.println(hotelRoomData.get(i).getBookedDates().get(x).getTime());
+               //System.out.println(hotelRoomData.get(i).getBookedDates().get(x).getTime());
            }
            }
             if( ( !( ( hotelRoomData.get(i).getBookedDates().contains(checkInDate) )  ) ) && ( hotelRoomData.get(i).isLuxury()==isLuxury) )
@@ -147,7 +147,7 @@ public class HotelModel implements Serializable {
             }
         }
         
-        return currentGuest; // returns the current guest
+        return currentGuest;
     }
     
     /**
@@ -164,9 +164,7 @@ public class HotelModel implements Serializable {
      * vacant.
      * 
      */
-    public String getRoomInfoOnDay(Calendar calendar)
-    {
-    	//String message = calendar.getTime().toString();
+    public String getRoomInfoOnDay(Calendar calendar) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM dd, yyyy");
     	String message = dateFormat.format( calendar.getTime() ) + "\n";
     	
@@ -207,16 +205,13 @@ public class HotelModel implements Serializable {
         return name;
     }
 
-    public ArrayList<Room> getAvailableRoomInfo() { // should return data based on filteredResults or N/A if no available rooms
+    /**
+     *  Shows the available rooms
+     *  or N/A
+     *  if no available rooms
+     * @return ArrayList of Rooms
+     */
+    public ArrayList<Room> getAvailableRoomInfo() {
       return filteredResults;
     }
-/*
-    // needs to use strategy pattern
-    public String getSimpleReceipt() { // this one relies on filtered results which I still do not like the idea of me having to set up first
-        return "";
-    }
-
-    public String getComprehensiveReceipt() { // this one relies on filtered results which I still do not like the idea of me having to set up first
-        return "";
-    }*/
 }
