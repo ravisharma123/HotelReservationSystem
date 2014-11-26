@@ -91,7 +91,7 @@ public class Room {
 		
 		for (Calendar cal: dates) {
 			bookedDates.add(cal);
-		}
+		 }		
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class Room {
 		for (Calendar cal: dates)
 		{
 			if ( bookedDates.contains(cal) )
-			{	bookedDates.remove( bookedDates.indexOf(cal) );	}
+			{		bookedDates.remove( bookedDates.indexOf(cal) );		}
 		}
 	}
 
@@ -120,7 +120,6 @@ public class Room {
 	 * @return the number of days between the dates (including the date)
 	 */
 	public int getDays(Calendar checkInDate, Calendar checkOutDate) {
-		System.out.println(checkInDate.getTime().toString() +"\t"+ checkOutDate.getTime().toString());
 		long days = 1 + ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / MILLISECSPERDAY;
 		return (int) days;
 	}
@@ -139,7 +138,8 @@ public class Room {
 		
 		for (long i = checkInDate.getTimeInMillis(); i <= checkOutDate.getTimeInMillis(); i = i + MILLISECSPERDAY)
 		{
-			reservationDates.add(cal);
+			Calendar newCal = (Calendar) cal.clone();
+			reservationDates.add(newCal);
 			cal.setTimeInMillis(cal.getTimeInMillis() + MILLISECSPERDAY);
 		}
 		
