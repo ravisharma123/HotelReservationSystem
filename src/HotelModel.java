@@ -141,10 +141,8 @@ public class HotelModel implements Serializable {
         
         for(int i = 0; i < guestList.size(); i++)
         {
-            if( guestList.get(i).getUserID() == setGuest.getUserID() ) 
-            {
-                currentGuest = guestList.get(i);
-            }
+            if(guestList.get(i).getUserID() == setGuest.getUserID()) 
+            {	currentGuest = guestList.get(i);	}
         }
         
         return currentGuest;
@@ -166,7 +164,7 @@ public class HotelModel implements Serializable {
      */
     public String getRoomInfoOnDay(Calendar calendar) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM dd, yyyy");
-    	String message = dateFormat.format( calendar.getTime() ) + "\n";
+    	String message = dateFormat.format( calendar.getTime() ) + "\n\n" + "Room Type" + "\tRoom Number" + "\tGuest Name" + "\n";
     	
     	for (Room r: hotelRoomData)
     	{
@@ -178,7 +176,7 @@ public class HotelModel implements Serializable {
     				if( g.getRoomList().contains(r) )
     				{	user = g;	}
     			}
-    			message += r.getType() + " Room " + r.getRoomNumber() + ": " + user.getUsername() + "\n"; //Regular Room 1: guest name
+    			message += r.getType() + "\t" + r.getRoomNumber() + "\t" + user.getUsername() + "\n"; //Regular Room 1: guest name
     		}
     	}
     	return message;
@@ -186,10 +184,10 @@ public class HotelModel implements Serializable {
 
     // new methods needed to work with guestPanel
     public boolean hasGuestID(int getGuestID) {
-        guestRecordFound=false;
-            for(int i=0;i<guestList.size();i++){
-                if(guestList.get(i).getUserID()==getGuestID){
-                    guestRecordFound=true;
+        guestRecordFound = false;
+            for(int i=0; i < guestList.size(); i++) {
+                if (guestList.get(i).getUserID() == getGuestID) {
+                    guestRecordFound = true;
                 }
             }
             return guestRecordFound;
