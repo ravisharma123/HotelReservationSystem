@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -325,7 +326,12 @@ public class GuestPanel extends JPanel implements ChangeListener {
         final ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
     
         for(Room room: reservationsByGuest) {
-        	String reservationDescription = room.getType() + " Room " + room.getRoomNumber() + ": " + room.getCheckInDate().getTime().toString() + " to " + room.getCheckOutDate().getTime().toString();
+        	SimpleDateFormat checkIn_df = new SimpleDateFormat("MM/dd/yy");
+        	SimpleDateFormat checkOut_df = new SimpleDateFormat("MM/dd/yy");
+    		String checkin = checkIn_df.format( room.getCheckInDate().getTime() );
+    		String checkout = checkOut_df.format( room.getCheckOutDate().getTime() ); 
+        	
+        	String reservationDescription = room.getType() + " Room " + room.getRoomNumber() + ": " + checkin + " to " + checkout;
 
         	JCheckBox checkBox = new JCheckBox(reservationDescription);
             checkBoxList.add(checkBox);
