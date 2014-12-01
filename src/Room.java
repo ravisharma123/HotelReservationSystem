@@ -39,42 +39,81 @@ public class Room {
 
 	}
 
+	/**
+	 * Gets the check in date as a Calendar
+	 * @return the check in date
+	 */
 	public Calendar getCheckInDate() {
 		return checkInDate;
 	}
 
+	/**
+	 * Sets the check in date
+	 * @param the check in date 
+	 */
 	public void setCheckInDate(Calendar checkInDate) {
 		this.checkInDate = checkInDate;
 	}
 
+	/**
+	 * Gets the check out Date
+	 * @return the check out date
+	 */
 	public Calendar getCheckOutDate() {
 		return checkOutDate;
 	}
 
+	/**
+	 * Sets the check out date
+	 * @param the check out Date
+	 */
 	public void setCheckOutDate(Calendar checkOutDate) {
 		this.checkOutDate = checkOutDate;
 	}
 
+	/**
+	 * Gets the price of the room
+	 * @return the room price
+	 */
 	public int getPrice() {
 		return price;
 	}
 
+	/**
+	 * Gets the room number
+	 * @return the number of the room
+	 */
 	public int getRoomNumber() {
 		return roomNumber;
 	}
 
+	/**
+	 * Gets the type of room based off the
+	 * isLuxury boolean
+	 * 
+	 * @return "Luxury" or "Regular" 
+	 */
 	public String getType() {
 		if(isLuxury) {
 			return "Luxury";
 		}
-
 		return "Regular";
 	}
 
+	/**
+	 * Gets the signifier determining
+	 * if the room is a luxury room
+	 * @return luxury room signifier
+	 */
 	public boolean isLuxury() {
 		return isLuxury;
 	}
 
+	/**
+	 * Gets an ArrayList of dates of when
+	 * the room is booked
+	 * @return a list of non vacant dates of the room
+	 */
 	public ArrayList<Calendar> getBookedDates() {
 		return bookedDates;
 	}
@@ -128,9 +167,9 @@ public class Room {
 	 * Gets all the days from
 	 * check-in to check-out
 	 * 
-	 * @param checkInDate
-	 * @param checkOutDate
-	 * @return list of dates
+	 * @param checkInDate the check in date
+	 * @param checkOutDate the check out date
+	 * @return list of dates from check in to check out
 	 */
 	public ArrayList<Calendar> getDates(Calendar checkInDate, Calendar checkOutDate) {
 		ArrayList<Calendar> reservationDates = new ArrayList<Calendar>();

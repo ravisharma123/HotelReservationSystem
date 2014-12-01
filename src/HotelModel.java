@@ -189,8 +189,13 @@ public class HotelModel implements Serializable {
     	}
     	return message;
     }
-
-    // new methods needed to work with guestPanel
+	
+	/**
+	 * Looks to see if the Guest is already
+	 * in the system
+	 * @param getGuestID the ID the user typed in
+	 * @return the location of the user if found, if not found returns -1
+	 */
     public int hasGuestID(int getGuestID) {
       int guestRecordFound = -1;
             for (int i = 0; i < guestList.size(); i++) {
@@ -201,6 +206,11 @@ public class HotelModel implements Serializable {
             return guestRecordFound;
     }
 
+    /**
+     * Gets the username of a guest in the system
+     * @param userID the ID of the user
+     * @return the name of the user with the associated ID
+     */
     public String getUsername(int userID) {
         String name="";
         for (int i=0; i < guestList.size(); i++) {

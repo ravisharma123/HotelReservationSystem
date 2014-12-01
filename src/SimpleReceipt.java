@@ -14,6 +14,8 @@ public class SimpleReceipt implements ReceiptFormatter{
 
 	/**
 	 * 	Displays the user id and name
+	 * 
+	 * @param guest is the guest making the reservation
 	 */
 	public String formatHeader(Guest guest) {
 		this.total = 0;

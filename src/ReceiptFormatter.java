@@ -9,18 +9,18 @@
  ********************************************************/
 public interface ReceiptFormatter {
 	/**
-	 * Formats the header of the receipt
+	 * creates the header of the receipt
 	 * 
 	 */
 	String formatHeader(Guest guest);
 	
 	/**
-	 * formats a line of the    	
+	 * creates a receipt of reservation info    	
 	 */
 	String receipt(Guest guest);
 
 	/**
-	 * Formats footer of the receipt  	
+	 * creates footer of the receipt including price  	
 	 */
 	String formatFooter();
 }

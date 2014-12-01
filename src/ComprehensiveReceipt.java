@@ -14,6 +14,9 @@ public class ComprehensiveReceipt implements ReceiptFormatter{
 
 	/**
 	 * 	Displays the user id and name
+	 * 
+	 * @param guest is the Guest 
+	 * making the reservation
 	 */
 	public String formatHeader(Guest guest) {
 		this.total = 0;
@@ -28,7 +31,7 @@ public class ComprehensiveReceipt implements ReceiptFormatter{
 	}
 
 	/**
-	 * Displays reserved rooms for
+	 * Displays all reserved rooms for
 	 * the guest
 	 * 
 	 * @param guest is the guest making the reservation

@@ -20,27 +20,60 @@ public class Guest {
         roomList = new ArrayList<Room>();
     }
 
+    /**
+     * 
+     * @return the Guest ID
+     */
     public int getUserID() {
         return userID;
     }
-
+	
+    /**
+	 * 
+	 * @return the Guest name
+	 */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Adds a room reservation to the
+     * list of reservations that the Guest
+     * has reserved 
+     * @param addReservation is a Room
+     */
     public void addToGuestReservations(Room addReservation) {
         roomList.add(addReservation);
     }
 
+    /**
+     * Removes a room reservation to the
+     * list of reservations that the Guest
+     * has reserved 
+     * @param removeReservation is a Room
+     */
     public void removeFromGuestReservations(Room removeReservation) {
         roomList.remove(removeReservation);
     }
 
+    /**
+     * Gets the list of rooms the Guest reserved
+     * @return roomList is a list of rooms
+     */
     public ArrayList<Room> getRoomList() {
         return roomList;
     }
     
-    //uses strategy pattern
+    /**
+     * Creates a receipt for the
+     * Guest for the reservations made
+     * Can return one or all reservations
+     * 
+     * USES STRATEGY PATTERN
+     * 
+     * @param receiptType
+     * @return A String of the receipt
+     */
     public String getReceipt(ReceiptFormatter receiptType) {
     	return receiptType.formatHeader(this) + receiptType.receipt(this) + receiptType.formatFooter();
     }
