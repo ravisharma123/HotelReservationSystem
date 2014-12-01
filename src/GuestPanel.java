@@ -13,7 +13,7 @@ import javax.swing.event.ChangeListener;
 /*********************************************************
  * Shows the Guest views for user input to make a reservation
  * and to store the information in to the data model
- * 
+ *
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-15
@@ -34,25 +34,27 @@ public class GuestPanel extends JPanel implements ChangeListener {
     }
 
     /**
+     * Resets some instance variables.
+     */
+    private void reset() {
+        guest = null;
+        isLuxury = false;
+        checkInCalendar = null;
+        checkOutCalendar = null;
+    }
+
+    /**
      * Display login.
      */
     public void displayLogin() {
         removeAll();
-        guest = null;     
-        // user ID panel
-        int rows = 1;
-        int columns = 0;
-        JLabel userIDLabel = new JLabel("Enter/create a user ID (can only contain numbers):");
-        final JTextField userIDField = new JTextField();
-        //userIDField.requestFocus();
-        
-        JPanel userIDPanel = new JPanel(new GridLayout(rows, columns));
-        userIDPanel.add(userIDLabel);
-        userIDPanel.add(userIDField);
 
-        // login button
-        JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
+        reset();
+
+        // ActionListener uses the userIDField so make it here
+        final JTextField userIDField = new JTextField();
+
+        ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String str = userIDField.getText();
                 if(str.matches("\\d+")) {
@@ -61,31 +63,39 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     // get username
                     String username;
                     if(hotelModel.hasGuestID(userID)>=0) {
-                       // username = hotelModel.getUsername(userID);
-                    	int location=hotelModel.hasGuestID(userID);
-                    	guest=hotelModel.getGuestList().get(location);
-                    	System.out.println(location);
-                    	System.out.println(guest.getUsername());
+                        int location = hotelModel.hasGuestID(userID);
+                        guest = hotelModel.getGuestList().get(location);
                     }
                     else {
                         username = JOptionPane.showInputDialog("Create a username for this user ID: ");
-                       
-                        if(username == null) {
-                            username = "null";
+
+                        // cancel option was selected or username is empty
+                        if(username == null || username.equals("")) {
+                            return;
                         }
+
                         guest = new Guest(userID, username);
                         hotelModel.updateToAddGuest(guest);
-
-
                     }
-                   
-                    for(int i=0;i<guest.getRoomList().size();i++){
-                    	System.out.println(guest.getRoomList().get(i));
-                    }
+
                     displayReservationOptions();
                 }
             }
-        });
+        };
+
+        // user ID panel
+        int rows = 1;
+        int columns = 0;
+        JLabel userIDLabel = new JLabel("Enter/create a user ID (can only contain numbers):");
+        userIDField.addActionListener(actionListener);
+
+        JPanel userIDPanel = new JPanel(new GridLayout(rows, columns));
+        userIDPanel.add(userIDLabel);
+        userIDPanel.add(userIDField);
+
+        // login button
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(actionListener);
 
         setLayout(new BorderLayout());
         add(userIDPanel, BorderLayout.NORTH);
@@ -148,16 +158,14 @@ public class GuestPanel extends JPanel implements ChangeListener {
         JPanel checkOutPanel = new JPanel(new GridLayout(0, 2));
         checkOutPanel.add(checkOutLabel);
         checkOutPanel.add(checkOutField);
-        
+
         // standard and luxury radio buttons
         final String standard = "Standard";
         JRadioButton standardRadioButton = new JRadioButton(standard);
         standardRadioButton.setActionCommand(standard);
         standardRadioButton.setSelected(true);
-        isLuxury = false;
 
         final String luxury = "Luxury";
-        isLuxury = false;
         JRadioButton luxuryRadioButton = new JRadioButton(luxury);
         luxuryRadioButton.setActionCommand(luxury);
 
@@ -166,7 +174,6 @@ public class GuestPanel extends JPanel implements ChangeListener {
         group.add(luxuryRadioButton);
 
         ActionListener groupListener = new ActionListener() {
-            
             public void actionPerformed(ActionEvent e) {
                 isLuxury = e.getActionCommand().equals(luxury);
             }
@@ -185,13 +192,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         JButton showAvailableRoomsButton = new JButton("Show Available Room");
         showAvailableRoomsButton.addActionListener(new ActionListener() {
-            
+
             public void actionPerformed(ActionEvent e) {
-                
+
                 String checkInDate = checkInField.getText();
                 String checkOutDate = checkOutField.getText();
                 availableRoomsArea.setText("");
-                
+
                 if(checkInDate.matches("\\d+/\\d+/\\d+") && checkOutDate.matches("\\d+/\\d+/\\d+")) {
                     String[] checkInDateArr = checkInDate.split("/");
                     int checkInYear = Integer.parseInt(checkInDateArr[2]);
@@ -214,21 +221,21 @@ public class GuestPanel extends JPanel implements ChangeListener {
                         availableRoomsArea.append("Check-Out date is prior to the Check-In date");
                     }
                     else if (checkInCalendar.before(currentDay)) {
-                    	availableRoomsArea.append("Dates occur prior to today's date");
+                        availableRoomsArea.append("Dates occur prior to today's date");
                     }
                     else if (cal.size() > 60) {
-                    	availableRoomsArea.append("Reservations in excess of 60 days");
+                        availableRoomsArea.append("Reservations in excess of 60 days");
                     }
                     else {
-                    	hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
-                    	if (!hotelModel.getAvailableRoomInfo().isEmpty()) {
-	                    	for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
-	                    		availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
-	                    	}
-                    	}
-                    	else {
-                    		availableRoomsArea.append("There are no " + hotelModel.getAvailableRoomInfo().get(0).getType() + " rooms available on this day");
-                    	}
+                        hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
+                        if (!hotelModel.getAvailableRoomInfo().isEmpty()) {
+                            for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
+                                availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
+                            }
+                        }
+                        else {
+                            availableRoomsArea.append("There are no " + hotelModel.getAvailableRoomInfo().get(0).getType() + " rooms available on this day");
+                        }
                     }
                 }
             }
@@ -237,15 +244,15 @@ public class GuestPanel extends JPanel implements ChangeListener {
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	if (!copyOfHotelRooms.isEmpty()) {
-	                hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
-	
-	                Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
-	                addReservationToGuestRecords.setCheckInDate(checkInCalendar);
-	                addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
-	
-	                guest.addToGuestReservations(addReservationToGuestRecords);
-            	}
+                if (!copyOfHotelRooms.isEmpty()) {
+                    hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
+
+                    Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
+                    addReservationToGuestRecords.setCheckInDate(checkInCalendar);
+                    addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
+
+                    guest.addToGuestReservations(addReservationToGuestRecords);
+                }
             }
         });
 
@@ -256,9 +263,12 @@ public class GuestPanel extends JPanel implements ChangeListener {
             }
         });
 
-        JPanel confirmedOrTransactionDonePanel = new JPanel(new GridLayout(1, 0));
-        confirmedOrTransactionDonePanel.add(confirmButton);
-        confirmedOrTransactionDonePanel.add(transactionDoneButton);
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                displayReservationOptions();
+            }
+        });
 
         JPanel infoPanel = new JPanel(new GridLayout(0, 1));
         infoPanel.add(checkInPanel);
@@ -266,10 +276,15 @@ public class GuestPanel extends JPanel implements ChangeListener {
         infoPanel.add(standardOrLuxuryButtonPanel);
         infoPanel.add(showAvailableRoomsButton);
 
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
+        buttonPanel.add(confirmButton);
+        buttonPanel.add(transactionDoneButton);
+        buttonPanel.add(cancelButton);
+
         setLayout(new BorderLayout());
         add(infoPanel, BorderLayout.NORTH);
         add(availableRoomsArea, BorderLayout.CENTER);
-        add(confirmedOrTransactionDonePanel, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         revalidate();
     }
@@ -283,35 +298,65 @@ public class GuestPanel extends JPanel implements ChangeListener {
         final JTextArea receiptArea = new JTextArea();
         receiptArea.setEditable(false);
 
-        JButton simpleButton = new JButton("Simple");
-        simpleButton.addActionListener(new ActionListener() {
+        // standard and luxury radio buttons
+        final String simple = "Simple";
+        JRadioButton simpleRadioButton = new JRadioButton(simple);
+        simpleRadioButton.setActionCommand(simple);
+        simpleRadioButton.setSelected(true);
+
+        // use Simple receipt view first
+        if ( !guest.getRoomList().isEmpty() )
+        {	receiptArea.setText(guest.getReceipt(new SimpleReceipt()));	}
+        else
+        {	receiptArea.setText("No Reservations were made");	}
+
+        final String comprehensive = "Comprehensive";
+        JRadioButton comprehensiveRadioButton = new JRadioButton(comprehensive);
+        comprehensiveRadioButton.setActionCommand(comprehensive);
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(simpleRadioButton);
+        group.add(comprehensiveRadioButton);
+
+        ActionListener groupListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	//Strategy Pattern
-            	if ( !guest.getRoomList().isEmpty() )
-            	{	receiptArea.setText(guest.getReceipt(new SimpleReceipt()));	}
-            	else
-            	{	receiptArea.setText("No Reservations were made");	}
+                String actionCommand = e.getActionCommand();
+
+                if(actionCommand.equals(simple)) {
+                    //Strategy Pattern
+                    if ( !guest.getRoomList().isEmpty() )
+                    {	receiptArea.setText(guest.getReceipt(new SimpleReceipt()));	}
+                    else
+                    {	receiptArea.setText("No Reservations were made");	}
+                }
+                else {
+                    //Strategy Pattern
+                    if ( !guest.getRoomList().isEmpty() )
+                    {	receiptArea.setText(guest.getReceipt(new ComprehensiveReceipt()));	}
+                    else
+                    {	receiptArea.setText("No Reservations were made");	}
+                }
+            }
+        };
+
+        simpleRadioButton.addActionListener(groupListener);
+        comprehensiveRadioButton.addActionListener(groupListener);
+
+        JPanel simpleOrComprehensiveButtonPanel = new JPanel(new GridLayout(0, 2));
+        simpleOrComprehensiveButtonPanel.add(simpleRadioButton);
+        simpleOrComprehensiveButtonPanel.add(comprehensiveRadioButton);
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                displayMakeReservationOption();
             }
         });
-
-        JButton comprehensiveButton = new JButton("Comprehensive");
-        comprehensiveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	//Strategy Pattern
-            	if ( !guest.getRoomList().isEmpty() )
-            	{	receiptArea.setText(guest.getReceipt(new ComprehensiveReceipt()));	}
-            	else
-            	{	receiptArea.setText("No Reservations were made");	}
-            }
-        });
-
-        JPanel simpleOrComprehensiveButtonPanel = new JPanel(new GridLayout(1, 0));
-        simpleOrComprehensiveButtonPanel.add(simpleButton);
-        simpleOrComprehensiveButtonPanel.add(comprehensiveButton);
 
         setLayout(new BorderLayout());
         add(simpleOrComprehensiveButtonPanel, BorderLayout.NORTH);
         add(receiptArea, BorderLayout.CENTER);
+        add(cancelButton, BorderLayout.SOUTH);
 
         revalidate();
     }
@@ -320,26 +365,26 @@ public class GuestPanel extends JPanel implements ChangeListener {
      * Display view or cancel options.
      */
     private void displayViewOrCancelOption() {
-        removeAll();   
+        removeAll();
 
         final ArrayList<Room> reservationsByGuest = guest.getRoomList();
         final ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
-    
-        for(Room room: reservationsByGuest) {
-        	SimpleDateFormat checkIn_df = new SimpleDateFormat("MM/dd/yy");
-        	SimpleDateFormat checkOut_df = new SimpleDateFormat("MM/dd/yy");
-    		String checkin = checkIn_df.format( room.getCheckInDate().getTime() );
-    		String checkout = checkOut_df.format( room.getCheckOutDate().getTime() ); 
-        	
-        	String reservationDescription = room.getType() + " Room " + room.getRoomNumber() + ": " + checkin + " to " + checkout;
 
-        	JCheckBox checkBox = new JCheckBox(reservationDescription);
+        for(Room room: reservationsByGuest) {
+            SimpleDateFormat checkIn_df = new SimpleDateFormat("MM/dd/yy");
+            SimpleDateFormat checkOut_df = new SimpleDateFormat("MM/dd/yy");
+            String checkin = checkIn_df.format( room.getCheckInDate().getTime() );
+            String checkout = checkOut_df.format( room.getCheckOutDate().getTime() );
+
+            String reservationDescription = room.getType() + " Room " + room.getRoomNumber() + ": " + checkin + " to " + checkout;
+
+            JCheckBox checkBox = new JCheckBox(reservationDescription);
             checkBoxList.add(checkBox);
             add(checkBox);
         }
 
-        JButton cancel = new JButton("Cancel");
-        cancel.addActionListener( new ActionListener() {
+        JButton confirmButton = new JButton("Delete Checked");
+        confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 for(int i = checkBoxList.size() - 1; i >= 0; i--) {
                     JCheckBox checkBox = checkBoxList.get(i);
@@ -354,16 +399,26 @@ public class GuestPanel extends JPanel implements ChangeListener {
                 }
             }
         });
-                add(cancel);
 
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                displayReservationOptions();
+            }
+        });
+
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
+        buttonPanel.add(confirmButton);
+        buttonPanel.add(cancelButton);
+        add(buttonPanel);
 
         revalidate();
     }
-                
-    
+
+
 
     public void stateChanged(ChangeEvent e) {
-    	copyOfHotelRooms = hotelModel.getFilteredData();
+        copyOfHotelRooms = hotelModel.getFilteredData();
 
         for(int i = 0; i < copyOfHotelRooms.size(); i++) {
             availableRooms.append("\n" + copyOfHotelRooms.get(i).toString());
