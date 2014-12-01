@@ -190,6 +190,22 @@ public class GuestPanel extends JPanel implements ChangeListener {
         final JTextArea availableRoomsArea = new JTextArea();
         availableRoomsArea.setEditable(false);
 
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (!copyOfHotelRooms.isEmpty()) {
+                    hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
+
+                    Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
+                    addReservationToGuestRecords.setCheckInDate(checkInCalendar);
+                    addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
+
+                    guest.addToGuestReservations(addReservationToGuestRecords);
+                }
+            }
+        });
+        confirmButton.setEnabled(false);
+
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String checkInDate = checkInField.getText();
@@ -216,12 +232,15 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
                     if (checkOutCalendar.before(checkInCalendar)) {
                         availableRoomsArea.append("Check-Out date is prior to the Check-In date");
+                        confirmButton.setEnabled(false);
                     }
                     else if (checkInCalendar.before(currentDay)) {
                         availableRoomsArea.append("Dates occur prior to today's date");
+                        confirmButton.setEnabled(false);
                     }
                     else if (cal.size() > 60) {
                         availableRoomsArea.append("Reservations in excess of 60 days");
+                        confirmButton.setEnabled(false);
                     }
                     else {
                         hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
@@ -229,9 +248,11 @@ public class GuestPanel extends JPanel implements ChangeListener {
                             for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
                                 availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
                             }
+                            confirmButton.setEnabled(true);
                         }
                         else {
                             availableRoomsArea.append("There are no " + hotelModel.getAvailableRoomInfo().get(0).getType() + " rooms available on this day");
+                            confirmButton.setEnabled(false);
                         }
                     }
                 }
@@ -241,21 +262,6 @@ public class GuestPanel extends JPanel implements ChangeListener {
         final int DELAY = 10; // 1000ms = 1s
         Timer t = new Timer(DELAY, actionListener);
         t.start();
-
-        JButton confirmButton = new JButton("Confirm");
-        confirmButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (!copyOfHotelRooms.isEmpty()) {
-                    hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
-
-                    Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
-                    addReservationToGuestRecords.setCheckInDate(checkInCalendar);
-                    addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
-
-                    guest.addToGuestReservations(addReservationToGuestRecords);
-                }
-            }
-        });
 
         JButton transactionDoneButton = new JButton("Transaction Done");
         transactionDoneButton.addActionListener(new ActionListener() {
