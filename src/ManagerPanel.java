@@ -35,7 +35,6 @@ public class ManagerPanel extends JPanel {
 
         roomInfoTextArea = new JTextArea();
         roomInfoTextArea.setEditable(false); // do not allow people to edit the text
-        showRoomInfoOnDay(currentCalendar);
 
         setLayout(new BorderLayout());
         add(getButtonPanel(), BorderLayout.SOUTH);
@@ -96,6 +95,11 @@ public class ManagerPanel extends JPanel {
         roomInfoTextArea.setText(manager.getRoomInfoOnDay(calendar));
     }
 
+    /**
+     * Shows the month and year drop downs.
+     * @param calendar the calendar
+     * @return the month and year drop down panel
+     */
     private JPanel getMonthAndYearComboBoxPanel(Calendar calendar) {
         // make the months combo box
         final JComboBox<String> monthComboBox = new JComboBox<>(MONTH_NAMES);

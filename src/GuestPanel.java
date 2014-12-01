@@ -190,11 +190,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
         final JTextArea availableRoomsArea = new JTextArea();
         availableRoomsArea.setEditable(false);
 
-        JButton showAvailableRoomsButton = new JButton("Show Available Room");
-        showAvailableRoomsButton.addActionListener(new ActionListener() {
-
+        ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 String checkInDate = checkInField.getText();
                 String checkOutDate = checkOutField.getText();
                 availableRoomsArea.setText("");
@@ -239,7 +236,11 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     }
                 }
             }
-        });
+        };
+
+        final int DELAY = 10; // 1000ms = 1s
+        Timer t = new Timer(DELAY, actionListener);
+        t.start();
 
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(new ActionListener() {
@@ -274,7 +275,6 @@ public class GuestPanel extends JPanel implements ChangeListener {
         infoPanel.add(checkInPanel);
         infoPanel.add(checkOutPanel);
         infoPanel.add(standardOrLuxuryButtonPanel);
-        infoPanel.add(showAvailableRoomsButton);
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
         buttonPanel.add(confirmButton);
@@ -415,8 +415,10 @@ public class GuestPanel extends JPanel implements ChangeListener {
         revalidate();
     }
 
-
-
+    /**
+     * Changes the room availability.
+     * @param e the ChangeEvent
+     */
     public void stateChanged(ChangeEvent e) {
         copyOfHotelRooms = hotelModel.getFilteredData();
 
