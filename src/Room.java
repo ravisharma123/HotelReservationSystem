@@ -1,6 +1,6 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /*******************************************************
  * Holds information about a hotel room
@@ -10,14 +10,14 @@ import java.util.GregorianCalendar;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-14
  *******************************************************/
-public class Room {
+public class Room implements Serializable {
 	private Calendar checkInDate;
 	private Calendar checkOutDate;
 	private ArrayList<Calendar> bookedDates;
 	private int price;
 	private boolean isLuxury;
 	private int roomNumber;
-	final static long MILLISECSPERDAY = 1000*60*60*24;
+	final static long MILLISECS_PER_DAY = 1000*60*60*24;
 
 	public Room(boolean isLuxury, int roomNumber) {
 		this.isLuxury = isLuxury;
@@ -159,7 +159,7 @@ public class Room {
 	 * @return the number of days between the dates (including the date)
 	 */
 	public int getDays(Calendar checkInDate, Calendar checkOutDate) {
-		long days = 1 + ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / MILLISECSPERDAY;
+		long days = 1 + ( checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis() ) / MILLISECS_PER_DAY;
 		return (int) days;
 	}
 	
@@ -175,11 +175,11 @@ public class Room {
 		ArrayList<Calendar> reservationDates = new ArrayList<Calendar>();
 		Calendar cal = (Calendar) checkInDate.clone();
 		
-		for (long i = checkInDate.getTimeInMillis(); i <= checkOutDate.getTimeInMillis(); i = i + MILLISECSPERDAY)
+		for (long i = checkInDate.getTimeInMillis(); i <= checkOutDate.getTimeInMillis(); i = i + MILLISECS_PER_DAY)
 		{
 			Calendar newCal = (Calendar) cal.clone();
 			reservationDates.add(newCal);
-			cal.setTimeInMillis(cal.getTimeInMillis() + MILLISECSPERDAY);
+			cal.setTimeInMillis(cal.getTimeInMillis() + MILLISECS_PER_DAY);
 		}
 		
 		return reservationDates;

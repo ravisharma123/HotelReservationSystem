@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /***********************************************************
@@ -7,12 +8,11 @@ import java.util.ArrayList;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-11
  ***********************************************************/
-public class Guest {
+public class Guest implements Serializable {
     private String username;
     private int userID;
     private ArrayList<Room> roomList;
 
-	
     public Guest(int userID, String username) {
         this.userID = userID;
         this.username = username;
