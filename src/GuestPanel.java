@@ -251,7 +251,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
                             confirmButton.setEnabled(true);
                         }
                         else {
-                            availableRoomsArea.append("There are no " + hotelModel.getAvailableRoomInfo().get(0).getType() + " rooms available on this day");
+                            String roomType = isLuxury ? luxury : standard;
+
+                            availableRoomsArea.append("There are no " + roomType + " rooms available during this duration");
                             confirmButton.setEnabled(false);
                         }
                     }
@@ -352,8 +354,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
         simpleOrComprehensiveButtonPanel.add(simpleRadioButton);
         simpleOrComprehensiveButtonPanel.add(comprehensiveRadioButton);
 
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ActionListener() {
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayMakeReservationOption();
             }
@@ -362,7 +364,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         setLayout(new BorderLayout());
         add(simpleOrComprehensiveButtonPanel, BorderLayout.NORTH);
         add(receiptArea, BorderLayout.CENTER);
-        add(cancelButton, BorderLayout.SOUTH);
+        add(backButton, BorderLayout.SOUTH);
 
         revalidate();
     }
