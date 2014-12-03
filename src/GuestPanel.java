@@ -190,7 +190,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         final JTextArea availableRoomsArea = new JTextArea();
         availableRoomsArea.setEditable(false);
 
-        JButton confirmButton = new JButton("Confirm");
+        final JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!copyOfHotelRooms.isEmpty()) {
