@@ -14,10 +14,13 @@ import java.util.ArrayList;
  * 
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-14
+ * Version 2014-12-03
  ********************************************************/
 public class HotelReservationSystemTester {
-
+    /**
+     * The main method.
+     * @param args the args
+     */
     public static void main(String[] args) {
         HotelModel hotelModel = Manager.load();
 

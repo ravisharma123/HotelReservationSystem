@@ -4,12 +4,16 @@ import java.util.Calendar;
 /**
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-14
+ * Version 2014-12-03
  */
 public class Manager {
     public static final String FILENAME = "HotelModel.txt";
     private HotelModel hotelModel;
 
+    /**
+     * Creates a manager.
+     * @param hotelModel the hotel model
+     */
     public Manager(HotelModel hotelModel) {
         this.hotelModel = hotelModel;
     }

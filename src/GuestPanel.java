@@ -16,7 +16,7 @@ import javax.swing.event.ChangeListener;
  *
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
- * Version 2014-11-15
+ * Version 2014-12-03
  *********************************************************/
 public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
@@ -27,6 +27,10 @@ public class GuestPanel extends JPanel implements ChangeListener {
     private Calendar checkInCalendar;
     private Calendar checkOutCalendar;
 
+    /**
+     * Creates a guest panel.
+     * @param hotelModel the hotel model
+     */
     public GuestPanel(HotelModel hotelModel) {
         copyOfHotelRooms = hotelModel.getData();
         this.hotelModel = hotelModel;
