@@ -205,6 +205,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
 
                     guest.addToGuestReservations(addReservationToGuestRecords);
+                    availableRoomsArea.revalidate();
                 }
             }
         });
