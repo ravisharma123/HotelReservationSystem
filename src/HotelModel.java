@@ -17,6 +17,7 @@ import javax.swing.event.ChangeListener;
  *********************************************/
 public class HotelModel implements Serializable {
     private ArrayList<Room> hotelRoomData;
+    private ArrayList<ChangeListener> listeners;
     private ArrayList<Room> filteredResults;
     private ArrayList<Guest> guestList;
 
@@ -28,6 +29,7 @@ public class HotelModel implements Serializable {
     {
         hotelRoomData = setHotelRoomData;
         guestList = new ArrayList<>();
+        listeners = new ArrayList<>();
         filteredResults = new ArrayList<>();
     }
 
@@ -38,7 +40,21 @@ public class HotelModel implements Serializable {
      * @return A the rooms in the hotel
      */
     public ArrayList<Room> getData()
-    {   return hotelRoomData;    }
+    {   return (ArrayList<Room>) hotelRoomData.clone();    }
+
+    /**
+     * Gets the filtered data.
+     * @return the filtered data
+     */
+    public ArrayList<Room> getFilteredData()
+    {    return filteredResults;    }
+
+    /**
+     * Attaches a change listener.
+     * @param c the change listener
+     */
+    public void attach(ChangeListener c)
+    {   listeners.add(c);    }
 
     /**
      * Adds dates to the room.  The room is reserved 
@@ -52,6 +68,10 @@ public class HotelModel implements Serializable {
     public void updateToAddReservation(Room addReservation, Calendar checkInDate, Calendar checkOutDate)
     {
         hotelRoomData.get( hotelRoomData.indexOf(addReservation) ).setBookedDates(checkInDate, checkOutDate);
+        for(ChangeListener l: listeners)
+        {
+            l.stateChanged( new ChangeEvent(this) );
+        }
     }
 
     /**
@@ -66,6 +86,10 @@ public class HotelModel implements Serializable {
     public void updateToCancelReservation(Room cancelReservation, Calendar checkInDate, Calendar checkOutDate)
     {
         hotelRoomData.get( hotelRoomData.indexOf(cancelReservation) ).deleteBookedDates(checkInDate, checkOutDate);
+        for(ChangeListener l: listeners)
+        {
+            l.stateChanged( new ChangeEvent(this) );
+        }
     }
 
     /**
@@ -75,6 +99,11 @@ public class HotelModel implements Serializable {
     public void updateToAddGuest(Guest addGuest)
     {
         guestList.add(addGuest);
+        for(ChangeListener l: listeners)
+        {
+            l.stateChanged(new ChangeEvent(this));
+        }
+
     }
 
     /**
@@ -103,6 +132,12 @@ public class HotelModel implements Serializable {
             }
             addRm = true;
         }
+
+        for(ChangeListener l: listeners)
+        {
+            l.stateChanged(new ChangeEvent(this));
+        }
+
     }
 
     /**

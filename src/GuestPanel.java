@@ -18,9 +18,11 @@ import javax.swing.event.ChangeListener;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-12-03
  *********************************************************/
-public class GuestPanel extends JPanel {
+public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
+    private ArrayList<Room> copyOfHotelRooms;
     private HotelModel hotelModel;
+    private JTextArea availableRooms;
     private boolean isLuxury;
     private Calendar checkInCalendar;
     private Calendar checkOutCalendar;
@@ -30,7 +32,9 @@ public class GuestPanel extends JPanel {
      * @param hotelModel the hotel model
      */
     public GuestPanel(HotelModel hotelModel) {
+        copyOfHotelRooms = hotelModel.getData();
         this.hotelModel = hotelModel;
+        availableRooms = new JTextArea("Available Rooms\n");
     }
 
     /**
@@ -193,9 +197,7 @@ public class GuestPanel extends JPanel {
         final JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Room> copyOfHotelRooms = hotelModel.getData();
-
-                if(!copyOfHotelRooms.isEmpty()) {
+                if (!copyOfHotelRooms.isEmpty()) {
                     hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
 
                     Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
@@ -423,5 +425,17 @@ public class GuestPanel extends JPanel {
         add(buttonPanel);
 
         revalidate();
+    }
+
+    /**
+     * Changes the room availability.
+     * @param e the ChangeEvent
+     */
+    public void stateChanged(ChangeEvent e) {
+        copyOfHotelRooms = hotelModel.getFilteredData();
+
+        for(int i = 0; i < copyOfHotelRooms.size(); i++) {
+            availableRooms.append("\n" + copyOfHotelRooms.get(i).toString());
+        }
     }
 }

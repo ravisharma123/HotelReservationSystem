@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * Runs the hotel reservation system for 
  * booking rooms and searching for rooms.
  * Managers can access and view the rooms per date
- * 
- * 
+ *
+ *
  * Solution to group project 2 for CS151-01.
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-12-03
@@ -63,6 +63,9 @@ public class HotelReservationSystemTester {
         final JPanel managerPanel = new ManagerPanel(manager);
         final GuestPanel guestPanel = new GuestPanel(hotelModel);
 
+        //attach listeners
+        hotelModel.attach(guestPanel);
+
         final JButton backButton = new JButton("Go back to user selection");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -97,7 +100,7 @@ public class HotelReservationSystemTester {
             public void mousePressed(MouseEvent e) {
                 frame.remove(selectionPanel);
                 guestPanel.displayLogin();
-            	frame.add(guestPanel, BorderLayout.CENTER);
+                frame.add(guestPanel, BorderLayout.CENTER);
                 backButton.setVisible(true);
                 frame.revalidate();
             }
@@ -107,7 +110,7 @@ public class HotelReservationSystemTester {
         selectionPanel.add(managerButton);
         selectionPanel.add(guestButton);
         frame.add(selectionPanel, BorderLayout.CENTER);
-        
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
