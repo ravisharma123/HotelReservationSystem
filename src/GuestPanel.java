@@ -198,13 +198,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!copyOfHotelRooms.isEmpty()) {
-                    hotelModel.updateToAddReservation(copyOfHotelRooms.get(0), checkInCalendar, checkOutCalendar);
-
-                    Room addReservationToGuestRecords = copyOfHotelRooms.get(0);
+                    hotelModel.updateToAddReservation(hotelModel.getAvailableRoomInfo().get(0), checkInCalendar, checkOutCalendar);
+                    Room addReservationToGuestRecords=new Room(copyOfHotelRooms.get(0).isLuxury(),copyOfHotelRooms.get(0).getRoomNumber());
                     addReservationToGuestRecords.setCheckInDate(checkInCalendar);
                     addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
 
                     guest.addToGuestReservations(addReservationToGuestRecords);
+                    //System.out.println(copyOfHotelRooms.get(0).hashCode()+" "+addReservationToGuestRecords.getCheckInDate().getTime().toString()+" "+addReservationToGuestRecords.getCheckOutDate().getTime().toString());
                     availableRoomsArea.revalidate();
                 }
             }
@@ -251,6 +251,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                         hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
                         if (!hotelModel.getAvailableRoomInfo().isEmpty()) {
                             for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
+                                System.out.println(hotelModel.getAvailableRoomInfo().get(i).hashCode());
                                 availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
                             }
                             confirmButton.setEnabled(true);
@@ -433,7 +434,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
      * @param e the ChangeEvent
      */
     public void stateChanged(ChangeEvent e) {
-        copyOfHotelRooms = hotelModel.getFilteredData();
+        copyOfHotelRooms = hotelModel.getAvailableRoomInfo();
 
         for(int i = 0; i < copyOfHotelRooms.size(); i++) {
             availableRooms.append("\n" + copyOfHotelRooms.get(i).toString());

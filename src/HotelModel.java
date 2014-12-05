@@ -46,8 +46,8 @@ public class HotelModel implements Serializable {
      * Gets the filtered data.
      * @return the filtered data
      */
-    public ArrayList<Room> getFilteredData()
-    {    return filteredResults;    }
+   // public ArrayList<Room> getFilteredData()
+   // {    return filteredResults;    }
 
     /**
      * Attaches a change listener.
