@@ -176,6 +176,10 @@ public class HotelModel implements Serializable {
                 }
                 message += r.getType() + "\t" + r.getRoomNumber() + "\t" + user.getUsername() + "\n";
             }
+            else
+            {
+            	message += r.getType() + "\t" + r.getRoomNumber() + "\tvacant\n";
+            }
         }
         return message;
     }
