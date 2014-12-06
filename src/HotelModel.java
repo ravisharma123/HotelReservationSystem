@@ -170,9 +170,14 @@ public class HotelModel implements Serializable {
             if(r.getBookedDates().contains(calendar)) {
                 Guest user = new Guest(1, "");
                 for (Guest g: guestList) {
-                    if(g.getRoomList().contains(r)) {
-                        user = g;
-                    }
+                	if(!g.getRoomList().isEmpty())
+                	{
+                    	for (Room rm: g.getRoomList())
+                    	{
+                    		if (rm.getRoomNumber() == r.getRoomNumber())
+                    		{	user = g;	}
+                    	}
+                	}
                 }
                 message += r.getType() + "\t" + r.getRoomNumber() + "\t" + user.getUsername() + "\n";
             }
@@ -194,7 +199,7 @@ public class HotelModel implements Serializable {
         int guestRecordFound = -1;
         for (int i = 0; i < guestList.size(); i++) {
             if (guestList.get(i).getUserID() == getGuestID) {
-                guestRecordFound = i;
+                return i;
             }
         }
         return guestRecordFound;
