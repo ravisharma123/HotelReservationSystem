@@ -83,10 +83,20 @@ public class HotelModel implements Serializable {
      * @param checkInDate is the first day of the reservation
      * @param checkOutDate is the last day of the reservation
      */
-    public void updateToCancelReservation(Room cancelReservation, Calendar checkInDate, Calendar checkOutDate)
+    public void updateToCancelReservation(int cancelReservation, Calendar checkInDate, Calendar checkOutDate)
     {
-        hotelRoomData.get( hotelRoomData.indexOf(cancelReservation) ).deleteBookedDates(checkInDate, checkOutDate);
-        for(ChangeListener l: listeners)
+    	Room room = new Room(false, -1);
+    	for (Room rm: hotelRoomData) {
+    		if (rm.getRoomNumber() == cancelReservation) {
+    			room = rm;
+    		}
+    	}
+        
+    	if (room.getRoomNumber() > 0) {
+    		room.deleteBookedDates(checkInDate, checkOutDate);
+    	}
+    	
+    	for(ChangeListener l: listeners)
         {
             l.stateChanged( new ChangeEvent(this) );
         }

@@ -69,7 +69,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
                     // get username
                     String username;
-                    if(hotelModel.hasGuestID(userID)>=0) {
+                    if(hotelModel.hasGuestID(userID) >= 0) {
                         int location = hotelModel.hasGuestID(userID);
                         guest = hotelModel.getGuestList().get(location);
                     }
@@ -204,11 +204,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     hotelModel.updateToAddReservation(hotelModel.getAvailableRoomInfo().get(0), checkInCalendar, checkOutCalendar);
                     Room addReservationToGuestRecords = new Room(copyOfHotelRooms.get(0).isLuxury(),copyOfHotelRooms.get(0).getRoomNumber());
                     addReservationToGuestRecords.setCheckInDate(checkInCalendar);
-                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                    System.out.print("------------------" + df.format(checkInCalendar.getTime()) + " to ");
+                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");                 
                     addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
-                    System.out.println(df.format(checkOutCalendar.getTime()) + "---------------------------");
-
                     guest.addToGuestReservations(addReservationToGuestRecords);
                     availableRoomsArea.revalidate();
                 }
@@ -236,7 +233,6 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     checkInCalendar = new GregorianCalendar(checkInYear, checkInMonth, checkInDay);
                     checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-                    System.out.println(df.format(checkInCalendar.getTime()) + " to " + df.format(checkOutCalendar.getTime()));
                     Calendar currentDay = Calendar.getInstance();
                     currentDay.add(Calendar.DATE, -1);
                     Room tempRoom = new Room(false, 0);
@@ -411,7 +407,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     JCheckBox checkBox = checkBoxList.get(i);
 
                     if(checkBox.isSelected()) {
-                        hotelModel.updateToCancelReservation(reservationsByGuest.get(i), reservationsByGuest.get(i).getCheckInDate(), reservationsByGuest.get(i).getCheckOutDate());
+                        hotelModel.updateToCancelReservation(reservationsByGuest.get(i).getRoomNumber(), reservationsByGuest.get(i).getCheckInDate(), reservationsByGuest.get(i).getCheckOutDate());
                         guest.removeFromGuestReservations(reservationsByGuest.get(i));
                         checkBoxList.remove(checkBox);
                         remove(checkBox);
