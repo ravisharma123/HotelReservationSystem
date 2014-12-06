@@ -196,7 +196,7 @@ public class HotelModel implements Serializable {
             }
             else
             {
-            	message += r.getType() + "\t" + r.getRoomNumber() + "\tvacant\n";
+            	message += r.getType() + "\t" + r.getRoomNumber() + "\t\n";
             }
         }
         
