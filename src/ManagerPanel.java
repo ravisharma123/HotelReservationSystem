@@ -56,7 +56,8 @@ public class ManagerPanel extends JPanel {
 
         add(roomInfoTextArea, BorderLayout.CENTER);
     }
-
+    
+   
     /**
      * Gets the button panel.
      * @return the button panel

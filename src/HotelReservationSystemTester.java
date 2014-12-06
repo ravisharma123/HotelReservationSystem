@@ -71,7 +71,7 @@ public class HotelReservationSystemTester {
             @Override
             public void actionPerformed(ActionEvent e) {
                 backButton.setVisible(false);
-
+                guestPanel.reset();
                 frame.remove(managerPanel);
                 frame.remove(guestPanel);
 

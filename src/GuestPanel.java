@@ -26,6 +26,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
     private boolean isLuxury;
     private Calendar checkInCalendar;
     private Calendar checkOutCalendar;
+    private Timer t;
 
     /**
      * Creates a guest panel.
@@ -35,16 +36,18 @@ public class GuestPanel extends JPanel implements ChangeListener {
         copyOfHotelRooms = hotelModel.getData();
         this.hotelModel = hotelModel;
         availableRooms = new JTextArea("Available Rooms\n");
+        this.t = new Timer(10, null);
     }
 
     /**
      * Resets some instance variables.
      */
-    private void reset() {
-        guest = null;
+      public void reset() {
+    	guest = null;
         isLuxury = false;
         checkInCalendar = null;
         checkOutCalendar = null;
+        t.stop();
     }
 
     /**
@@ -199,12 +202,14 @@ public class GuestPanel extends JPanel implements ChangeListener {
             public void actionPerformed(ActionEvent e) {
                 if (!copyOfHotelRooms.isEmpty()) {
                     hotelModel.updateToAddReservation(hotelModel.getAvailableRoomInfo().get(0), checkInCalendar, checkOutCalendar);
-                    Room addReservationToGuestRecords=new Room(copyOfHotelRooms.get(0).isLuxury(),copyOfHotelRooms.get(0).getRoomNumber());
+                    Room addReservationToGuestRecords = new Room(copyOfHotelRooms.get(0).isLuxury(),copyOfHotelRooms.get(0).getRoomNumber());
                     addReservationToGuestRecords.setCheckInDate(checkInCalendar);
+                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                    System.out.print("------------------" + df.format(checkInCalendar.getTime()) + " to ");
                     addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
+                    System.out.println(df.format(checkOutCalendar.getTime()) + "---------------------------");
 
                     guest.addToGuestReservations(addReservationToGuestRecords);
-                    //System.out.println(copyOfHotelRooms.get(0).hashCode()+" "+addReservationToGuestRecords.getCheckInDate().getTime().toString()+" "+addReservationToGuestRecords.getCheckOutDate().getTime().toString());
                     availableRoomsArea.revalidate();
                 }
             }
@@ -230,6 +235,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
                     checkInCalendar = new GregorianCalendar(checkInYear, checkInMonth, checkInDay);
                     checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
+                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                    System.out.println(df.format(checkInCalendar.getTime()) + " to " + df.format(checkOutCalendar.getTime()));
                     Calendar currentDay = Calendar.getInstance();
                     currentDay.add(Calendar.DATE, -1);
                     Room tempRoom = new Room(false, 0);
@@ -251,8 +258,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                         hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
                         if (!hotelModel.getAvailableRoomInfo().isEmpty()) {
                             for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
-                                System.out.println(hotelModel.getAvailableRoomInfo().get(i).hashCode());
-                                availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
+                            	availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
                             }
                             confirmButton.setEnabled(true);
                         }
@@ -268,19 +274,21 @@ public class GuestPanel extends JPanel implements ChangeListener {
         };
 
         final int DELAY = 10; // 1000ms = 1s
-        Timer t = new Timer(DELAY, actionListener);
+        this.t = new Timer(DELAY, actionListener);
         t.start();
 
         JButton transactionDoneButton = new JButton("Transaction Done");
         transactionDoneButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                displayReceipt();
+                t.stop();
+            	displayReceipt();
             }
         });
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	t.stop();
                 displayReservationOptions();
             }
         });
@@ -385,10 +393,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
         final ArrayList<JCheckBox> checkBoxList = new ArrayList<JCheckBox>();
 
         for(Room room: reservationsByGuest) {
-            SimpleDateFormat checkIn_df = new SimpleDateFormat("MM/dd/yy");
-            SimpleDateFormat checkOut_df = new SimpleDateFormat("MM/dd/yy");
-            String checkin = checkIn_df.format( room.getCheckInDate().getTime() );
-            String checkout = checkOut_df.format( room.getCheckOutDate().getTime() );
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
+            String checkin = dateFormat.format( room.getCheckInDate().getTime() );
+            String checkout = dateFormat.format( room.getCheckOutDate().getTime() );
 
             String reservationDescription = room.getType() + " Room " + room.getRoomNumber() + ": " + checkin + " to " + checkout;
 
