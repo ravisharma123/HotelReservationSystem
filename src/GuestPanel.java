@@ -65,12 +65,13 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     int userID = Integer.parseInt(str);
 
                     // get username
-                    if(hotelModel.hasGuestID(userID) >= 0) {
+                    String username;
+                    if(hotelModel.hasGuestID(userID)>=0) {
                         int location = hotelModel.hasGuestID(userID);
                         guest = hotelModel.getGuestList().get(location);
                     }
                     else {
-                        String username = JOptionPane.showInputDialog("Create a username for this user ID: ");
+                        username = JOptionPane.showInputDialog("Create a username for this user ID: ");
 
                         // cancel option was selected or username is empty
                         if(username == null || username.equals("")) {
@@ -148,7 +149,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
      */
     private void displayMakeReservationOption() {
         removeAll();
-        
+
         // check in and check out panels
         JLabel checkInLabel = new JLabel("Check-in date (in mm/dd/yyyy format):");
         final JTextField checkInField = new JTextField();
@@ -198,11 +199,12 @@ public class GuestPanel extends JPanel implements ChangeListener {
             public void actionPerformed(ActionEvent e) {
                 if (!copyOfHotelRooms.isEmpty()) {
                     hotelModel.updateToAddReservation(hotelModel.getAvailableRoomInfo().get(0), checkInCalendar, checkOutCalendar);
-                    Room addReservationToGuestRecords = new Room(copyOfHotelRooms.get(0).isLuxury(),copyOfHotelRooms.get(0).getRoomNumber());
-                    addReservationToGuestRecords.setCheckInDate((Calendar) checkInCalendar.clone());
-                    addReservationToGuestRecords.setCheckOutDate((Calendar) checkOutCalendar.clone());
+                    Room addReservationToGuestRecords=new Room(copyOfHotelRooms.get(0).isLuxury(),copyOfHotelRooms.get(0).getRoomNumber());
+                    addReservationToGuestRecords.setCheckInDate(checkInCalendar);
+                    addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
 
                     guest.addToGuestReservations(addReservationToGuestRecords);
+                    //System.out.println(copyOfHotelRooms.get(0).hashCode()+" "+addReservationToGuestRecords.getCheckInDate().getTime().toString()+" "+addReservationToGuestRecords.getCheckOutDate().getTime().toString());
                     availableRoomsArea.revalidate();
                 }
             }
@@ -249,7 +251,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                         hotelModel.setFilteredData(checkInCalendar, checkOutCalendar, isLuxury);
                         if (!hotelModel.getAvailableRoomInfo().isEmpty()) {
                             for (int i = 0; i < hotelModel.getAvailableRoomInfo().size(); i++) {
-                               // System.out.println(hotelModel.getAvailableRoomInfo().get(i).hashCode());
+                                System.out.println(hotelModel.getAvailableRoomInfo().get(i).hashCode());
                                 availableRoomsArea.append( hotelModel.getAvailableRoomInfo().get(i).getRoomNumber() + "\n" );
                             }
                             confirmButton.setEnabled(true);
@@ -434,8 +436,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
     public void stateChanged(ChangeEvent e) {
         copyOfHotelRooms = hotelModel.getAvailableRoomInfo();
 
-        for(Room r : copyOfHotelRooms) {
-            availableRooms.append("\n" + r.toString());
+        for(int i = 0; i < copyOfHotelRooms.size(); i++) {
+            availableRooms.append("\n" + copyOfHotelRooms.get(i).toString());
         }
     }
 }
