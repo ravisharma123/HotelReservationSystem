@@ -178,24 +178,28 @@ public class HotelModel implements Serializable {
 
         for (Room r: hotelRoomData)	{
             if(r.getBookedDates().contains(calendar)) {
-                Guest user = new Guest(1, "");
                 for (Guest g: guestList) {
                 	if(!g.getRoomList().isEmpty())
                 	{
                     	for (Room rm: g.getRoomList())
                     	{
                     		if (rm.getRoomNumber() == r.getRoomNumber())
-                    		{	user = g;	}
+                    		{	
+                				if (rm.getCheckInDate().getTimeInMillis() <= calendar.getTimeInMillis() && rm.getCheckOutDate().getTimeInMillis() >= calendar.getTimeInMillis()){
+                        			message += r.getType() + "\t" + r.getRoomNumber() + "\t" + g.getUsername() + "\n";		
+                				}
+                    		}
                     	}
                 	}
                 }
-                message += r.getType() + "\t" + r.getRoomNumber() + "\t" + user.getUsername() + "\n";
+                
             }
             else
             {
             	message += r.getType() + "\t" + r.getRoomNumber() + "\tvacant\n";
             }
         }
+        
         return message;
     }
 

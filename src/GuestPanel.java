@@ -203,8 +203,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                 if (!copyOfHotelRooms.isEmpty()) {
                     hotelModel.updateToAddReservation(hotelModel.getAvailableRoomInfo().get(0), checkInCalendar, checkOutCalendar);
                     Room addReservationToGuestRecords = new Room(copyOfHotelRooms.get(0).isLuxury(),copyOfHotelRooms.get(0).getRoomNumber());
-                    addReservationToGuestRecords.setCheckInDate(checkInCalendar);
-                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");                 
+                    addReservationToGuestRecords.setCheckInDate(checkInCalendar);              
                     addReservationToGuestRecords.setCheckOutDate(checkOutCalendar);
                     guest.addToGuestReservations(addReservationToGuestRecords);
                     availableRoomsArea.revalidate();
