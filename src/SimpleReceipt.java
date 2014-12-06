@@ -40,8 +40,11 @@ public class SimpleReceipt implements ReceiptFormatter{
 		int roomPrice = room.getPrice();
 		int days = room.getDays(room.getCheckInDate(), room.getCheckOutDate());
 		total += roomPrice * days;
-
-		return "\nRoom\tRoom Price\tNumber of Days\n" +  room.getRoomNumber() + "\t$" + roomPrice + "\t" + days;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String CheckIn = dateFormat.format( room.getCheckInDate().getTime() );
+        String CheckOut = dateFormat.format( room.getCheckOutDate().getTime() );
+        
+		return "\nRoom\tRoom Price\tCheck In\tCheck Out\tNumber of Days\n" +  room.getRoomNumber() + "\t$" + roomPrice + "\t" + CheckIn + "\t"+ CheckOut + "\t" + days;
 	}
 	
 

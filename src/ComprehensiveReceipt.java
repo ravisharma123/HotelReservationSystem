@@ -37,14 +37,17 @@ public class ComprehensiveReceipt implements ReceiptFormatter{
 	 * @param guest is the guest making the reservation
 	 */
 	public String receipt(Guest guest) {
-		String receipt = "\nRoom\tRoom Price\tNumber of Days";
+		String receipt = "\nRoom\tRoom Price\tCheck In\tCheck Out\tNumber of Days";
 		
 		for (Room room: guest.getRoomList() )
 		{
 			int roomPrice = room.getPrice();
 			int days = room.getDays(room.getCheckInDate(), room.getCheckOutDate() );
 			total += roomPrice * days;
-			receipt += "\n" + room.getRoomNumber() + "\t$" + roomPrice + "\t" + days;
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			String CheckIn = dateFormat.format( room.getCheckInDate().getTime() );
+			String CheckOut = dateFormat.format( room.getCheckOutDate().getTime() );
+			receipt += "\n" + room.getRoomNumber() + "\t$" + roomPrice  + "\t" + CheckIn + "\t" + CheckOut + "\t" + days;
 		}
 
 		return receipt;
