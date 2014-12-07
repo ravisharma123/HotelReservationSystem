@@ -228,6 +228,15 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     int checkOutYear = Integer.parseInt(checkOutDateArr[2]);
                     int checkOutMonth = Integer.parseInt(checkOutDateArr[0]) - 1;
                     int checkOutDay = Integer.parseInt(checkOutDateArr[1]);
+                    Calendar tempCheckOut = Calendar.getInstance();
+                    tempCheckOut.set(checkOutYear, checkOutMonth, 1);
+                    Calendar tempCheckIn = Calendar.getInstance();
+                    tempCheckIn.set(checkInYear, checkInMonth, 1);
+                    if(checkOutDay>tempCheckOut.getActualMaximum(Calendar.DATE) || checkInDay>tempCheckIn.getActualMaximum(Calendar.DATE)){
+                        availableRoomsArea.append("incorrect date inputted");
+                        confirmButton.setEnabled(false);
+                    }
+                    else{
 
                     checkInCalendar = new GregorianCalendar(checkInYear, checkInMonth, checkInDay);
                     checkOutCalendar = new GregorianCalendar(checkOutYear, checkOutMonth, checkOutDay);
@@ -264,6 +273,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                             confirmButton.setEnabled(false);
                         }
                     }
+                }
                 }
             }
         };
