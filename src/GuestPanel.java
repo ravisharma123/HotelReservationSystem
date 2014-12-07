@@ -232,7 +232,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
                     tempCheckOut.set(checkOutYear, checkOutMonth, 1);
                     Calendar tempCheckIn = Calendar.getInstance();
                     tempCheckIn.set(checkInYear, checkInMonth, 1);
-                    if(checkOutDay>tempCheckOut.getActualMaximum(Calendar.DATE) || checkInDay>tempCheckIn.getActualMaximum(Calendar.DATE)){
+                    if(checkOutDay>tempCheckOut.getActualMaximum(Calendar.DATE) || checkInDay>tempCheckIn.getActualMaximum(Calendar.DATE)|| checkInMonth>12 || checkInMonth<1 || checkOutMonth>12 || checkOutMonth<1){
                         availableRoomsArea.append("incorrect date inputted");
                         confirmButton.setEnabled(false);
                     }
