@@ -319,6 +319,9 @@ public class GuestPanel extends JPanel implements ChangeListener {
     /**
      * Display receipt.
      */
+    /*This GuestPanel class is the client of the Strategy Pattern since it is invoking the pattern here
+      and makes the call to guest.getReceipt(new ConcreteStrategy()) depending on which radio button is selected
+    */
     private void displayReceipt() {
         removeAll();
 

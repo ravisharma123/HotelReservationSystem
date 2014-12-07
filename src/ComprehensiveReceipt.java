@@ -9,6 +9,7 @@ import java.util.Calendar;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-14
  ********************************************************/
+//This is a concrete strategy that realizes the interface ReciptFormatter
 public class ComprehensiveReceipt implements ReceiptFormatter{
 	private double total;
 

@@ -45,7 +45,7 @@ public class HotelReservationSystemTester {
 
         //CREATE FRAME / CENTER ON SCREEN
         final JFrame frame = new JFrame("Hotel Reservation System");
-        final int width = 600;
+        final int width = 800;
         final int height = 600;
         frame.setSize(width, height);
         frame.setLayout(new BorderLayout());

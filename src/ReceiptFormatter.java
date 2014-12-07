@@ -7,6 +7,11 @@
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-11-14
  ********************************************************/
+/*Interface for Strategy Pattern --> this interface is called the strategy
+  The interface/strategy defines three requirements that the concrete strategies must fulfill
+  in their own way.
+*/
+
 public interface ReceiptFormatter {
 	/**
 	 * creates the header of the receipt

@@ -174,7 +174,7 @@ public class HotelModel implements Serializable {
      */
     public String getRoomInfoOnDay(Calendar calendar) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM dd, yyyy");
-        String message = dateFormat.format( calendar.getTime() ) + "\n\n" + "Room Type" + "\tRoom Number" + "\tGuest Name" + "\n";
+        String message = dateFormat.format( calendar.getTime() ) + "\n\n" + "Room Type" + "\tRoom Number" + "\tRoom Price" + "\tGuest Name" + "\n";
 
         for (Room r: hotelRoomData)	{
             if(r.getBookedDates().contains(calendar)) {
@@ -186,7 +186,7 @@ public class HotelModel implements Serializable {
                     		if (rm.getRoomNumber() == r.getRoomNumber())
                     		{	
                 				if (rm.getCheckInDate().getTimeInMillis() <= calendar.getTimeInMillis() && rm.getCheckOutDate().getTimeInMillis() >= calendar.getTimeInMillis()){
-                        			message += r.getType() + "\t" + r.getRoomNumber() + "\t" + g.getUsername() + "\n";		
+                        			message += r.getType() + "\t" + r.getRoomNumber() +"\t" + "$"+r.getPrice()+ "\t" + g.getUsername() + "\n";		
                 				}
                     		}
                     	}
@@ -196,7 +196,7 @@ public class HotelModel implements Serializable {
             }
             else
             {
-            	message += r.getType() + "\t" + r.getRoomNumber() + "\t\n";
+            	message += r.getType() + "\t" + +r.getRoomNumber() +"\t" +"$"+r.getPrice()+ "\t\n";
             }
         }
         
