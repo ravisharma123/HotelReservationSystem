@@ -15,9 +15,13 @@ import javax.swing.event.ChangeListener;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-12-03
  *********************************************/
+/*
+  This class is the Model component of the MVC pattern and it holds the list of the 20 rooms
+  10 of which are standard and 10 luxary. It also holds the guest list.  
+*/
 public class HotelModel implements Serializable {
     private ArrayList<Room> hotelRoomData;
-    private ArrayList<ChangeListener> listeners;
+    private ArrayList<ChangeListener> listeners; //listeners to update/notify the views 
     private ArrayList<Room> filteredResults;
     private ArrayList<Guest> guestList;
 
@@ -50,7 +54,7 @@ public class HotelModel implements Serializable {
    // {    return filteredResults;    }
 
     /**
-     * Attaches a change listener.
+     * Attaches a change listener which is the view (GuestPanel).
      * @param c the change listener
      */
     public void attach(ChangeListener c)

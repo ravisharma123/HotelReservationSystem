@@ -63,7 +63,7 @@ public class HotelReservationSystemTester {
         final JPanel managerPanel = new ManagerPanel(manager);
         final GuestPanel guestPanel = new GuestPanel(hotelModel);
 
-        //attach listeners
+        //attach listeners/View 
         hotelModel.attach(guestPanel);
 
         final JButton backButton = new JButton("Go back to user selection");

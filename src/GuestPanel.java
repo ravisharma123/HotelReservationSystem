@@ -18,6 +18,14 @@ import javax.swing.event.ChangeListener;
  * Copyright(C) Luke Sieben, Nathan Kong, and Ravi Sharma
  * Version 2014-12-03
  *********************************************************/
+/*
+ The GuestPanel class contains the View component of the MVC Pattern since it is updated everytime
+ more specifically it is the availableRooms JTextArea that is being updated in this panel so that is the view 
+ This class also contains the multiple controller components of the MVC Pattern. 1) the actionListener 
+ that the Timer t uses to update instantaneously when user is reserving a room. 2) the actionListener used to 
+ add a guest to the system is another controller that changes the hotel model to add a guest. 3) the last controller
+ is the anonymous action listener for canceling reservations which changes the hotel model to free vacancy 
+*/
 public class GuestPanel extends JPanel implements ChangeListener {
     private Guest guest;
     private ArrayList<Room> copyOfHotelRooms;
@@ -26,7 +34,8 @@ public class GuestPanel extends JPanel implements ChangeListener {
     private boolean isLuxury;
     private Calendar checkInCalendar;
     private Calendar checkOutCalendar;
-    private Timer t;
+    private Timer t; //Timer ONLY uses the controller(actionListener) to update in real time
+                     //*actual contoller is actionListener that is passed into the timer*
 
     /**
      * Creates a guest panel.
@@ -60,7 +69,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
 
         // ActionListener uses the userIDField so make it here
         final JTextField userIDField = new JTextField();
-
+        //This actionListener is the controller that updates to add a guest to the hotel model
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String str = userIDField.getText();
@@ -211,7 +220,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
             }
         });
         confirmButton.setEnabled(false);
-
+        //The actionListener is the controller component of the MVC pattern that adds a reservation to the hotel model
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String checkInDate = checkInField.getText();
@@ -279,7 +288,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
         };
 
         final int DELAY = 10; // 1000ms = 1s
-        this.t = new Timer(DELAY, actionListener);
+        this.t = new Timer(DELAY, actionListener); //actionListener is passed into the timer for instantaneous update
         t.start();
 
         JButton transactionDoneButton = new JButton("Transaction Done");
@@ -410,7 +419,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
             checkBoxList.add(checkBox);
             add(checkBox);
         }
-
+        //This is the third controller that is used to cancel reservations and change the hotel model so that vacancy is freed
         JButton confirmButton = new JButton("Delete Checked");
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -444,7 +453,7 @@ public class GuestPanel extends JPanel implements ChangeListener {
     }
 
     /**
-     * Changes the room availability.
+     * Changes the room availability when a change has been made to the HotelModel.
      * @param e the ChangeEvent
      */
     public void stateChanged(ChangeEvent e) {
